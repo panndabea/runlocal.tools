@@ -1126,9 +1126,10 @@
         track.setAttribute('aria-valuenow', Math.round(pct));
       }
 
-      function getPercent(e) {
+      // Accepts both MouseEvent and Touch objects (both have clientX)
+      function getPercent(pointer) {
         const rect = track.getBoundingClientRect();
-        return ((e.clientX - rect.left) / rect.width) * 100;
+        return ((pointer.clientX - rect.left) / rect.width) * 100;
       }
 
       track.addEventListener('mousedown', (e) => { dragging = true; setQuality(getPercent(e)); });
