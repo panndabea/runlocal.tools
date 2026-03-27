@@ -46,10 +46,10 @@ You open a link, drop a file, and the processing happens locally — on your dev
 ## 🔄 How it works
 
 ```mermaid
-flowchart LR
-    A[Open Tool URL] --> B[Drop File]
-    B --> C[Process Locally in Browser]
-    C --> D[Download Result]
+flowchart TD
+    A[Open tool URL] --> B[Drop file]
+    B --> C[Process in browser]
+    C --> D[Download result]
 ```
 
 No uploads.
@@ -63,13 +63,10 @@ No external processing.
 Instead of uploading and forwarding files, users can share the tool itself.
 
 ```mermaid
-sequenceDiagram
-    participant A as User A
-    participant B as User B
-
-    A->>B: Sends tool link (/images/resize)
-    B->>B: Opens tool locally
-    B->>B: Processes file in browser
+flowchart LR
+    A[User A shares tool link] --> B[User B opens tool]
+    B --> C[File stays on User B device]
+    C --> D[User B downloads result]
 ```
 
 This removes friction and avoids unnecessary data transfer.
@@ -84,7 +81,7 @@ It is designed to evolve into a system where tools can be combined.
 
 ```mermaid
 flowchart LR
-    A[Image Resize] --> B[Format Convert]
+    A[Resize] --> B[Convert]
     B --> C[Compress]
 ```
 
@@ -96,9 +93,9 @@ Inspired by Unix pipelines — but adapted to the browser.
 
 ```mermaid
 flowchart TB
-    UI[Tool UI] --> Engine[Local Processing Layer]
-    Engine --> Browser[Browser APIs / WASM / Workers]
-    Engine --> FileSystem[User File Input / Output]
+    UI[Tool UI] --> Engine[Local processing layer]
+    Engine --> Runtime[Browser runtime and workers]
+    Engine --> IO[Local file input and output]
 ```
 
 * No backend required for core functionality
@@ -233,4 +230,3 @@ runlocal.tools rethinks how simple tools should work on the web:
 * composable instead of isolated
 
 A universal toolbox for everyday tasks — running where your data already is.
-
