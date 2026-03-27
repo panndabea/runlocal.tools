@@ -3,1193 +3,702 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>runlocal.tools — File tools that run in your browser</title>
-  <meta name="description" content="Privacy-first file tools that run entirely in your browser. No uploads. No tracking. Just fast, private tools." />
+  <title>runlocal.tools — Simple file tools that run locally</title>
+  <meta
+    name="description"
+    content="Simple browser-based file tools that run locally on your device. Resize, convert, and process files without uploading private data to random websites."
+  />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & base ───────────────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:          #09090f;
-      --bg-card:     #0f0f1a;
-      --bg-card-alt: #12121f;
-      --border:      rgba(255,255,255,0.07);
-      --text:        #f0f0f5;
-      --text-muted:  #7a7a96;
-      --text-dim:    #4a4a6a;
-      --accent-blue: #4f8ef7;
-      --accent-purple:#a78bfa;
-      --accent-green: #34d399;
-      --radius-sm:   10px;
-      --radius-md:   16px;
-      --radius-lg:   24px;
-      --max-w:       1120px;
-      --transition:  0.22s cubic-bezier(0.4,0,0.2,1);
+      --bg: #f7f5ef;
+      --surface: #fcfbf7;
+      --ink: #1f2421;
+      --ink-soft: #4f584f;
+      --line: #dad8cf;
+      --accent: #2e6b52;
+      --accent-deep: #1f4c3a;
+      --max: 1120px;
+      --radius: 10px;
     }
+
+    * { box-sizing: border-box; }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
       background: var(--bg);
-      color: var(--text);
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
 
-    /* ─── Animated gradient background ──────────────────────────────────────── */
-    .bg-gradient {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .bg-gradient::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 700px;
-      background: radial-gradient(ellipse at center,
-        rgba(79, 142, 247, 0.10) 0%,
-        rgba(167, 139, 250, 0.07) 40%,
-        transparent 70%);
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-    .bg-gradient::after {
-      content: '';
-      position: absolute;
-      bottom: -20%;
-      right: -10%;
-      width: 600px;
-      height: 500px;
-      background: radial-gradient(ellipse at center,
-        rgba(52, 211, 153, 0.06) 0%,
-        transparent 65%);
-      animation: drift 24s ease-in-out 4s infinite alternate-reverse;
-    }
-    @keyframes drift {
-      0%   { transform: translateX(-50%) scale(1)   translateY(0); }
-      100% { transform: translateX(-50%) scale(1.1) translateY(-40px); }
-    }
+    a { color: inherit; }
 
-    /* ─── Layout helpers ─────────────────────────────────────────────────────── */
     .container {
-      position: relative;
-      z-index: 1;
       width: 100%;
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 32px;
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: 1.25rem;
     }
 
-    /* ─── Nav ────────────────────────────────────────────────────────────────── */
-    nav {
-      position: fixed;
+    .topbar {
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      border-bottom: 1px solid transparent;
-      transition: border-color var(--transition), background var(--transition), backdrop-filter var(--transition);
+      z-index: 10;
+      background: color-mix(in srgb, var(--bg) 95%, white);
+      border-bottom: 1px solid var(--line);
     }
-    nav.scrolled {
-      background: rgba(9,9,15,0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-color: var(--border);
-    }
-    .nav-inner {
+
+    .topbar-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      min-height: 68px;
+      gap: 1.25rem;
     }
-    .nav-logo {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      text-decoration: none;
+
+    .brand {
+      font-weight: 800;
       letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      text-decoration: none;
+      font-size: 1.08rem;
     }
-    .nav-logo-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0.45rem 0.7rem;
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 600;
     }
+
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 1.3rem;
       list-style: none;
+      margin: 0;
+      padding: 0;
     }
+
     .nav-links a {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--text-muted);
       text-decoration: none;
-      transition: color var(--transition);
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 16px;
-      text-decoration: none;
-      transition: background var(--transition), border-color var(--transition);
-    }
-    .nav-cta:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.14);
+      color: var(--ink-soft);
+      font-size: 0.95rem;
     }
 
-    /* ─── Hero ───────────────────────────────────────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 32px 80px;
-      position: relative;
-    }
-    .hero-glow {
-      position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px;
-      height: 400px;
-      background: radial-gradient(ellipse,
-        rgba(79,142,247,0.15) 0%,
-        rgba(167,139,250,0.08) 50%,
-        transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(2px);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 6px 14px;
-      margin-bottom: 36px;
-      letter-spacing: 0.02em;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 8px rgba(52,211,153,0.6);
-      animation: pulse 2.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.4; }
-    }
-    .hero-headline {
-      font-size: clamp(42px, 6vw, 68px);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      color: var(--text);
-      max-width: 820px;
-      margin-bottom: 24px;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-headline span {
-      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-sub {
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.65;
-      color: var(--text-muted);
-      max-width: 480px;
-      margin-bottom: 40px;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 72px;
-      position: relative;
-      z-index: 1;
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ink);
     }
 
-    /* ─── Buttons ────────────────────────────────────────────────────────────── */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 10px;
-      padding: 12px 22px;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
       text-decoration: none;
-      cursor: pointer;
-      border: none;
-      font-family: inherit;
-      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
-      user-select: none;
-      -webkit-user-select: none;
+      white-space: nowrap;
+      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
     }
-    .btn:active { transform: scale(0.97); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      color: #fff;
-      box-shadow: 0 0 0 0 rgba(79,142,247,0.3);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(79,142,247,0.25), 0 0 0 0 rgba(79,142,247,0);
-    }
-    .btn-secondary {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.09);
-      color: var(--text);
-      transform: translateY(-1px);
+      background: var(--accent);
+      color: #f7f7f2;
     }
 
-    /* ─── Hero mockup card ───────────────────────────────────────────────────── */
-    .hero-card {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 680px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 28px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 40px 80px rgba(0,0,0,0.5),
-        0 4px 24px rgba(0,0,0,0.3);
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      background: var(--accent-deep);
     }
-    .hero-card::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      background: linear-gradient(135deg,
-        rgba(79,142,247,0.18) 0%,
-        rgba(167,139,250,0.10) 50%,
-        transparent 100%);
-      z-index: -1;
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line);
     }
-    .card-topbar {
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: #f0eee6;
+    }
+
+    main section {
+      padding-block: 4.6rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero {
+      border-top: 0;
+      padding-top: 4.2rem;
+      padding-bottom: 4.2rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5.2vw, 4rem);
+      max-width: 17ch;
+      margin-bottom: 1.25rem;
+      font-weight: 800;
+    }
+
+    .lead {
+      font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+      color: var(--ink-soft);
+      max-width: 44ch;
+      margin: 0 0 1.4rem;
+    }
+
+    .hero-copy p {
+      margin: 0 0 1rem;
+      max-width: 60ch;
+      color: #3f473f;
+    }
+
+    .action-row {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 22px;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.8rem;
     }
-    .card-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
+
+    .aside-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.2rem;
     }
-    .card-dot:nth-child(1) { background: #ff5f57; }
-    .card-dot:nth-child(2) { background: #febc2e; }
-    .card-dot:nth-child(3) { background: #28c840; }
-    .card-title {
-      flex: 1;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-dim);
-      margin-left: -34px;
+
+    .aside-panel h2 {
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
     }
-    .card-drop {
-      border: 1.5px dashed rgba(255,255,255,0.1);
-      border-radius: var(--radius-md);
-      padding: 32px 20px;
-      text-align: center;
-      margin-bottom: 18px;
-      background: rgba(255,255,255,0.02);
-      transition: border-color var(--transition), background var(--transition);
-      cursor: pointer;
+
+    .aside-panel p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.94rem;
     }
-    .card-drop:hover {
-      border-color: rgba(79,142,247,0.4);
-      background: rgba(79,142,247,0.04);
+
+    .mini-list {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      border-top: 1px solid var(--line);
     }
-    .card-drop-icon {
-      font-size: 28px;
-      margin-bottom: 10px;
-      opacity: 0.5;
-    }
-    .card-drop-text {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    .card-drop-text strong {
-      color: var(--accent-blue);
-      font-weight: 500;
-    }
-    .card-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .card-label-row {
+
+    .mini-list li {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .card-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    .card-value {
-      font-size: 12px;
-      color: var(--accent-blue);
-      font-weight: 500;
-    }
-    .card-slider-track {
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 99px;
-      position: relative;
-      cursor: pointer;
-    }
-    .card-slider-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-      width: 72%;
-      transition: width 0.2s;
-    }
-    .card-slider-thumb {
-      position: absolute;
-      top: 50%;
-      left: 72%;
-      transform: translate(-50%, -50%);
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 8px rgba(79,142,247,0.5);
-      transition: left 0.2s;
-    }
-    .card-format-row {
-      display: flex;
-      gap: 8px;
-    }
-    .card-format-btn {
-      flex: 1;
-      padding: 8px;
-      font-size: 12px;
-      font-weight: 500;
-      text-align: center;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      color: var(--text-muted);
-      transition: all var(--transition);
-      font-family: inherit;
-    }
-    .card-format-btn.active {
-      background: rgba(79,142,247,0.12);
-      border-color: rgba(79,142,247,0.3);
-      color: var(--accent-blue);
-    }
-    .card-format-btn:hover:not(.active) {
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-    }
-    .card-action-btn {
-      width: 100%;
-      padding: 11px;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 9px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      color: #fff;
-      font-family: inherit;
-      transition: opacity var(--transition), transform var(--transition);
-    }
-    .card-action-btn:hover {
-      opacity: 0.88;
-      transform: translateY(-1px);
+      gap: 1rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.92rem;
     }
 
-    /* ─── Section base ───────────────────────────────────────────────────────── */
-    section { position: relative; z-index: 1; }
-
-    .section-divider {
-      height: 1px;
-      background: var(--border);
-      max-width: var(--max-w);
-      margin: 0 auto;
-      opacity: 0.5;
+    .mini-list span:last-child {
+      color: var(--ink-soft);
     }
 
-    /* ─── Trust strip ────────────────────────────────────────────────────────── */
-    .trust {
-      padding: 40px 32px;
-      border-top: 1px solid var(--border);
-    }
-    .trust-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--text-dim);
-      font-weight: 400;
-    }
-    .trust-icon {
-      font-size: 14px;
-      opacity: 0.6;
-    }
-
-    /* ─── Section header ─────────────────────────────────────────────────────── */
-    .section-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-dim);
-      margin-bottom: 16px;
-    }
     .section-title {
-      font-size: clamp(28px, 4vw, 40px);
+      max-width: 25ch;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      margin-bottom: 1rem;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      line-height: 1.15;
-      margin-bottom: 16px;
     }
-    .section-desc {
-      font-size: 16px;
-      color: var(--text-muted);
-      max-width: 460px;
-      margin: 0 auto;
+
+    .section-intro {
+      margin: 0;
+      max-width: 68ch;
+      color: var(--ink-soft);
+    }
+
+    .problem-grid {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .compare-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 1.2rem;
+    }
+
+    .compare-box h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .compare-box ol,
+    .compare-box ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: #3f473f;
+    }
+
+    .compare-box li { margin-bottom: 0.6rem; }
+
+    .why-list {
+      margin-top: 2.3rem;
+      display: grid;
+      gap: 1.3rem;
+    }
+
+    .why-item {
+      padding: 1.2rem 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+      gap: 1.2rem;
+      align-items: start;
+    }
+
+    .why-item:first-child { border-top: 0; }
+
+    .why-item h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .why-item p {
+      margin: 0;
+      color: var(--ink-soft);
+      max-width: 66ch;
+    }
+
+    .tool-grid {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .tool-block {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 1.1rem;
+    }
+
+    .tool-block h3 {
+      font-size: 1.08rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .tool-block ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--ink-soft);
+    }
+
+    .tool-block li { margin-bottom: 0.4rem; }
+
+    .how-grid {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .steps {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .steps li {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 1rem;
+    }
+
+    .step-number {
+      color: var(--ink-soft);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      display: inline-block;
+    }
+
+    .mockup {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 0.95rem;
+    }
+
+    .mockup-top {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .dot {
+      width: 9px;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      background: #d3d0c6;
+    }
+
+    .mockup-body {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 0.85rem;
+      background: #f7f5ef;
+      font-size: 0.93rem;
+      color: #364036;
+    }
+
+    .manifesto {
+      max-width: 72ch;
+      font-size: clamp(1.04rem, 1.5vw, 1.18rem);
       line-height: 1.65;
     }
 
-    /* ─── Features ───────────────────────────────────────────────────────────── */
-    .features {
-      padding: 100px 32px;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 32px 28px;
-      transition: border-color var(--transition), transform var(--transition), background var(--transition);
-      cursor: default;
-    }
-    .feature-card:hover {
-      border-color: rgba(255,255,255,0.12);
-      transform: translateY(-3px);
-      background: var(--bg-card-alt);
-    }
-    .feature-icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 22px;
-    }
-    .feature-icon-wrap.blue   { background: rgba(79,142,247,0.1);  }
-    .feature-icon-wrap.purple { background: rgba(167,139,250,0.1); }
-    .feature-icon-wrap.green  { background: rgba(52,211,153,0.1);  }
-    .feature-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
-    .feature-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
+    .manifesto p {
+      margin: 0 0 1rem;
     }
 
-    /* ─── Tool grid ──────────────────────────────────────────────────────────── */
-    .tools {
-      padding: 100px 32px;
-      border-top: 1px solid var(--border);
-    }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .tool-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 28px 24px;
-      text-decoration: none;
-      display: block;
-      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    .tool-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--glow-a, transparent) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-    .tool-card:hover::before { opacity: 1; }
-    .tool-card:hover {
-      border-color: rgba(255,255,255,0.12);
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-    }
-    .tool-card.blue   { --glow-a: rgba(79,142,247,0.06);  }
-    .tool-card.purple { --glow-a: rgba(167,139,250,0.06); }
-    .tool-card.green  { --glow-a: rgba(52,211,153,0.06);  }
-    .tool-card-emoji {
-      font-size: 28px;
-      margin-bottom: 16px;
-      display: block;
-    }
-    .tool-card-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-    .tool-card-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.55;
-      margin-bottom: 20px;
-    }
-    .tool-card-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 100px;
-    }
-    .tool-card-tag.ready {
-      color: var(--accent-green);
-      background: rgba(52,211,153,0.08);
-    }
-    .tool-card-tag.soon {
-      color: var(--text-dim);
-      background: rgba(255,255,255,0.04);
+    .manifesto strong {
+      color: #273327;
     }
 
-    /* ─── Demo section ───────────────────────────────────────────────────────── */
-    .demo {
-      padding: 100px 32px;
-      border-top: 1px solid var(--border);
-    }
-    .demo-card {
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 36px;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
-      position: relative;
-    }
-    .demo-card::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      background: linear-gradient(135deg,
-        rgba(167,139,250,0.15) 0%,
-        rgba(79,142,247,0.08) 60%,
-        transparent 100%);
-      z-index: -1;
-    }
-    .demo-drop {
-      border: 1.5px dashed rgba(255,255,255,0.1);
-      border-radius: var(--radius-md);
-      padding: 52px 24px;
-      text-align: center;
-      background: rgba(255,255,255,0.01);
-      cursor: pointer;
-      transition: all var(--transition);
-      margin-bottom: 24px;
-    }
-    .demo-drop:hover,
-    .demo-drop.drag-over {
-      border-color: rgba(79,142,247,0.5);
-      background: rgba(79,142,247,0.05);
-    }
-    .demo-drop-icon {
-      font-size: 36px;
-      margin-bottom: 14px;
-    }
-    .demo-drop-title {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-    .demo-drop-hint {
-      font-size: 13px;
-      color: var(--text-dim);
-    }
-    .demo-row {
-      margin-bottom: 18px;
-    }
-    .demo-row-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .demo-row-label span:last-child { color: var(--accent-blue); }
-    .demo-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 4px;
-      border-radius: 99px;
-      background: rgba(255,255,255,0.07);
-      outline: none;
-      cursor: pointer;
-    }
-    .demo-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(79,142,247,0.5);
-      transition: transform var(--transition);
-    }
-    .demo-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
-    .demo-slider::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      cursor: pointer;
-      border: none;
-    }
-    .demo-format-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .demo-fmt-btn {
-      flex: 1;
-      padding: 9px;
-      font-size: 12px;
-      font-weight: 500;
-      text-align: center;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      color: var(--text-muted);
-      transition: all var(--transition);
-      font-family: inherit;
-    }
-    .demo-fmt-btn.active {
-      background: rgba(79,142,247,0.12);
-      border-color: rgba(79,142,247,0.35);
-      color: var(--accent-blue);
-    }
-    .demo-fmt-btn:hover:not(.active) {
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-    }
-    .demo-convert-btn {
-      width: 100%;
-      padding: 13px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      color: #fff;
-      font-family: inherit;
-      transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
-    }
-    .demo-convert-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(79,142,247,0.3);
-    }
-    .demo-convert-btn:active { transform: scale(0.98); }
-
-    /* ─── Footer ─────────────────────────────────────────────────────────────── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 64px 32px;
-      position: relative;
-      z-index: 1;
+      border-top: 1px solid var(--line);
+      padding: 1.4rem 0 2rem;
+      color: var(--ink-soft);
     }
+
     .footer-inner {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
       align-items: center;
-      text-align: center;
-      gap: 24px;
+      flex-wrap: wrap;
     }
-    .footer-logo {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .footer-logo-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-    }
+
     .footer-links {
       display: flex;
-      gap: 28px;
-      list-style: none;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
+
     .footer-links a {
-      font-size: 13px;
-      color: var(--text-dim);
       text-decoration: none;
-      transition: color var(--transition);
-    }
-    .footer-links a:hover { color: var(--text-muted); }
-    .footer-legal {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.6;
+      font-size: 0.92rem;
     }
 
-    /* ─── Responsive ─────────────────────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .features-grid, .tools-grid { grid-template-columns: 1fr; }
-      .hero-headline { font-size: 38px; }
-      .hero-sub { font-size: 16px; }
-      .hero-actions { flex-direction: column; }
-      .trust-inner { gap: 20px; }
-      .features, .tools, .demo { padding: 72px 24px; }
-      .hero { padding: 100px 24px 60px; }
-    }
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .features-grid, .tools-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
     }
 
-    /* ─── Fade-in on scroll ──────────────────────────────────────────────────── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    @media (max-width: 920px) {
+      .hero-grid,
+      .problem-grid,
+      .tool-grid,
+      .how-grid,
+      .why-item {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner {
+        flex-wrap: wrap;
+        padding-block: 0.5rem;
+      }
+
+      .menu-button { display: inline-flex; }
+
+      .nav-links {
+        width: 100%;
+        order: 3;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        padding: 0.4rem 0 0.8rem;
+      }
+
+      .nav-links.is-open { display: flex; }
+
+      .topbar-cta { margin-left: auto; }
     }
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
+
+    @media (max-width: 560px) {
+      .container { padding-inline: 0.7rem; }
+      main section { padding-block: 3.4rem; }
+      .hero { padding-top: 2.7rem; }
+      .action-row .btn { flex: 1 1 auto; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Animated background layer -->
-  <div class="bg-gradient" aria-hidden="true"></div>
-
-  <!-- ─── Navigation ─────────────────────────────────────────────────────────── -->
-  <nav id="nav">
-    <div class="container">
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <span class="nav-logo-dot"></span>
-          runlocal.tools
-        </a>
-        <ul class="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#tools">Tools</a></li>
-          <li><a href="#demo">Try it</a></li>
-        </ul>
-        <a href="#tools" class="nav-cta">Get started</a>
-      </div>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top">runlocal.tools</a>
+      <button class="menu-button" type="button" aria-controls="primary-nav" aria-expanded="false">Toggle menu</button>
+      <ul class="nav-links" id="primary-nav">
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#why-local">Why local</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a class="btn btn-primary topbar-cta" href="#tools">Open image tools</a>
     </div>
-  </nav>
+  </header>
 
-  <!-- ─── Hero ───────────────────────────────────────────────────────────────── -->
-  <section class="hero" id="hero">
-    <div class="hero-glow" aria-hidden="true"></div>
-
-    <span class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      100% client-side — nothing leaves your device
-    </span>
-
-    <h1 class="hero-headline">
-      All your file tools.<br>
-      <span>Run locally in your browser.</span>
-    </h1>
-
-    <p class="hero-sub">
-      No uploads. No tracking.<br>Just fast, private tools.
-    </p>
-
-    <div class="hero-actions">
-      <a href="#tools" class="btn btn-primary">
-        Try image tools
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#features" class="btn btn-secondary">Learn more</a>
-    </div>
-
-    <!-- Product mockup -->
-    <div class="hero-card fade-up" role="img" aria-label="Image resize tool interface preview">
-      <div class="card-topbar">
-        <div class="card-dot"></div>
-        <div class="card-dot"></div>
-        <div class="card-dot"></div>
-        <span class="card-title">Image Tools — runlocal.tools</span>
-      </div>
-
-      <div class="card-drop" id="heroDropZone" role="button" tabindex="0" aria-label="Drop image files here">
-        <div class="card-drop-icon">🖼</div>
-        <div class="card-drop-text">
-          <strong>Drop your image here</strong><br>
-          or click to select — JPEG, PNG, WebP, GIF
-        </div>
-      </div>
-
-      <div class="card-controls">
-        <div>
-          <div class="card-label-row">
-            <span class="card-label">Quality</span>
-            <span class="card-value" id="heroQualityVal">72%</span>
-          </div>
-          <div class="card-slider-track" id="heroSliderTrack" role="slider" aria-valuenow="72" aria-valuemin="1" aria-valuemax="100" aria-label="Quality">
-            <div class="card-slider-fill" id="heroSliderFill"></div>
-            <div class="card-slider-thumb" id="heroSliderThumb"></div>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Browser-based utilities</span>
+          <h1>Simple file tools. Run locally in your browser.</h1>
+          <p class="lead">Resize images, convert files, and handle everyday file tasks without uploading private data to random websites.</p>
+          <p>Most online utility sites are a mess. Popups everywhere. Ads fighting for your attention. A simple file task turns into ten clicks and a little regret.</p>
+          <p>Then comes the awkward part: upload your file to a server you know nothing about, wait in line, and hope your data is handled responsibly.</p>
+          <p>runlocal.tools is the opposite. Open a tool, drop a file, process it in your browser, download the result, move on with your day.</p>
+          <div class="action-row">
+            <a class="btn btn-primary" href="#tools">Try image tools</a>
+            <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
           </div>
         </div>
-        <div class="card-format-row">
-          <button class="card-format-btn active" data-fmt="JPEG">JPEG</button>
-          <button class="card-format-btn" data-fmt="PNG">PNG</button>
-          <button class="card-format-btn" data-fmt="WebP">WebP</button>
-        </div>
-        <button class="card-action-btn">Resize &amp; Convert</button>
-      </div>
-    </div>
-  </section>
 
-  <!-- ─── Trust strip ────────────────────────────────────────────────────────── -->
-  <div class="trust">
-    <div class="container">
-      <div class="trust-inner">
-        <span class="trust-item"><span class="trust-icon">🔒</span> Runs entirely in your browser</span>
-        <span class="trust-item"><span class="trust-icon">🛡</span> Your files never leave your device</span>
-        <span class="trust-item"><span class="trust-icon">✦</span> No ads. No tracking.</span>
+        <aside class="aside-panel" aria-label="Key tool promises summary">
+          <h2>What you can expect</h2>
+          <p>No account. No uploads. No mystery pipeline.</p>
+          <ul class="mini-list">
+            <li><span>Processing location</span><span>Your device</span></li>
+            <li><span>Typical setup time</span><span>About 5 seconds</span></li>
+            <li><span>Privacy model</span><span>Local by default</span></li>
+            <li><span>Business model</span><span>Build useful tools</span></li>
+          </ul>
+        </aside>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- ─── Features ──────────────────────────────────────────────────────────── -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-header fade-up">
-        <p class="section-label">Why runlocal.tools</p>
-        <h2 class="section-title">Built different, by design</h2>
-        <p class="section-desc">Most tools send your files to a server. We don't. Every operation happens in your browser, instantly.</p>
-      </div>
+    <section id="problem">
+      <div class="container">
+        <h2 class="section-title">The old way is still weirdly painful</h2>
+        <p class="section-intro">For something as common as resizing an image or converting CSV, people still end up wandering through ad-heavy tool sites. It feels dated because it is.</p>
 
-      <div class="features-grid">
-        <div class="feature-card fade-up">
-          <div class="feature-icon-wrap blue">🖥</div>
-          <h3 class="feature-title">Runs locally</h3>
-          <p class="feature-desc">All processing happens directly in your browser using WebAssembly and native APIs. No server round-trips, ever.</p>
-        </div>
-        <div class="feature-card fade-up" style="transition-delay: 0.1s">
-          <div class="feature-icon-wrap purple">🔐</div>
-          <h3 class="feature-title">Privacy first</h3>
-          <p class="feature-desc">Your files never touch our servers. We collect zero telemetry and show zero ads. What you process stays yours.</p>
-        </div>
-        <div class="feature-card fade-up" style="transition-delay: 0.2s">
-          <div class="feature-icon-wrap green">⚡</div>
-          <h3 class="feature-title">Fast &amp; simple</h3>
-          <p class="feature-desc">No sign-ups, no file size limits imposed by a backend. Just drop, adjust, and get your result in seconds.</p>
+        <div class="problem-grid">
+          <article class="compare-box">
+            <h3>The usual utility site flow</h3>
+            <ol>
+              <li>Upload your file to a server.</li>
+              <li>Wait while it processes somewhere else.</li>
+              <li>Close popups and dodge misleading buttons.</li>
+              <li>Try to download the right output file.</li>
+              <li>Wonder where your original file ended up.</li>
+            </ol>
+          </article>
+
+          <article class="compare-box">
+            <h3>The runlocal.tools flow</h3>
+            <ol>
+              <li>Open the tool you need.</li>
+              <li>Drop your file.</li>
+              <li>Process locally in the browser.</li>
+              <li>Download the result.</li>
+              <li>Done.</li>
+            </ol>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ─── Tool grid ──────────────────────────────────────────────────────────── -->
-  <section class="tools" id="tools">
-    <div class="container">
-      <div class="section-header fade-up">
-        <p class="section-label">Tools</p>
-        <h2 class="section-title">Everything you need</h2>
-        <p class="section-desc">A growing collection of private, browser-based tools for everyday file work.</p>
-      </div>
+    <section id="why-local">
+      <div class="container">
+        <h2 class="section-title">Why runlocal.tools exists</h2>
+        <p class="section-intro">We built this because common file work should feel normal, not risky. These are not startup slogans. They are product decisions.</p>
 
-      <div class="tools-grid">
-        <a href="#demo" class="tool-card blue fade-up">
-          <span class="tool-card-emoji">🖼</span>
-          <h3 class="tool-card-name">Image tools</h3>
-          <p class="tool-card-desc">Resize, compress, convert, and crop images in JPEG, PNG, WebP, and more — all offline.</p>
-          <span class="tool-card-tag ready">✓ Available now</span>
-        </a>
-        <a href="#demo" class="tool-card purple fade-up" style="transition-delay: 0.1s">
-          <span class="tool-card-emoji">📄</span>
-          <h3 class="tool-card-name">CSV &amp; JSON</h3>
-          <p class="tool-card-desc">Parse, transform, convert, and inspect CSV and JSON files without leaving your tab.</p>
-          <span class="tool-card-tag ready">✓ Available now</span>
-        </a>
-        <div class="tool-card green fade-up" style="transition-delay: 0.2s; cursor: default;">
-          <span class="tool-card-emoji">🎬</span>
-          <h3 class="tool-card-name">Video tools</h3>
-          <p class="tool-card-desc">Trim, compress, and convert video files entirely in-browser using WebCodecs.</p>
-          <span class="tool-card-tag soon">Coming soon</span>
+        <div class="why-list">
+          <article class="why-item">
+            <h3>Your files stay on your device</h3>
+            <p>When we say local, we mean local. The file processing happens in your browser using your computer’s resources. That removes an entire layer of trust that most utility sites quietly ask for.</p>
+          </article>
+
+          <article class="why-item">
+            <h3>Fast because there is no round-trip</h3>
+            <p>No upload queue, no waiting for a remote worker, no download bottleneck for every tiny change. For common tasks, local processing often feels instant because nothing is taking a detour through somebody else’s infrastructure.</p>
+          </article>
+
+          <article class="why-item">
+            <h3>No ad-choked nonsense</h3>
+            <p>Utility pages should help you finish a job, not trick you into scrolling through banners and fake download buttons. We keep the UI plain on purpose so the task is the focus.</p>
+          </article>
+
+          <article class="why-item">
+            <h3>One home for everyday tools</h3>
+            <p>Most people do the same handful of file tasks again and again. runlocal.tools groups those tasks in one place with consistent controls, clear outputs, and no scavenger hunt for the next tool.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ─── Demo ───────────────────────────────────────────────────────────────── -->
-  <section class="demo" id="demo">
-    <div class="container">
-      <div class="section-header fade-up">
-        <p class="section-label">Try it live</p>
-        <h2 class="section-title">See it work — right now</h2>
-        <p class="section-desc">No sign-up needed. Drop any image and resize or convert it instantly.</p>
+    <section id="tools">
+      <div class="container">
+        <h2 class="section-title">Tool directory</h2>
+        <p class="section-intro">Start with what you need today. Expand over time without changing the core promise.</p>
+
+        <div class="tool-grid">
+          <article class="tool-block">
+            <h3>Image tools</h3>
+            <ul>
+              <li>Resize</li>
+              <li>Convert</li>
+              <li>Compress</li>
+              <li>Crop</li>
+            </ul>
+          </article>
+
+          <article class="tool-block">
+            <h3>CSV &amp; JSON tools</h3>
+            <ul>
+              <li>CSV to JSON</li>
+              <li>JSON to CSV</li>
+              <li>Validate</li>
+              <li>Inspect</li>
+            </ul>
+          </article>
+
+          <article class="tool-block">
+            <h3>Video tools</h3>
+            <ul>
+              <li>Transcode basics</li>
+              <li>Size optimization</li>
+              <li>Format convert</li>
+              <li><em>Coming later</em></li>
+            </ul>
+          </article>
+        </div>
       </div>
+    </section>
 
-      <div class="demo-card fade-up">
-        <div class="demo-drop" id="demoDropZone" role="button" tabindex="0" aria-label="Drop an image file here to convert">
-          <div class="demo-drop-icon">📂</div>
-          <div class="demo-drop-title">Drop an image to convert</div>
-          <div class="demo-drop-hint">JPEG · PNG · WebP · GIF — any size</div>
+    <section id="how-it-works">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-intro">No signup flow. No tour. Three steps and you are done.</p>
+
+        <div class="how-grid">
+          <ol class="steps">
+            <li>
+              <span class="step-number">Step 1</span>
+              <h3>Choose a tool</h3>
+              <p>Pick Image resize, CSV to JSON, or whichever task you need right now.</p>
+            </li>
+            <li>
+              <span class="step-number">Step 2</span>
+              <h3>Drop your file</h3>
+              <p>Drag and drop a file into the browser. No upload form, no waiting room.</p>
+            </li>
+            <li>
+              <span class="step-number">Step 3</span>
+              <h3>Process locally and download</h3>
+              <p>Your browser handles the job on your device. Download the result and keep moving.</p>
+            </li>
+          </ol>
+
+          <aside class="mockup" aria-label="Example interface for the image resize tool">
+            <div class="mockup-top" aria-hidden="true">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="mockup-body">
+              <strong>Image Resize</strong>
+              <p>Drop a file here</p>
+              <p>Width: 1600px &nbsp;•&nbsp; Format: WebP &nbsp;•&nbsp; Quality: 82%</p>
+              <p><button type="button" class="btn btn-primary" style="padding:0.4rem 0.7rem;font-size:0.85rem;">Process locally</button></p>
+            </div>
+          </aside>
         </div>
-
-        <div class="demo-row">
-          <div class="demo-row-label">
-            <span>Quality</span>
-            <span id="demoQualityVal">80%</span>
-          </div>
-          <input type="range" class="demo-slider" id="demoSlider" min="1" max="100" value="80" aria-label="Quality" />
-        </div>
-
-        <div class="demo-format-row" role="group" aria-label="Output format">
-          <button class="demo-fmt-btn active" data-fmt="JPEG">JPEG</button>
-          <button class="demo-fmt-btn" data-fmt="PNG">PNG</button>
-          <button class="demo-fmt-btn" data-fmt="WebP">WebP</button>
-          <button class="demo-fmt-btn" data-fmt="AVIF">AVIF</button>
-        </div>
-
-        <button class="demo-convert-btn" id="demoConvertBtn">
-          Convert image →
-        </button>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ─── Footer ────────────────────────────────────────────────────────────── -->
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">A simple philosophy, on purpose</h2>
+        <div class="manifesto">
+          <p><strong>Utility sites should be simple.</strong> You should be able to arrive, do one task, and leave with confidence.</p>
+          <p><strong>Privacy should be normal.</strong> For common file work, sending personal files to strangers should be the exception, not the default.</p>
+          <p><strong>The browser is capable now.</strong> Modern web technology can handle much more local processing than most people realize. We think that capability should be used to make practical software, not just flashy demos.</p>
+          <p>runlocal.tools is our small, stubborn argument that everyday tools can be better than what people have settled for.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-logo">
-          <span class="footer-logo-dot"></span>
-          runlocal.tools
-        </span>
-        <ul class="footer-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#tools">Tools</a></li>
-          <li><a href="#demo">Try it</a></li>
-        </ul>
-        <p class="footer-legal">
-          No uploads. No tracking. No servers.<br>
-          &copy; 2025 runlocal.tools
-        </p>
-      </div>
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> runlocal.tools</div>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="#about">About</a>
+        <a href="#">Privacy</a>
+        <a href="#">GitHub</a>
+        <a href="#tools">Tool index</a>
+      </nav>
     </div>
   </footer>
 
-  <!-- ─── JavaScript ─────────────────────────────────────────────────────────── -->
   <script>
-    /* Nav scroll effect */
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
+    const menuButton = document.querySelector('.menu-button');
+    const navList = document.querySelector('#primary-nav');
 
-    /* Intersection observer for fade-up animations */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
+    if (menuButton && navList) {
+      menuButton.addEventListener('click', () => {
+        const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!expanded));
+        navList.classList.toggle('is-open', !expanded);
       });
-    }, { threshold: 0.12 });
+    }
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-    /* Hero card — interactive format buttons */
-    document.querySelectorAll('.card-format-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.closest('.card-format-row').querySelectorAll('.card-format-btn')
-           .forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    /* Hero card — drag slider */
-    (function () {
-      const track = document.getElementById('heroSliderTrack');
-      const fill  = document.getElementById('heroSliderFill');
-      const thumb = document.getElementById('heroSliderThumb');
-      const val   = document.getElementById('heroQualityVal');
-      let dragging = false;
-
-      function setQuality(pct) {
-        pct = Math.max(1, Math.min(100, pct));
-        fill.style.width  = pct + '%';
-        thumb.style.left  = pct + '%';
-        val.textContent   = Math.round(pct) + '%';
-        track.setAttribute('aria-valuenow', Math.round(pct));
-      }
-
-      // Accepts both MouseEvent and Touch objects (both have clientX)
-      function getPercent(pointer) {
-        const rect = track.getBoundingClientRect();
-        return ((pointer.clientX - rect.left) / rect.width) * 100;
-      }
-
-      track.addEventListener('mousedown', (e) => { dragging = true; setQuality(getPercent(e)); });
-      document.addEventListener('mousemove', (e) => { if (dragging) setQuality(getPercent(e)); });
-      document.addEventListener('mouseup', () => { dragging = false; });
-
-      track.addEventListener('touchstart', (e) => { dragging = true; setQuality(getPercent(e.touches[0])); }, { passive: true });
-      document.addEventListener('touchmove', (e) => { if (dragging) setQuality(getPercent(e.touches[0])); }, { passive: true });
-      document.addEventListener('touchend', () => { dragging = false; });
-    })();
-
-    /* Demo section — slider */
-    const demoSlider   = document.getElementById('demoSlider');
-    const demoQualVal  = document.getElementById('demoQualityVal');
-    demoSlider.addEventListener('input', () => {
-      demoQualVal.textContent = demoSlider.value + '%';
-    });
-
-    /* Demo section — format buttons */
-    document.querySelectorAll('.demo-fmt-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.closest('.demo-format-row').querySelectorAll('.demo-fmt-btn')
-           .forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    /* Demo drop zone — drag & drop visual feedback */
-    [document.getElementById('demoDropZone'), document.getElementById('heroDropZone')].forEach(zone => {
-      if (!zone) return;
-      zone.addEventListener('dragenter', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
-      zone.addEventListener('dragover',  (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
-      zone.addEventListener('dragleave', ()  => zone.classList.remove('drag-over'));
-      zone.addEventListener('drop',      (e) => {
-        e.preventDefault();
-        zone.classList.remove('drag-over');
-        const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
-          const icon  = zone.querySelector('.card-drop-icon, .demo-drop-icon');
-          const title = zone.querySelector('.card-drop-text strong, .demo-drop-title');
-          const hint  = zone.querySelector('.card-drop-text, .demo-drop-hint');
-          if (icon)  icon.textContent  = '✅';
-          if (title) title.textContent = file.name;
-          if (hint && zone.id === 'demoDropZone') hint.textContent = (file.size / 1024).toFixed(0) + ' KB — ready to convert';
-        }
-      });
-    });
-
-    /* Demo convert button — micro-interaction */
-    document.getElementById('demoConvertBtn').addEventListener('click', function () {
-      this.textContent = '⚡ Processing…';
-      this.disabled = true;
-      setTimeout(() => {
-        this.textContent = '✓ Done — no file was uploaded';
-        setTimeout(() => {
-          this.textContent = 'Convert image →';
-          this.disabled = false;
-        }, 2800);
-      }, 900);
-    });
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
