@@ -1,574 +1,1321 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>runlocal.tools — open, local-first web tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>runlocal.tools — Open tools. Local execution.</title>
   <meta
     name="description"
-    content="runlocal.tools is an open, local-first toolbox for images, video, and data tasks that run directly in your browser."
+    content="runlocal.tools is an open, local-first toolbox for file and media processing in the browser. No uploads. No server-side processing."
   />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f8f5ee;
-      --paper: #fcfaf5;
-      --ink: #1f2528;
-      --ink-soft: #495257;
-      --line: #ddd8cc;
-      --accent: #355d80;
-      --accent-deep: #27455f;
-      --max-width: 980px;
-      --radius: 10px;
+      --bg: #fbfbfd;
+      --bg-soft: #f4f3ff;
+      --bg-soft-2: #eef8f5;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: rgba(255, 255, 255, 0.94);
+      --text: #171717;
+      --muted: #5f6673;
+      --line: #e7e8ee;
+      --line-strong: #d9dce6;
+      --accent: #4f46e5;
+      --accent-soft: #ecebff;
+      --accent-2: #0f8a5f;
+      --accent-2-soft: #e9f8f1;
+      --shadow: 0 10px 30px rgba(27, 35, 69, 0.07);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1120px;
+      --content: 760px;
     }
 
-    * { box-sizing: border-box; }
+```
+* {
+  box-sizing: border-box;
+}
 
-    html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 28%),
+    radial-gradient(circle at top right, rgba(15, 138, 95, 0.08), transparent 30%),
+    linear-gradient(180deg, #fcfcfe 0%, #f8f8fc 100%);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
 
-    a { color: inherit; }
+a {
+  color: inherit;
+}
 
-    .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin-inline: auto;
-      padding-inline: 1.25rem;
-    }
+img {
+  max-width: 100%;
+  display: block;
+}
 
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      border-bottom: 1px solid var(--line);
-      background: var(--bg);
-      backdrop-filter: blur(4px);
-    }
+.container {
+  width: min(calc(100% - 40px), var(--max));
+  margin: 0 auto;
+}
 
-    .header-inner {
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.9rem;
-    }
+.content-width {
+  width: min(100%, var(--content));
+}
 
-    .brand {
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  background: rgba(251, 251, 253, 0.8);
+  border-bottom: 1px solid rgba(231, 232, 238, 0.85);
+}
 
-    .menu-button {
-      display: none;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--paper);
-      color: var(--ink);
-      padding: 0.42rem 0.72rem;
-      font: inherit;
-      font-size: 0.92rem;
-      font-weight: 600;
-    }
+.header-inner {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 
-    .nav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 1.12rem;
-    }
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
 
-    .nav-list a {
-      text-decoration: none;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-    }
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--accent-soft), var(--bg-soft-2));
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+}
 
-    .nav-list a:hover,
-    .nav-list a:focus-visible {
-      color: var(--ink);
-    }
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius);
-      text-decoration: none;
-      font-size: 0.93rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-      padding: 0.68rem 0.95rem;
-      white-space: nowrap;
-      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
-    }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
 
-    .btn-primary {
-      background: var(--accent);
-      color: #f7f9fb;
-    }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
 
-    .btn-primary:hover,
-    .btn-primary:focus-visible {
-      background: var(--accent-deep);
-    }
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--text);
+}
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--ink);
-      border-color: var(--line);
-    }
+.button {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 11px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
-    .btn-secondary:hover,
-    .btn-secondary:focus-visible {
-      background: #f0ebdf;
-    }
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-1px);
+}
 
-    main section {
-      border-top: 1px solid var(--line);
-      padding-block: 4.5rem;
-    }
+.button-primary {
+  background: var(--text);
+  color: white;
+  box-shadow: 0 8px 18px rgba(23, 23, 23, 0.12);
+}
 
-    .hero {
-      border-top: 0;
-      padding-top: 4rem;
-      padding-bottom: 4.2rem;
-    }
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: #262626;
+}
 
-    h1, h2, h3 {
-      margin: 0;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
+.button-secondary {
+  background: rgba(255,255,255,0.86);
+  border-color: var(--line);
+  color: var(--text);
+}
 
-    h1 {
-      font-size: clamp(2.1rem, 5vw, 3.75rem);
-      max-width: 15ch;
-      margin-bottom: 1.1rem;
-      font-weight: 800;
-    }
+.button-secondary:hover,
+.button-secondary:focus-visible {
+  background: white;
+  border-color: var(--line-strong);
+}
 
-    h2 {
-      font-size: clamp(1.68rem, 3.2vw, 2.45rem);
-      max-width: 24ch;
-      margin-bottom: 1rem;
-      font-weight: 700;
-    }
+.hero {
+  padding: 84px 0 40px;
+}
 
-    .lead {
-      margin: 0 0 1.3rem;
-      color: var(--ink-soft);
-      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-      max-width: 62ch;
-    }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(79, 70, 229, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+  border-radius: 999px;
+  padding: 7px 12px;
+  margin-bottom: 22px;
+}
 
-    p {
-      margin: 0 0 1rem;
-      max-width: 70ch;
-      color: #3b4549;
-    }
+h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2.7rem, 7vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  max-width: 12ch;
+}
 
-    .actions {
-      margin-top: 1.6rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
+.hero-lead {
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  color: var(--muted);
+  max-width: 46rem;
+  margin: 0 0 18px;
+}
 
-    .body-grid {
-      display: grid;
-      gap: 1.2rem;
-      grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
-      align-items: start;
-      margin-top: 1.7rem;
-    }
+.hero-copy {
+  font-size: 1.02rem;
+  color: var(--text);
+  max-width: 43rem;
+  margin: 0 0 14px;
+}
 
-    .aside-panel {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-      padding: 1rem;
-    }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  margin-bottom: 26px;
+}
 
-    .aside-panel h3 {
-      font-size: 1rem;
-      margin-bottom: 0.56rem;
-    }
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
 
-    ul,
-    ol {
-      margin: 0;
-      padding-left: 1.1rem;
-      color: var(--ink-soft);
-      max-width: 70ch;
-    }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.72);
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
 
-    li { margin-bottom: 0.45rem; }
+.hero-panel {
+  margin-top: 42px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  align-items: stretch;
+}
 
-    .tool-columns {
-      margin-top: 1.5rem;
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+.card {
+  border: 1px solid rgba(231, 232, 238, 0.95);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
 
-    .tool-group {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-      padding: 1rem;
-    }
+.card-strong {
+  background: var(--surface-strong);
+}
 
-    .tool-group h3 {
-      font-size: 1.03rem;
-      margin-bottom: 0.55rem;
-    }
+.tool-demo {
+  padding: 20px;
+}
 
-    .steps {
-      margin-top: 1.4rem;
-      display: grid;
-      gap: 0.75rem;
-      list-style: none;
-      padding: 0;
-    }
+.tool-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
 
-    .steps li {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-      padding: 0.9rem 1rem;
-      color: var(--ink);
-    }
+.tool-title {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+}
 
-    .steps strong {
-      display: block;
-      margin-bottom: 0.2rem;
-      font-size: 0.87rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--ink-soft);
-    }
+.dots {
+  display: flex;
+  gap: 6px;
+}
 
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 1.45rem 0 2rem;
-      color: var(--ink-soft);
-    }
+.dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #d9dce6;
+}
 
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+.upload-zone {
+  border: 1.5px dashed #cfd4e3;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,247,255,0.9));
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 18px;
+}
 
-    .footer-mark {
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 0.2rem;
-    }
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent-soft), #f4fbf8);
+  border: 1px solid var(--line);
+  font-size: 22px;
+}
 
-    .footer-links {
-      display: flex;
-      gap: 0.9rem;
-      flex-wrap: wrap;
-    }
+.upload-zone strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
 
-    .footer-links a {
-      text-decoration: none;
-      font-size: 0.93rem;
-    }
+.upload-zone p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
 
-    .footer-links a:hover,
-    .footer-links a:focus-visible {
-      color: var(--ink);
-      text-decoration: underline;
-      text-underline-offset: 0.15em;
-    }
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
 
-    :focus-visible {
-      outline: 2px solid color-mix(in srgb, var(--accent) 80%, white);
-      outline-offset: 2px;
-    }
+.demo-box {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.78);
+  border-radius: 14px;
+  padding: 14px;
+}
 
-    @media (max-width: 920px) {
-      .header-inner {
-        flex-wrap: wrap;
-        padding-block: 0.45rem;
-      }
+.demo-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 
-      .menu-button { display: inline-flex; }
+.fake-input,
+.fake-select,
+.fake-slider {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--text);
+  font-size: 14px;
+}
 
-      .nav-list {
-        order: 3;
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.7rem;
-        padding-top: 0.4rem;
-        padding-bottom: 0.6rem;
-      }
+.fake-slider {
+  position: relative;
+  overflow: hidden;
+}
 
-      .nav-list.is-open { display: flex; }
+.fake-slider::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: #eceef6;
+}
 
-      .header-cta { margin-left: auto; }
+.fake-slider::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  width: 58%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #7c74ff);
+}
 
-      .body-grid,
-      .tool-columns {
-        grid-template-columns: 1fr;
-      }
-    }
+.demo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
 
-    @media (max-width: 560px) {
-      .container { padding-inline: 0.8rem; }
-      main section { padding-block: 3.4rem; }
-      .hero { padding-top: 2.8rem; }
-      .actions .btn { flex: 1 1 auto; }
-    }
+.tiny-note {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.side-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.info-card {
+  padding: 18px;
+}
+
+.info-card h3,
+.section h2,
+.faq h2,
+.cta-panel h2 {
+  letter-spacing: -0.03em;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.info-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.section {
+  padding: 36px 0;
+}
+
+.section-header {
+  margin-bottom: 24px;
+}
+
+.section-kicker {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 10px;
+}
+
+.section h2 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.08;
+}
+
+.section-intro {
+  margin: 0;
+  max-width: 52rem;
+  color: var(--muted);
+  font-size: 1.04rem;
+}
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.principle {
+  padding: 22px;
+}
+
+.principle-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, var(--accent-soft), #f9f8ff);
+}
+
+.principle h3,
+.tool-category h3,
+.roadmap-card h3,
+.faq-item h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.principle p,
+.tool-category p,
+.roadmap-card p,
+.open-source-grid p,
+.faq-item p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.editorial-card,
+.tool-directory,
+.open-source-grid,
+.roadmap-grid,
+.faq-grid,
+.cta-panel {
+  padding: 24px;
+}
+
+.editorial-card p:last-child,
+.faq-item p:last-child,
+.roadmap-card p:last-child {
+  margin-bottom: 0;
+}
+
+.editorial-card p {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.plain-list,
+.tool-list,
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plain-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.plain-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.tool-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.tool-category {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.6);
+}
+
+.tool-list li {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 7px 0;
+  border-bottom: 1px solid #eff1f6;
+}
+
+.tool-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.tool-route-strip {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.route-pill {
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--line);
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.step {
+  padding: 20px;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+}
+
+.open-source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.open-source-block {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  background: rgba(255,255,255,0.7);
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.roadmap-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.68);
+}
+
+.roadmap-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-2);
+  background: var(--accent-2-soft);
+  border-radius: 999px;
+  padding: 6px 10px;
+  margin-bottom: 14px;
+}
+
+.faq-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  background: rgba(255,255,255,0.72);
+}
+
+.cta-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background:
+    linear-gradient(135deg, rgba(236,235,255,0.92), rgba(233,248,241,0.92));
+  border: 1px solid rgba(220, 225, 239, 0.95);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.cta-panel h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1.08;
+}
+
+.cta-panel p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 42rem;
+}
+
+.site-footer {
+  padding: 36px 0 60px;
+  color: var(--muted);
+}
+
+.footer-inner {
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.footer-copy {
+  font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: var(--text);
+}
+
+.mobile-nav-toggle {
+  display: none;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.82);
+  border-radius: 12px;
+  padding: 9px 11px;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 980px) {
+  .hero-panel,
+  .two-col,
+  .principles,
+  .tool-groups,
+  .steps,
+  .roadmap-grid,
+  .open-source-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-panel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .side-stack {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .header-inner {
+    min-height: 64px;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav {
+    position: relative;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    min-width: 220px;
+    padding: 14px;
+    background: rgba(255,255,255,0.96);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav .button {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 56px;
+  }
+
+  .hero-panel {
+    margin-top: 30px;
+  }
+
+  .side-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-demo,
+  .editorial-card,
+  .tool-directory,
+  .open-source-grid,
+  .roadmap-grid,
+  .faq-grid,
+  .cta-panel {
+    padding: 20px;
+  }
+
+  .container {
+    width: min(calc(100% - 28px), var(--max));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+```
+
   </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#top">runlocal.tools</a>
-      <button class="menu-button" type="button" aria-controls="primary-nav" aria-expanded="false">Toggle menu</button>
-      <nav aria-label="Primary navigation">
-        <ul class="nav-list" id="primary-nav">
-          <li><a href="#tools">Tools</a></li>
-          <li><a href="#why-local">Why local</a></li>
-          <li><a href="#open-source">Open source</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </nav>
-      <a class="btn btn-primary header-cta" href="#tools">Open image tools</a>
+      <a class="brand" href="#top" aria-label="runlocal.tools home">
+        <span class="brand-mark">⚒️</span>
+        <span>runlocal.tools</span>
+      </a>
+
+```
+  <nav class="nav" aria-label="Primary">
+    <button class="mobile-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">
+      ☰
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#tools">Tools</a>
+      <a href="#why-local">Why local</a>
+      <a href="#open-source">Open source</a>
+      <a href="#about">About</a>
     </div>
+    <a class="button button-primary" href="#tools">Open image tools</a>
+  </nav>
+</div>
+```
+
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero">
       <div class="container">
-        <h1 id="hero-title">Simple tools. Run locally in your browser.</h1>
-        <p class="lead">A universal toolbox for images, video, and data — without uploading your files to random websites.</p>
-        <p>Most online utility tools are cluttered, slow, and full of ads. They ask you to upload private files for simple tasks. You wait, click through popups, and hope your data is handled responsibly.</p>
-        <p>It shouldn’t be like this.</p>
-        <p>runlocal.tools takes a different approach.</p>
-        <p>Tools run entirely in your browser. No uploads. No tracking. No unnecessary trust.</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="#tools">Try image tools</a>
-          <a class="btn btn-secondary" href="#local-first">Learn more</a>
-        </div>
-      </div>
-    </section>
+        <div class="content-width">
+          <div class="eyebrow">Open tools · Local execution · No unnecessary trust</div>
 
-    <section id="local-first" aria-labelledby="local-first-title">
-      <div class="container">
-        <h2 id="local-first-title">A local-first toolbox for the web</h2>
-        <p>runlocal.tools is a growing collection of practical tools for everyday file and media tasks.</p>
-        <p>Each tool has a simple, stable URL:</p>
-        <div class="body-grid">
-          <div>
-            <ul>
-              <li><code>/images/resize</code></li>
-              <li><code>/images/convert</code></li>
-              <li><code>/csv/to-json</code></li>
-              <li><code>/json/to-csv</code></li>
-            </ul>
-            <p>You open a link, drop a file, and the work happens locally — on your device.</p>
-            <p>No server round-trips. No file transfers. No waiting for someone else’s infrastructure.</p>
-            <p>Just the tool, running where your data already is.</p>
+```
+      <h1>Simple tools. Run locally in your browser.</h1>
+
+      <p class="hero-lead">
+        A universal toolbox for images, video, and data — without uploading your files to external services.
+      </p>
+
+      <p class="hero-copy">
+        Most online utility tools are cluttered, slow, and full of ads. They ask you to upload private files for simple tasks, then turn a small job into a questionable transaction.
+      </p>
+
+      <p class="hero-copy">
+        runlocal.tools takes a different approach. Files are processed entirely in your browser. No uploads. No server-side processing. No unnecessary trust.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#tools">Try image tools</a>
+        <a class="button button-secondary" href="#about">Learn more</a>
+      </div>
+
+      <div class="hero-meta" aria-label="Project highlights">
+        <div class="chip">🔒 Files stay on the user's device</div>
+        <div class="chip">🔗 Stable, shareable tool URLs</div>
+        <div class="chip">🧩 Composable by design</div>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <div class="card card-strong tool-demo" aria-label="Example image resize tool">
+        <div class="tool-topbar">
+          <div class="tool-title">Example tool: /images/resize</div>
+          <div class="dots" aria-hidden="true">
+            <span></span><span></span><span></span>
           </div>
-          <aside class="aside-panel" aria-label="Local processing summary">
-            <h3>Local execution model</h3>
-            <ul>
-              <li>Simple URLs for focused tasks</li>
-              <li>Browser-native processing</li>
-              <li>No required uploads</li>
-              <li>Reliable and shareable workflows</li>
-            </ul>
-          </aside>
+        </div>
+
+        <div class="upload-zone">
+          <div class="upload-icon">🖼️</div>
+          <strong>Drop an image</strong>
+          <p>Process it locally in the browser. No upload step required.</p>
+        </div>
+
+        <div class="demo-grid">
+          <div class="demo-box">
+            <span class="demo-label">Width</span>
+            <div class="fake-input">1200 px</div>
+          </div>
+          <div class="demo-box">
+            <span class="demo-label">Format</span>
+            <div class="fake-select">WebP</div>
+          </div>
+          <div class="demo-box">
+            <span class="demo-label">Quality</span>
+            <div class="fake-slider" aria-hidden="true"></div>
+          </div>
+          <div class="demo-box">
+            <span class="demo-label">Output</span>
+            <div class="fake-input">optimized-image.webp</div>
+          </div>
+        </div>
+
+        <div class="demo-footer">
+          <span class="tiny-note">Runs entirely in the browser runtime</span>
+          <a class="button button-secondary" href="#tools">Download result</a>
         </div>
       </div>
-    </section>
 
-    <section id="share-tools" aria-labelledby="share-tools-title">
-      <div class="container">
-        <h2 id="share-tools-title">Share tools, not files</h2>
-        <p>Because each tool is accessible via a simple URL, it can be shared easily.</p>
-        <p>Instead of sending files to services, you send the tool itself.</p>
-        <p>“Use this to resize your image.”</p>
-        <p>“Convert your CSV here.”</p>
-        <p>The person on the other end runs the same tool — locally, in their own browser.</p>
-        <p>No accounts. No uploads. No friction.</p>
-      </div>
-    </section>
+      <div class="side-stack">
+        <div class="card info-card">
+          <h3>Share tools, not files</h3>
+          <p>
+            Send a route like <code>/images/resize</code> or <code>/csv/to-json</code>. The recipient opens the same tool and processes their own files locally.
+          </p>
+        </div>
 
-    <section id="composability" aria-labelledby="composability-title">
-      <div class="container">
-        <h2 id="composability-title">Composable by design</h2>
-        <p>runlocal.tools is not just a collection of isolated tools.</p>
-        <p>It is designed to grow into a system where tools can be combined.</p>
-        <p>The output of one tool can become the input of another. Small, focused actions can be chained into larger workflows.</p>
-        <p>Inspired by Unix pipelines — but adapted to the browser.</p>
-        <p>Simple building blocks. Clear inputs and outputs. Composable by design.</p>
-      </div>
-    </section>
+        <div class="card info-card">
+          <h3>Built as digital commons</h3>
+          <p>
+            The goal is simple: practical tools that are open, inspectable, reusable, and independent from opaque services.
+          </p>
+        </div>
 
-    <section id="why-local" aria-labelledby="why-local-title">
-      <div class="container">
-        <h2 id="why-local-title">Why this matters</h2>
-        <p>Everyday file tasks should not require blind trust.</p>
-        <p>Uploading personal files to unknown services has quietly become normal. But for most tasks, it is unnecessary.</p>
-        <p>Modern browsers are powerful enough to handle many of these operations locally.</p>
-        <p>runlocal.tools is built on a simple idea:</p>
-        <p>Users should stay in control of their data.</p>
-        <ul>
-          <li>No forced uploads</li>
-          <li>No hidden processing</li>
-          <li>No dependency on opaque services</li>
-        </ul>
-        <p>Just tools that run where your data already lives.</p>
-      </div>
-    </section>
-
-    <section id="tools" aria-labelledby="tools-title">
-      <div class="container">
-        <h2 id="tools-title">Tools, organized and growing</h2>
-        <div class="tool-columns">
-          <article class="tool-group">
-            <h3>Image tools</h3>
-            <p>Resize, convert, compress, crop, optimize</p>
-          </article>
-          <article class="tool-group">
-            <h3>Data tools</h3>
-            <p>CSV ↔ JSON, formatting, validation, inspection</p>
-          </article>
-          <article class="tool-group">
-            <h3>Video tools (planned)</h3>
-            <p>Trim, convert, compress</p>
-          </article>
+        <div class="card info-card">
+          <h3>Designed to evolve</h3>
+          <p>
+            Today: focused browser tools. Next: shared processing primitives, composable workflows, and a local-first automation layer.
+          </p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section id="how-it-works" aria-labelledby="how-title">
-      <div class="container">
-        <h2 id="how-title">How it works</h2>
-        <ol class="steps">
-          <li><strong>Step 1</strong> Open a tool via a simple URL</li>
-          <li><strong>Step 2</strong> Drop your file</li>
-          <li><strong>Step 3</strong> Process it locally in your browser</li>
-          <li><strong>Step 4</strong> Download the result</li>
-        </ol>
-      </div>
-    </section>
+<section class="section" id="why-local">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">Why local</div>
+      <h2>A local-first toolbox for the web.</h2>
+      <p class="section-intro">
+        runlocal.tools is a growing collection of practical tools for everyday file and media tasks. Each tool has a stable URL and runs where the data already is: on the user's device.
+      </p>
+    </div>
 
-    <section id="open-source" aria-labelledby="open-source-title">
-      <div class="container">
-        <h2 id="open-source-title">Open source, by default</h2>
-        <p>runlocal.tools is built as an open project.</p>
-        <ul>
-          <li>Source code is publicly available</li>
-          <li>Tools can be inspected and verified</li>
-          <li>Components can be reused and extended</li>
-          <li>The platform can be self-hosted</li>
-        </ul>
-        <p>This is not a closed service. It is a set of tools meant to be shared, improved, and built upon.</p>
+    <div class="principles">
+      <div class="card principle">
+        <div class="principle-icon">🖥️</div>
+        <h3>Local execution by default</h3>
+        <p>
+          Processing happens in the browser runtime using browser APIs, Web Workers, WASM, and related client-side capabilities.
+        </p>
       </div>
-    </section>
 
-    <section id="digital-commons" aria-labelledby="commons-title">
-      <div class="container">
-        <h2 id="commons-title">Built as digital commons</h2>
-        <p>runlocal.tools is intended as public digital infrastructure.</p>
-        <p>A place where common tools are:</p>
-        <ul>
-          <li>freely accessible</li>
-          <li>openly developed</li>
-          <li>usable without friction</li>
-          <li>independent from centralized services</li>
-        </ul>
-        <p>Simple utilities should not be locked behind ads, tracking, or opaque systems. They should be part of the commons.</p>
+      <div class="card principle">
+        <div class="principle-icon">🔐</div>
+        <h3>No upload step</h3>
+        <p>
+          Core workflows do not depend on sending files to a server. The tool opens, the file is dropped, and processing happens locally.
+        </p>
       </div>
-    </section>
 
-    <section id="roadmap" aria-labelledby="roadmap-title">
-      <div class="container">
-        <h2 id="roadmap-title">What’s next</h2>
-        <p>The initial focus is on a small set of reliable tools:</p>
-        <ul>
-          <li>image resize, convert, compress</li>
-          <li>CSV ↔ JSON conversion</li>
-        </ul>
-        <p>From there:</p>
-        <ul>
-          <li>expand into more tools across images, video, and data</li>
-          <li>build a shared local processing layer</li>
-          <li>enable composable workflows between tools</li>
-          <li>explore optional local AI-assisted processing</li>
-        </ul>
-        <p>The long-term goal is simple:</p>
-        <p>A universal, open toolbox for the web — running locally.</p>
+      <div class="card principle">
+        <div class="principle-icon">🌐</div>
+        <h3>Stable, shareable routes</h3>
+        <p>
+          Tools are directly addressable through simple routes such as <code>/images/resize</code> or <code>/csv/to-json</code>.
+        </p>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section id="about" aria-labelledby="about-title">
-      <div class="container">
-        <h2 id="about-title">About</h2>
-        <p>runlocal.tools is a public-interest project for practical browser-native tools, built with a local-first mindset and an open development model.</p>
-      </div>
-    </section>
+<section class="section" id="about">
+  <div class="container two-col">
+    <div class="card editorial-card">
+      <div class="section-kicker">Core idea</div>
+      <h2>Open the tool, not the file transfer workflow.</h2>
+      <p>
+        Instead of sending files to remote services, users run tools locally. A person can open a stable URL, drop a file, and get a result — without handing that file to third-party infrastructure.
+      </p>
+      <p>
+        This changes the default relationship between utility tools and user data. It removes an unnecessary upload step, reduces dependency on centralized services, and makes the system easier to inspect and reason about.
+      </p>
+      <p>
+        It also makes tools easier to share. Rather than saying “upload your file to this site,” someone can simply send the tool route itself.
+      </p>
+    </div>
 
-    <section id="privacy" aria-labelledby="privacy-title">
-      <div class="container">
-        <h2 id="privacy-title">Privacy</h2>
-        <p>For supported tools, files are processed locally in your browser on your device and are not uploaded to project-operated servers for processing.</p>
+    <div class="card editorial-card">
+      <div class="section-kicker">Why this matters</div>
+      <h2>Everyday file tasks should not require blind trust.</h2>
+      <p>
+        Many simple web tools quietly assume server-side processing, even when modern browsers are capable of doing the work locally. That makes ordinary tasks slower, more opaque, and more privacy-invasive than they need to be.
+      </p>
+      <ul class="plain-list">
+        <li>Files often end up on systems the user cannot inspect.</li>
+        <li>Temporary or invisible retention is hard to verify.</li>
+        <li>Simple tasks become dependent on external infrastructure.</li>
+        <li>Ad-heavy utility sites normalize unnecessary data exposure.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tools">
+  <div class="container">
+    <div class="card tool-directory">
+      <div class="section-kicker">Tool overview</div>
+      <h2>Organized as a growing browser-native toolbox.</h2>
+      <p class="section-intro">
+        The initial focus is on practical, everyday tools. The long-term direction is broader: a universal set of local-first browser tools for common file and media tasks.
+      </p>
+
+      <div class="tool-groups">
+        <div class="tool-category">
+          <h3>Image tools</h3>
+          <p>Focused tools for common image workflows.</p>
+          <ul class="tool-list">
+            <li>Resize</li>
+            <li>Convert</li>
+            <li>Compress</li>
+            <li>Crop</li>
+            <li>Optimize</li>
+          </ul>
+        </div>
+
+        <div class="tool-category">
+          <h3>Data tools</h3>
+          <p>Small utilities for structured text and formats.</p>
+          <ul class="tool-list">
+            <li>CSV ↔ JSON</li>
+            <li>Formatting</li>
+            <li>Validation</li>
+            <li>Inspection</li>
+          </ul>
+        </div>
+
+        <div class="tool-category">
+          <h3>Video tools</h3>
+          <p>Planned next, once the first domains are stable.</p>
+          <ul class="tool-list">
+            <li>Trim</li>
+            <li>Convert</li>
+            <li>Compress</li>
+            <li>Preview</li>
+          </ul>
+        </div>
       </div>
-    </section>
+
+      <div class="tool-route-strip" aria-label="Example tool routes">
+        <span class="route-pill">/images/resize</span>
+        <span class="route-pill">/images/convert</span>
+        <span class="route-pill">/csv/to-json</span>
+        <span class="route-pill">/json/to-csv</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">How it works</div>
+      <h2>Simple, direct, and local.</h2>
+      <p class="section-intro">
+        The model is intentionally straightforward: a tool route, a local file input, processing in the browser, and a downloadable result.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="card step">
+        <div class="step-number">1</div>
+        <h3>Open a tool URL</h3>
+        <p>Navigate to a stable route such as <code>/images/resize</code>.</p>
+      </div>
+
+      <div class="card step">
+        <div class="step-number">2</div>
+        <h3>Drop a file</h3>
+        <p>Provide the file locally, directly from the user's device.</p>
+      </div>
+
+      <div class="card step">
+        <div class="step-number">3</div>
+        <h3>Process in-browser</h3>
+        <p>Run the operation through browser-native execution layers.</p>
+      </div>
+
+      <div class="card step">
+        <div class="step-number">4</div>
+        <h3>Download the result</h3>
+        <p>Export the transformed output without a server-side handoff.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="open-source">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">Open source</div>
+      <h2>Inspectable, reusable, and self-hostable.</h2>
+      <p class="section-intro">
+        runlocal.tools is intended as an open project, not a closed utility service. The code, processing logic, and user-facing tools should be transparent and reusable by others.
+      </p>
+    </div>
+
+    <div class="card open-source-grid">
+      <div class="open-source-block">
+        <h3>Open by default</h3>
+        <p>
+          The platform is meant to be inspectable and understandable, with clear routes, clear behavior, and no hidden remote processing behind the scenes.
+        </p>
+      </div>
+
+      <div class="open-source-block">
+        <h3>Reusable primitives</h3>
+        <p>
+          Shared browser-side processing components can support multiple tools, reducing duplication and making the system easier to extend.
+        </p>
+      </div>
+
+      <div class="open-source-block">
+        <h3>Built for extension</h3>
+        <p>
+          New tools should not require reinventing the whole platform. The long-term value is in reusable local processing building blocks.
+        </p>
+      </div>
+
+      <div class="open-source-block">
+        <h3>Digital commons</h3>
+        <p>
+          Practical utilities should be accessible without ads, opaque infrastructure, or unnecessary lock-in. They should be part of the commons.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">Roadmap</div>
+      <h2>Start small. Build shared infrastructure. Expand carefully.</h2>
+      <p class="section-intro">
+        The first step is a reliable set of image and data tools. From there, the project can evolve into a broader local-first toolbox with composable workflows.
+      </p>
+    </div>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="roadmap-tag">Now</div>
+        <h3>Core tools</h3>
+        <p>
+          Establish dependable browser-native tools for image resize, convert, compress, and CSV ↔ JSON workflows.
+        </p>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="roadmap-tag">Next</div>
+        <h3>Shared local processing layer</h3>
+        <p>
+          Define common processing patterns, file handling flows, and reusable client-side primitives across tools.
+        </p>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="roadmap-tag">Later</div>
+        <h3>Composable workflows</h3>
+        <p>
+          Enable tools to work together, allowing outputs from one task to become inputs for another in browser-native pipelines.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section faq">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">FAQ</div>
+      <h2>Clear principles, plain answers.</h2>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>Does the platform upload files?</h3>
+        <p>
+          No. The core model is local execution in the browser. Files are processed on the user's device rather than handed to a remote processing service.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Why use stable URLs for tools?</h3>
+        <p>
+          Stable routes make tools easy to bookmark, share, and understand. They also make the platform feel like a coherent toolbox rather than a single monolithic app.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Is this just an image tool site?</h3>
+        <p>
+          No. Images are a practical starting point, but the broader goal is a local-first toolbox for everyday browser-based file and media tasks.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What makes this different from existing utility sites?</h3>
+        <p>
+          The difference is structural: local execution, no upload step, open-source implementation, stable routes, and a long-term focus on reusable and composable tooling.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-panel">
+      <div>
+        <h2>Open tools. Local execution. No unnecessary trust.</h2>
+        <p>
+          runlocal.tools is a proposal for how practical web tools should work: local-first, inspectable, shareable, and built as public digital infrastructure.
+        </p>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="button button-primary" href="#tools">Explore tools</a>
+        <a class="button button-secondary" href="#open-source">Read the principles</a>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
   </main>
 
-  <footer>
+  <footer class="site-footer">
     <div class="container footer-inner">
-      <div>
-        <div class="footer-mark">runlocal.tools</div>
-        <div>Open tools. Local execution. No unnecessary trust.</div>
+      <div class="footer-copy">
+        <strong>runlocal.tools</strong><br />
+        Local-first browser tools for file and media processing.
       </div>
-      <nav class="footer-links" aria-label="Footer links">
-        <a href="https://github.com/panndabea/runlocal.tools">GitHub</a>
-        <a href="#about">About</a>
-        <a href="#privacy">Privacy</a>
-        <a href="#tools">Tool index</a>
-      </nav>
-    </div>
+
+```
+  <ul class="footer-links">
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#tools">Tool index</a></li>
+  </ul>
+</div>
+```
+
   </footer>
 
   <script>
-    const menuButton = document.querySelector('.menu-button');
-    const navList = document.querySelector('#primary-nav');
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
 
-    if (menuButton && navList) {
-      menuButton.addEventListener('click', () => {
-        const expanded = menuButton.getAttribute('aria-expanded') === 'true';
-        menuButton.setAttribute('aria-expanded', String(!expanded));
-        navList.classList.toggle('is-open', !expanded);
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
       });
     }
   </script>
+
 </body>
 </html>
