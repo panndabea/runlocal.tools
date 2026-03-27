@@ -40,8 +40,10 @@
     a { color: inherit; }
 
     .container {
-      width: min(100% - 2.5rem, var(--max));
+      width: 100%;
+      max-width: var(--max);
       margin-inline: auto;
+      padding-inline: 1.25rem;
     }
 
     .topbar {
@@ -238,7 +240,7 @@
       max-width: 25ch;
       font-size: clamp(1.8rem, 3.2vw, 2.8rem);
       margin-bottom: 1rem;
-      font-weight: 750;
+      font-weight: 700;
     }
 
     .section-intro {
@@ -465,13 +467,13 @@
         padding: 0.4rem 0 0.8rem;
       }
 
-      .nav-links[aria-expanded="true"] { display: flex; }
+      .nav-links.is-open { display: flex; }
 
       .topbar-cta { margin-left: auto; }
     }
 
     @media (max-width: 560px) {
-      .container { width: min(100% - 1.4rem, var(--max)); }
+      .container { padding-inline: 0.7rem; }
       main section { padding-block: 3.4rem; }
       .hero { padding-top: 2.7rem; }
       .action-row .btn { flex: 1 1 auto; }
@@ -482,8 +484,8 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <a class="brand" href="#top">runlocal.tools</a>
-      <button class="menu-button" type="button" aria-controls="primary-nav" aria-expanded="false">Menu</button>
-      <ul class="nav-links" id="primary-nav" aria-expanded="false">
+      <button class="menu-button" type="button" aria-controls="primary-nav" aria-expanded="false">Toggle menu</button>
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#tools">Tools</a></li>
         <li><a href="#why-local">Why local</a></li>
         <li><a href="#about">About</a></li>
@@ -508,7 +510,7 @@
           </div>
         </div>
 
-        <aside class="aside-panel" aria-label="Quick proof points">
+        <aside class="aside-panel" aria-label="Key tool promises summary">
           <h2>What you can expect</h2>
           <p>No account. No uploads. No mystery pipeline.</p>
           <ul class="mini-list">
@@ -644,7 +646,7 @@
             </li>
           </ol>
 
-          <aside class="mockup" aria-label="Browser example panel">
+          <aside class="mockup" aria-label="Example interface for the image resize tool">
             <div class="mockup-top" aria-hidden="true">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             </div>
@@ -690,9 +692,9 @@
 
     if (menuButton && navList) {
       menuButton.addEventListener('click', () => {
-        const expanded = navList.getAttribute('aria-expanded') === 'true';
-        navList.setAttribute('aria-expanded', String(!expanded));
+        const expanded = menuButton.getAttribute('aria-expanded') === 'true';
         menuButton.setAttribute('aria-expanded', String(!expanded));
+        navList.classList.toggle('is-open', !expanded);
       });
     }
 
