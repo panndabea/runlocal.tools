@@ -23,8 +23,8 @@ Local-first browser tools for file and media processing.
 
 ## Contributing
 
-Contributions for new tools, performance work, and documentation are welcome.
+Open an issue for proposals; submit PRs for tools, performance work, or documentation.
 
 ## License
 
-To be defined.
+TBD (MIT or Apache-2.0).
