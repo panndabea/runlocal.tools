@@ -6,7 +6,7 @@ Local-first browser tools for file and media processing.
 
 - Execute processing in the client runtime (browser APIs, Web Workers, WASM).
 - Avoid server-side file processing for core tool behavior.
-- Expose tools via stable URL routes (for example: `/images/resize`, `/csv/to-json`).
+- Expose tools via stable URL routes (for example `/images/resize`, `/csv/to-json`).
 
 ## Current tool domains
 
@@ -27,4 +27,4 @@ Open an issue for proposals; submit PRs for tools, performance work, or document
 
 ## License
 
-TBD (MIT or Apache-2.0).
+Not specified yet.
