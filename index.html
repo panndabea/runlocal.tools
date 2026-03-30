@@ -583,6 +583,41 @@ h1 {
   border-bottom: 1px solid #eff1f6;
 }
 
+.tool-list-link-item {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-link {
+  background: var(--accent-soft);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: 999px;
+  color: var(--accent);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.tool-link:hover,
+.tool-link:focus-visible {
+  background: #e2e0ff;
+  border-color: rgba(79, 70, 229, 0.32);
+  transform: translateY(-1px);
+}
+
+.tool-link-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .tool-list li:last-child {
   border-bottom: 0;
   padding-bottom: 0;
@@ -1000,7 +1035,10 @@ h1 {
             <li>Compress</li>
             <li>Crop</li>
             <li>Optimize</li>
-            <li><a href="/images/merge/index.html">Merge images</a></li>
+            <li class="tool-list-link-item">
+              <a class="tool-link" href="/images/merge/index.html">Open Merge Images Tool →</a>
+              <span class="tool-link-meta">Live now · runs locally in your browser</span>
+            </li>
           </ul>
         </div>
 
