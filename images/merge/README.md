@@ -2,4 +2,4 @@
 
 Use this page to merge multiple images locally in your browser:
 
-- /images/merge/index.html
+Access the tool at [images/merge/index.html](/images/merge/index.html).
