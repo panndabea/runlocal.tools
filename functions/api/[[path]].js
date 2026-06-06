@@ -1,10 +1,10 @@
 export async function onRequest(context) {
   const host = context.request.headers.get("host");
-  const path = new URL(context.request.url).pathname;
 
-  if (host === "verify.runlocal.tools" && path.startsWith("/rct_")) {
-    return context.env.ASSETS.fetch(
-      new Request("https://runlocal.tools/verify.html")
+  if (host === "verify.runlocal.tools") {
+    return Response.redirect(
+      "https://verify.runlocal.tools/verify.html",
+      302
     );
   }
 
