@@ -18,6 +18,17 @@ export async function onRequestPost(context) {
   receipt.verify_url =
     `https://verify.runlocal.tools/?id=${receipt.receipt_id}`;
 
+  const hashBuffer = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(JSON.stringify(receipt))
+  );
+
+    receipt.receipt_hash =
+    "sha256:" +
+    [...new Uint8Array(hashBuffer)]
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+
   await context.env.RECEIPTS.put(
     receipt.receipt_id,
     JSON.stringify(receipt)
