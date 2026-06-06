@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Runlocal Receipt Verification</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f6f7f9;
+      color: #111;
+      max-width: 760px;
+      margin: 60px auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    h1 { margin-top: 0; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin: 12px 0;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .verified {
+      color: #087f23;
+      font-weight: 700;
+      margin-top: 24px;
+      font-size: 22px;
+    }
+
+    .row {
+      margin: 14px 0;
+    }
+
+    .label {
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      word-break: break-all;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Runlocal Receipt Verification</h1>
+    <p>Verify a local tool execution receipt.</p>
+
+    <input id="receiptId" placeholder="rct_xxxxx" />
+    <button onclick="verifyReceipt()">Verify Receipt</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function verifyReceipt() {
+      const id = document.getElementById("receiptId").value.trim();
+      const result = document.getElementById("result");
+
+      result.innerHTML = "Loading...";
+
+      const response = await fetch(`/api/receipts/${id}`);
+
+      if (!response.ok) {
+        result.innerHTML = "<p>Receipt not found.</p>";
+        return;
+      }
+
+      const receipt = await response.json();
+
+      result.innerHTML = `
+        <div class="verified">✅ VERIFIED RECEIPT</div>
+
+        <div class="row">
+          <div class="label">Receipt ID</div>
+          <div class="value">${receipt.receipt_id}</div>
+        </div>
+
+        <div class="row">
+          <div class="label">Tool</div>
+          <div class="value">${receipt.tool}</div>
+        </div>
+
+        <div class="row">
+          <div class="label">Version</div>
+          <div class="value">${receipt.version}</div>
+        </div>
+
+        <div class="row">
+          <div class="label">Timestamp</div>
+          <div class="value">${receipt.timestamp}</div>
+        </div>
+
+        <div class="row">
+          <div class="label">Output Hash</div>
+          <div class="value">${receipt.output_hash}</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
