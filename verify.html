@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Runlocal Receipt Verification</title>
+</head>
+<body>
+  <h1>Runlocal Receipt Verification</h1>
+
+  <input
+    id="receiptId"
+    placeholder="rct_xxxxx"
+    style="width:400px;"
+  />
+
+  <button onclick="verifyReceipt()">
+    Verify
+  </button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function verifyReceipt() {
+      const id = document.getElementById("receiptId").value;
+
+      const response = await fetch(
+        `/api/receipts/${id}`
+      );
+
+      const text = await response.text();
+
+      document.getElementById("result").textContent = text;
+    }
+  </script>
+</body>
+</html>
