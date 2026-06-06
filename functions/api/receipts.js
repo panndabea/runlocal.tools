@@ -12,12 +12,12 @@ export async function onRequestPost(context) {
     input_hashes: body.input_hashes || [],
     output_hash: body.output_hash || null,
     proof_type: "verifiable_execution_receipt",
-    payment: {
-                protocol: "x402",
-                network: "algorand-testnet",
-                asset: "USDC",
-                amount: "0.001",
-                status: "pending_testnet_integration"
+    payment: body.payment || {
+                  protocol: "x402",
+                  network: "algorand-testnet",
+                  asset: "USDC",
+                  amount: "0.001",
+                  status: "pending_testnet_integration"
             }
   };
 
