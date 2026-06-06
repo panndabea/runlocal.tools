@@ -7,5 +7,10 @@ export async function onRequestPost(context) {
     ...body
   };
 
+  await context.env.RECEIPTS.put(
+    receipt.receipt_id,
+    JSON.stringify(receipt)
+  );
+
   return Response.json(receipt);
 }
