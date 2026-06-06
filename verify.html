@@ -153,11 +153,33 @@
         </div>
 
         <div class="row">
-          <div class="label">Payment Status</div>
-          <div class="value">${receipt.payment
-  ? `${receipt.payment.amount} ${receipt.payment.asset} via ${receipt.payment.protocol} on ${receipt.payment.network} (${receipt.payment.status})`
-  : receipt.payment_status}</div>
-        </div>
+  <div class="label">Payment Method</div>
+  <div class="value">${receipt.payment?.protocol || "Not provided"}</div>
+</div>
+
+<div class="row">
+  <div class="label">Payment Network</div>
+  <div class="value">${receipt.payment?.network || "Not provided"}</div>
+</div>
+
+<div class="row">
+  <div class="label">Payment Amount</div>
+  <div class="value">${
+    receipt.payment
+      ? `${receipt.payment.amount} ${receipt.payment.asset}`
+      : "Not provided"
+  }</div>
+</div>
+
+<div class="row">
+  <div class="label">Payment Status</div>
+  <div class="value">${receipt.payment?.status || receipt.payment_status || "Not provided"}</div>
+</div>
+
+<div class="row">
+  <div class="label">Payment TxID</div>
+  <div class="value">${receipt.payment?.txid || "Not provided"}</div>
+</div>
 
         <div class="row">
           <div class="label">Verify URL</div>
