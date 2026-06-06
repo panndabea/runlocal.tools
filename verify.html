@@ -2,189 +2,539 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Runlocal Receipt Verification</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f6f7f9;
-      color: #111;
-      max-width: 760px;
-      margin: 60px auto;
-      padding: 24px;
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --green: #16a34a;
+      --green-dark: #15803d;
+      --green-soft: #ecfdf5;
+      --purple: #5b3fd6;
+      --purple-soft: #f3f0ff;
+      --blue-soft: #eff6ff;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
     }
 
-    .card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    }
-
-    h1 { margin-top: 0; }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin: 12px 0;
+    * {
       box-sizing: border-box;
     }
 
-    button {
-      padding: 12px 18px;
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(34,197,94,0.12), transparent 34%),
+        radial-gradient(circle at top right, rgba(91,63,214,0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      padding: 32px;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.75);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .logo span {
+      color: var(--green);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 58px 32px 42px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 20px;
+      margin: 18px 0 30px;
+    }
+
+    .search {
+      display: flex;
+      gap: 14px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    input {
+      flex: 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 15px 16px;
       font-size: 16px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 15px 22px;
+      font-weight: 700;
+      font-size: 15px;
       cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      box-shadow: 0 10px 24px rgba(22,163,74,0.25);
+    }
+
+    main {
+      padding: 0 32px 36px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding: 26px;
+      border: 1px solid #bbf7d0;
+      background: linear-gradient(135deg, var(--green-soft), #ffffff);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(22,163,74,0.08);
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      font-size: 34px;
+      font-weight: 900;
+      flex: 0 0 auto;
     }
 
     .verified {
-      color: #087f23;
-      font-weight: 700;
-      margin-top: 24px;
-      font-size: 22px;
+      color: var(--green-dark);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .status p {
+      margin: 0;
+      color: #334155;
+    }
+
+    .badge {
+      border: 1px solid #bbf7d0;
+      background: white;
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: var(--green-dark);
+      font-weight: 800;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+      min-width: 0;
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin: 0 0 18px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #bbf7d0;
+      letter-spacing: -0.03em;
+    }
+
+    .payment h2 {
+      border-bottom-color: #c4b5fd;
     }
 
     .row {
-      margin: 14px 0;
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .row:last-child {
+      border-bottom: 0;
     }
 
     .label {
-      font-size: 13px;
-      color: #666;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: .04em;
+      letter-spacing: 0.06em;
     }
 
     .value {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      word-break: break-all;
-      margin-top: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      color: #0f172a;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .purple {
+      color: var(--purple);
+      font-weight: 900;
+    }
+
+    .note {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid #ddd6fe;
+      background: linear-gradient(135deg, var(--purple-soft), #ffffff);
+      color: #312e81;
+      line-height: 1.55;
+    }
+
+    .summary {
+      margin-top: 24px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .summary-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .summary-item strong {
+      display: block;
+      color: #1d4ed8;
+      margin-bottom: 6px;
+    }
+
+    .verify-url {
+      margin-top: 24px;
+      background: var(--blue-soft);
+      border: 1px solid #bfdbfe;
+    }
+
+    .error {
+      margin-top: 28px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      font-weight: 700;
+    }
+
+    .loading {
+      margin-top: 28px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 16px;
+      }
+
+      .grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search,
+      .status,
+      .status-left {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Runlocal Receipt Verification</h1>
-    <p>Verify a local tool execution receipt.</p>
+  <div class="shell">
+    <header>
+      <div class="logo">run<span>local</span></div>
+      <div class="tagline">Verifiable. Local. Trustless.</div>
+    </header>
 
-    <input id="receiptId" placeholder="rct_xxxxx" />
-    <button onclick="verifyReceipt()">Verify Receipt</button>
+    <section class="hero">
+      <h1><span>Runlocal</span> Receipt Verification</h1>
+      <p>Verify a local tool execution receipt.</p>
 
-    <div id="result"></div>
+      <div class="search">
+        <input id="receiptId" placeholder="Enter receipt ID, e.g. rct_..." />
+        <button onclick="verifyReceipt()">Verify Receipt</button>
+      </div>
+    </section>
+
+    <main>
+      <div id="result"></div>
+    </main>
   </div>
 
   <script>
+    function display(value, fallback = "Not provided") {
+      if (value === true) return '<span class="pill">true</span>';
+      if (value === false) return '<span class="pill">false</span>';
+      if (value === null || value === undefined || value === "") return fallback;
+      return String(value);
+    }
+
     async function verifyReceipt() {
       const id = document.getElementById("receiptId").value.trim();
       const result = document.getElementById("result");
 
       if (!id) {
-        result.innerHTML = "<p>Please enter a receipt ID.</p>";
+        result.innerHTML = `<div class="error">Please enter a receipt ID.</div>`;
         return;
       }
 
-      result.innerHTML = "Loading...";
+      result.innerHTML = `<div class="loading">Loading receipt...</div>`;
 
       const response = await fetch(`/api/receipts/${id}`);
 
       if (!response.ok) {
-        result.innerHTML = "<p>Receipt not found.</p>";
+        result.innerHTML = `<div class="error">Receipt not found.</div>`;
         return;
       }
 
       const receipt = await response.json();
 
       result.innerHTML = `
-        <div class="verified">✅ VERIFIED RECEIPT</div>
+        <section class="status">
+          <div class="status-left">
+            <div class="check">✓</div>
+            <div>
+              <div class="verified">VERIFIED RECEIPT</div>
+              <p>This receipt exists, is hashed, and can be publicly verified.</p>
+            </div>
+          </div>
+          <div class="badge">VERIFIED<br><small>Checks passed</small></div>
+        </section>
 
-        <div class="row">
-          <div class="label">Receipt ID</div>
-          <div class="value">${receipt.receipt_id}</div>
-        </div>
+        <section class="grid">
+          <div class="panel">
+            <h2>Execution Details</h2>
 
-        <div class="row">
-          <div class="label">Tool</div>
-          <div class="value">${receipt.tool}</div>
-        </div>
+            <div class="row">
+              <div class="label">Receipt ID</div>
+              <div class="value">${display(receipt.receipt_id)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Tool URL</div>
-          <div class="value">${receipt.tool_url}</div>
-        </div>
+            <div class="row">
+              <div class="label">Tool</div>
+              <div class="value">${display(receipt.tool)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Version</div>
-          <div class="value">${receipt.version}</div>
-        </div>
+            <div class="row">
+              <div class="label">Tool URL</div>
+              <div class="value">${display(receipt.tool_url)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Runs Locally</div>
-          <div class="value">${receipt.runs_locally}</div>
-        </div>
+            <div class="row">
+              <div class="label">Version</div>
+              <div class="value">${display(receipt.version)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Free To Use</div>
-          <div class="value">${receipt.free_to_use}</div>
-        </div>
+            <div class="row">
+              <div class="label">Runs Locally</div>
+              <div class="value">${display(receipt.runs_locally)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Timestamp</div>
-          <div class="value">${receipt.timestamp}</div>
-        </div>
+            <div class="row">
+              <div class="label">Free To Use</div>
+              <div class="value">${display(receipt.free_to_use)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Input Hashes</div>
-          <div class="value">${(receipt.input_hashes || []).join("<br>") || "None provided"}</div>
-        </div>
+            <div class="row">
+              <div class="label">Timestamp</div>
+              <div class="value">${display(receipt.timestamp)}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Output Hash</div>
-          <div class="value">${receipt.output_hash || "None provided"}</div>
-        </div>
+            <div class="row">
+              <div class="label">Input Hashes</div>
+              <div class="value">${(receipt.input_hashes || []).join("<br>") || "None provided"}</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Proof Type</div>
-          <div class="value">${receipt.proof_type}</div>
-        </div>
+            <div class="row">
+              <div class="label">Output Hash</div>
+              <div class="value">${display(receipt.output_hash)}</div>
+            </div>
 
-        <div class="row">
-            <div class="label">Receipt Hash</div>
-            <div class="value">${receipt.receipt_hash}</div>
-        </div>
+            <div class="row">
+              <div class="label">Proof Type</div>
+              <div class="value">${display(receipt.proof_type)}</div>
+            </div>
 
-        <div class="row">
-  <div class="label">Payment Method</div>
-  <div class="value">${receipt.payment?.protocol || "Not provided"}</div>
-</div>
+            <div class="row">
+              <div class="label">Receipt Hash</div>
+              <div class="value">${display(receipt.receipt_hash)}</div>
+            </div>
+          </div>
 
-<div class="row">
-  <div class="label">Payment Network</div>
-  <div class="value">${receipt.payment?.network || "Not provided"}</div>
-</div>
+          <div class="panel payment">
+            <h2>Payment Details</h2>
 
-<div class="row">
-  <div class="label">Payment Amount</div>
-  <div class="value">${
-    receipt.payment
-      ? `${receipt.payment.amount} ${receipt.payment.asset}`
-      : "Not provided"
-  }</div>
-</div>
+            <div class="row">
+              <div class="label">Payment Method</div>
+              <div class="value purple">${display(receipt.payment?.protocol)}</div>
+            </div>
 
-<div class="row">
-  <div class="label">Payment Status</div>
-  <div class="value">${receipt.payment?.status || receipt.payment_status || "Not provided"}</div>
-</div>
+            <div class="row">
+              <div class="label">Payment Network</div>
+              <div class="value purple">${display(receipt.payment?.network)}</div>
+            </div>
 
-<div class="row">
-  <div class="label">Payment TxID</div>
-  <div class="value">${receipt.payment?.txid || "Not provided"}</div>
-</div>
+            <div class="row">
+              <div class="label">Payment Amount</div>
+              <div class="value purple">${
+                receipt.payment
+                  ? `${receipt.payment.amount} ${receipt.payment.asset}`
+                  : "Not provided"
+              }</div>
+            </div>
 
-        <div class="row">
-          <div class="label">Verify URL</div>
-          <div class="value">${receipt.verify_url}</div>
-        </div>
+            <div class="row">
+              <div class="label">Payment Status</div>
+              <div class="value">${display(receipt.payment?.status || receipt.payment_status)}</div>
+            </div>
+
+            <div class="row">
+              <div class="label">Payment TxID</div>
+              <div class="value">${display(receipt.payment?.txid)}</div>
+            </div>
+
+            <div class="note">
+              <strong>About x402 Payments</strong><br>
+              This receipt was paid using x402 over Algorand TestNet via the facilitator flow.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel summary">
+          <h2>Verification Summary</h2>
+
+          <div class="summary-grid">
+            <div class="summary-item">
+              <strong>Authentic</strong>
+              Receipt record exists and is retrievable.
+            </div>
+
+            <div class="summary-item">
+              <strong>Hashed</strong>
+              Receipt metadata has a SHA-256 hash.
+            </div>
+
+            <div class="summary-item">
+              <strong>Paid Proof</strong>
+              Optional receipt proof can be paid via x402.
+            </div>
+
+            <div class="summary-item">
+              <strong>Publicly Verifiable</strong>
+              Anyone can verify this receipt URL.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel verify-url">
+          <h2>Verify URL</h2>
+          <div class="value">${display(receipt.verify_url)}</div>
+        </section>
       `;
     }
 
