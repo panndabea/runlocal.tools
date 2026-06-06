@@ -7,6 +7,9 @@ export async function onRequestPost(context) {
     ...body
   };
 
+  receipt.verify_url =
+    `https://verify.runlocal.tools/?id=${receipt.receipt_id}`;
+
   await context.env.RECEIPTS.put(
     receipt.receipt_id,
     JSON.stringify(receipt)
