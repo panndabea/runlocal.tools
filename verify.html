@@ -21,10 +21,13 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     }
 
-    h1 { margin-top: 0; }
+    h1 {
+      margin-top: 0;
+    }
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: 12px;
       font-size: 16px;
       margin: 12px 0;
@@ -41,6 +44,17 @@
       font-weight: 700;
       margin-top: 24px;
       font-size: 22px;
+    }
+
+    .error {
+      color: #b00020;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+
+    .loading {
+      margin-top: 20px;
+      color: #555;
     }
 
     .row {
@@ -67,56 +81,93 @@
     <p>Verify a local tool execution receipt.</p>
 
     <input id="receiptId" placeholder="rct_xxxxx" />
-    <button onclick="verifyReceipt()">Verify Receipt</button>
+    <button id="verifyButton" type="button">Verify Receipt</button>
 
     <div id="result"></div>
   </div>
 
   <script>
     async function verifyReceipt() {
-      const id = document.getElementById("receiptId").value.trim();
+      const input = document.getElementById("receiptId");
       const result = document.getElementById("result");
+      const button = document.getElementById("verifyButton");
 
-      result.innerHTML = "Loading...";
+      const id = input.value.trim();
 
-      const response = await fetch(`/api/receipts/${id}`);
-
-      if (!response.ok) {
-        result.innerHTML = "<p>Receipt not found.</p>";
+      if (!id) {
+        result.innerHTML = '<p class="error">Please enter a receipt ID.</p>';
         return;
       }
 
-      const receipt = await response.json();
+      result.innerHTML = '<p class="loading">Loading...</p>';
+      button.disabled = true;
 
-      result.innerHTML = `
-        <div class="verified">✅ VERIFIED RECEIPT</div>
+      try {
+        const response = await fetch(`/api/receipts/${encodeURIComponent(id)}`);
 
-        <div class="row">
-          <div class="label">Receipt ID</div>
-          <div class="value">${receipt.receipt_id}</div>
-        </div>
+        if (!response.ok) {
+          result.innerHTML = '<p class="error">Receipt not found.</p>';
+          return;
+        }
 
-        <div class="row">
-          <div class="label">Tool</div>
-          <div class="value">${receipt.tool}</div>
-        </div>
+        const receipt = await response.json();
 
-        <div class="row">
-          <div class="label">Version</div>
-          <div class="value">${receipt.version}</div>
-        </div>
+        result.innerHTML = `
+          <div class="verified">✅ VERIFIED RECEIPT</div>
 
-        <div class="row">
-          <div class="label">Timestamp</div>
-          <div class="value">${receipt.timestamp}</div>
-        </div>
+          <div class="row">
+            <div class="label">Receipt ID</div>
+            <div class="value">${receipt.receipt_id}</div>
+          </div>
 
-        <div class="row">
-          <div class="label">Output Hash</div>
-          <div class="value">${receipt.output_hash}</div>
-        </div>
-      `;
+          <div class="row">
+            <div class="label">Tool</div>
+            <div class="value">${receipt.tool}</div>
+          </div>
+
+          <div class="row">
+            <div class="label">Version</div>
+            <div class="value">${receipt.version}</div>
+          </div>
+
+          <div class="row">
+            <div class="label">Timestamp</div>
+            <div class="value">${receipt.timestamp}</div>
+          </div>
+
+          <div class="row">
+            <div class="label">Output Hash</div>
+            <div class="value">${receipt.output_hash}</div>
+          </div>
+        `;
+      } catch (error) {
+        console.error(error);
+        result.innerHTML = '<p class="error">Failed to verify receipt.</p>';
+      } finally {
+        button.disabled = false;
+      }
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const input = document.getElementById("receiptId");
+      const button = document.getElementById("verifyButton");
+
+      button.addEventListener("click", verifyReceipt);
+
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          verifyReceipt();
+        }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const receiptIdFromUrl = params.get("id");
+
+      if (receiptIdFromUrl) {
+        input.value = receiptIdFromUrl;
+        verifyReceipt();
+      }
+    });
   </script>
 </body>
 </html>
