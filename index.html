@@ -778,6 +778,71 @@
       }
     }
 
+    .flow-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.flow-card {
+  position: relative;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.82);
+  box-shadow: var(--shadow);
+}
+
+.flow-card:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-weight: 900;
+  z-index: 2;
+}
+
+.flow-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent-2-soft));
+  border: 1px solid var(--line);
+}
+
+.flow-card h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.flow-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .flow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-card:not(:last-child)::after {
+    content: "↓";
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -18px;
+    transform: translateX(-50%);
+  }
+}
+
     @media (max-width: 760px) {
       .header-inner {
         min-height: 64px;
@@ -914,6 +979,50 @@
         </div>
       </div>
     </section>
+
+    <section class="section" id="agent-flow">
+  <div class="container">
+    <div class="section-header content-width">
+      <div class="section-kicker">Agent flow</div>
+      <h2>From local execution to public proof.</h2>
+      <p class="section-intro">
+        Humans use tools for free. Agents can optionally pay for proof when they need auditability.
+      </p>
+    </div>
+
+    <div class="flow-grid">
+      <div class="flow-card">
+        <div class="flow-icon">🖥️</div>
+        <h3>Local Tool</h3>
+        <p>Image Merge runs locally in the browser.</p>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-icon">🧾</div>
+        <h3>Request Proof</h3>
+        <p>The agent asks for a verifiable execution receipt.</p>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-icon">⚡</div>
+        <h3>Pay via x402</h3>
+        <p>0.001 USDC paid on Algorand TestNet.</p>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-icon">🔐</div>
+        <h3>Receipt Issued</h3>
+        <p>A hashed receipt is created and stored.</p>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-icon">✅</div>
+        <h3>Public Verify</h3>
+        <p>Anyone can verify the receipt URL.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
     <section class="section agent-receipts" id="agent-receipts">
       <div class="container">
