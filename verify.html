@@ -467,7 +467,7 @@
           </div>
 
           <div class="panel payment">
-            <h2>Payment Details</h2>
+            <h2>Payment Proof</h2>
 
             <div class="row">
               <div class="label">Payment Method</div>
@@ -506,30 +506,32 @@
         </section>
 
         <section class="panel summary">
-          <h2>Verification Summary</h2>
+  <h2>Verification Summary</h2>
 
-          <div class="summary-grid">
-            <div class="summary-item">
-              <strong>Authentic</strong>
-              Receipt record exists and is retrievable.
-            </div>
+  <div class="summary-grid">
 
-            <div class="summary-item">
-              <strong>Hashed</strong>
-              Receipt metadata has a SHA-256 hash.
-            </div>
+    <div class="summary-item">
+      <strong>✓ Receipt Found</strong>
+      Receipt exists and is publicly retrievable.
+    </div>
 
-            <div class="summary-item">
-              <strong>Paid Proof</strong>
-              Optional receipt proof can be paid via x402.
-            </div>
+    <div class="summary-item">
+      <strong>✓ Receipt Hashed</strong>
+      SHA-256 receipt hash generated and stored.
+    </div>
 
-            <div class="summary-item">
-              <strong>Publicly Verifiable</strong>
-              Anyone can verify this receipt URL.
-            </div>
-          </div>
-        </section>
+    <div class="summary-item">
+      <strong>✓ x402 Payment</strong>
+      Payment recorded via x402 on Algorand TestNet.
+    </div>
+
+    <div class="summary-item">
+      <strong>✓ Public Verification</strong>
+      Anyone can independently verify this receipt URL.
+    </div>
+
+  </div>
+</section>
 
         <section class="panel verify-url">
           <h2>Verify URL</h2>
