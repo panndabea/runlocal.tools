@@ -13,18 +13,13 @@
       --paper: #fffdf8;
       --ink: #121411;
       --muted: #667069;
-      --faint: #9aa39c;
       --line: rgba(18, 20, 17, 0.13);
       --line-strong: rgba(18, 20, 17, 0.22);
       --green: #08764f;
-      --green-dark: #064c35;
       --green-soft: #e5f3ec;
       --red: #b42318;
       --red-soft: #fff0ee;
-      --blue: #2636c7;
-      --blue-soft: #edf0ff;
-      --radius: 22px;
-      --max: 1180px;
+      --max: 980px;
       --shadow: 0 24px 80px rgba(28, 29, 24, 0.08);
     }
 
@@ -91,16 +86,10 @@
       font-weight: 760;
     }
 
-    main {
-      padding: 70px 0 90px;
-    }
+    main { padding: 70px 0 90px; }
 
     .hero {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 46px;
-      align-items: end;
-      margin-bottom: 36px;
+      margin-bottom: 34px;
     }
 
     .kicker {
@@ -112,8 +101,8 @@
 
     h1 {
       margin: 0;
-      max-width: 11ch;
-      font-size: clamp(3.35rem, 9vw, 7.5rem);
+      max-width: 10ch;
+      font-size: clamp(3.2rem, 8vw, 7rem);
       line-height: 0.92;
       letter-spacing: -0.07em;
       font-weight: 760;
@@ -121,26 +110,10 @@
 
     .lede {
       margin: 24px 0 0;
-      max-width: 700px;
+      max-width: 720px;
       color: var(--muted);
       font-size: clamp(1.08rem, 2vw, 1.35rem);
       line-height: 1.5;
-    }
-
-    .note {
-      border-left: 1px solid var(--line);
-      padding-left: 24px;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .note strong {
-      display: block;
-      color: var(--ink);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .09em;
-      margin-bottom: 7px;
     }
 
     .tool {
@@ -161,14 +134,8 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    button, .file-label, select {
+    .file-label,
+    button {
       min-height: 42px;
       border-radius: 999px;
       border: 1px solid var(--line);
@@ -178,27 +145,18 @@
       font-size: 14px;
       font-weight: 650;
       padding: 0 14px;
-    }
-
-    button, .file-label {
       cursor: pointer;
       transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    button:hover, .file-label:hover {
+    .file-label:hover,
+    button:hover {
       transform: translateY(-1px);
       background: var(--paper);
       border-color: var(--line-strong);
-    }
-
-    .primary {
-      background: var(--ink);
-      color: var(--paper);
-      border-color: var(--ink);
-    }
-
-    .primary:hover {
-      background: #282c27;
     }
 
     button:disabled {
@@ -207,13 +165,11 @@
       transform: none;
     }
 
-    input[type="file"] {
-      display: none;
-    }
+    input[type="file"] { display: none; }
 
     .dropzone {
       margin: 18px;
-      min-height: 230px;
+      min-height: 260px;
       border: 1.5px dashed rgba(8, 118, 79, 0.28);
       border-radius: 22px;
       background:
@@ -223,7 +179,6 @@
       place-items: center;
       text-align: center;
       padding: 34px;
-      transition: background 160ms ease, border-color 160ms ease;
     }
 
     .dropzone.dragover {
@@ -242,66 +197,38 @@
       color: var(--muted);
     }
 
-    .results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-      padding: 18px;
+    .list {
       border-top: 1px solid var(--line);
+      padding: 0 18px 18px;
     }
 
-    .item {
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(255,253,248,0.58);
-      overflow: hidden;
-    }
-
-    .thumb {
-      aspect-ratio: 4 / 3;
-      background: #eee8dc;
+    .row {
       display: grid;
-      place-items: center;
-      overflow: hidden;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
     }
 
-    .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .item-body {
-      padding: 13px;
-    }
+    .row:last-child { border-bottom: 0; }
 
     .name {
-      font-weight: 750;
-      font-size: 14px;
+      font-weight: 720;
       overflow-wrap: anywhere;
       line-height: 1.25;
-      margin-bottom: 8px;
     }
 
     .meta {
-      display: grid;
-      gap: 4px;
+      margin-top: 4px;
       color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 12px;
+      font-size: 13px;
     }
 
-    .item-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .small {
-      min-height: 34px;
-      padding: 0 11px;
-      font-size: 12px;
+    .download {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
     }
 
     .status {
@@ -324,18 +251,12 @@
       margin-top: 28px;
       color: var(--muted);
       font-size: 14px;
-      max-width: 860px;
+      max-width: 760px;
     }
 
-    @media (max-width: 900px) {
-      .hero {
+    @media (max-width: 640px) {
+      .row {
         grid-template-columns: 1fr;
-      }
-
-      .note {
-        border-left: 0;
-        border-top: 1px solid var(--line);
-        padding: 20px 0 0;
       }
     }
   </style>
@@ -355,61 +276,36 @@
   <main>
     <div class="wrap">
       <section class="hero">
-        <div>
-          <div class="kicker">/images/strip-metadata</div>
-          <h1>Strip image metadata.</h1>
-          <p class="lede">
-            Remove hidden metadata from images directly in your browser. Useful before sharing photos, screenshots, product images, or sensitive visual material online.
-          </p>
-        </div>
-
-        <aside class="note">
-          <strong>Privacy first</strong>
-          Images are decoded and re-exported locally through the browser canvas. The exported file contains only the rendered pixels, without EXIF, GPS, camera, or author metadata.
-        </aside>
+        <div class="kicker">/images/strip-metadata</div>
+        <h1>Strip image metadata.</h1>
+        <p class="lede">
+          Remove hidden metadata from images directly in your browser. The image is re-saved from its visible pixels, without EXIF, GPS, camera, author, or software metadata.
+        </p>
       </section>
 
       <section class="tool" aria-label="Strip image metadata tool">
         <div class="toolbar">
-          <div class="controls">
-            <label class="file-label">
-              Open images
-              <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple />
-            </label>
+          <label class="file-label">
+            Choose images
+            <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple />
+          </label>
 
-            <select id="format">
-              <option value="image/png">Export PNG</option>
-              <option value="image/jpeg">Export JPEG</option>
-              <option value="image/webp">Export WebP</option>
-            </select>
-
-            <select id="quality">
-              <option value="0.92">Quality 92%</option>
-              <option value="0.85">Quality 85%</option>
-              <option value="0.75">Quality 75%</option>
-              <option value="1">Quality 100%</option>
-            </select>
-          </div>
-
-          <div class="controls">
-            <button id="clearBtn" type="button">Clear</button>
-            <button id="downloadAllBtn" class="primary" type="button" disabled>Download all</button>
-          </div>
+          <button id="clearBtn" type="button" disabled>Clear</button>
         </div>
 
         <div id="dropzone" class="dropzone">
           <div>
             <strong>Drop images here</strong>
-            <span>PNG, JPEG, or WebP · processed locally · no upload</span>
+            <span>PNG, JPEG, or WebP · metadata stripped locally · no upload</span>
           </div>
         </div>
 
-        <div id="results" class="results" hidden></div>
+        <div id="list" class="list" hidden></div>
         <div id="status" class="status ok">✓ Ready · processing happens locally</div>
       </section>
 
       <div class="footer">
-        Note: this tool strips metadata by re-encoding the visible image pixels through the browser canvas. For animated images, only the first rendered frame may be exported. For color-critical professional workflows, compare the output before publishing.
+        This tool only strips metadata. It does not resize, compress, optimize, enhance, or otherwise transform the visible image content beyond re-saving the pixels required to remove embedded metadata.
       </div>
     </div>
   </main>
@@ -417,14 +313,11 @@
   <script>
     const fileInput = document.getElementById("fileInput");
     const dropzone = document.getElementById("dropzone");
-    const results = document.getElementById("results");
+    const list = document.getElementById("list");
     const statusEl = document.getElementById("status");
-    const formatSelect = document.getElementById("format");
-    const qualitySelect = document.getElementById("quality");
     const clearBtn = document.getElementById("clearBtn");
-    const downloadAllBtn = document.getElementById("downloadAllBtn");
 
-    let processed = [];
+    let outputs = [];
 
     function setStatus(message, type = "ok") {
       statusEl.className = `status ${type}`;
@@ -438,27 +331,18 @@
       return `${(bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
     }
 
-    function extensionForType(type) {
-      if (type === "image/jpeg") return "jpg";
-      if (type === "image/webp") return "webp";
+    function extensionForMime(mime) {
+      if (mime === "image/jpeg") return "jpg";
+      if (mime === "image/webp") return "webp";
       return "png";
     }
 
-    function outputName(originalName, type) {
-      const clean = originalName.replace(/\.[^.]+$/, "");
-      return `${clean}-metadata-stripped.${extensionForType(type)}`;
+    function outputName(name, mime) {
+      const base = name.replace(/\.[^.]+$/, "");
+      return `${base}-metadata-stripped.${extensionForMime(mime)}`;
     }
 
-    function blobToDataUrl(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error("Could not read image output."));
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    function loadImageFromFile(file) {
+    function loadImage(file) {
       return new Promise((resolve, reject) => {
         const url = URL.createObjectURL(file);
         const image = new Image();
@@ -477,7 +361,7 @@
       });
     }
 
-    function canvasToBlob(canvas, type, quality) {
+    function canvasToBlob(canvas, mime) {
       return new Promise((resolve, reject) => {
         canvas.toBlob((blob) => {
           if (!blob) {
@@ -485,103 +369,91 @@
             return;
           }
           resolve(blob);
-        }, type, quality);
+        }, mime);
       });
     }
 
     async function stripMetadata(file) {
-      const image = await loadImageFromFile(file);
-
+      const image = await loadImage(file);
       const canvas = document.createElement("canvas");
+
       canvas.width = image.naturalWidth || image.width;
       canvas.height = image.naturalHeight || image.height;
 
-      const ctx = canvas.getContext("2d", { alpha: true });
+      const ctx = canvas.getContext("2d");
       ctx.drawImage(image, 0, 0);
 
-      const type = formatSelect.value;
-      const quality = Number(qualitySelect.value);
-      const blob = await canvasToBlob(canvas, type, quality);
-      const preview = await blobToDataUrl(blob);
+      const mime = ["image/png", "image/jpeg", "image/webp"].includes(file.type)
+        ? file.type
+        : "image/png";
+
+      const blob = await canvasToBlob(canvas, mime);
 
       return {
         originalName: file.name,
-        outputName: outputName(file.name, type),
+        outputName: outputName(file.name, mime),
         originalSize: file.size,
         outputSize: blob.size,
-        width: canvas.width,
-        height: canvas.height,
-        type,
-        blob,
-        preview
+        mime,
+        blob
       };
     }
 
-    function downloadBlob(blob, filename) {
+    function download(blob, name) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = filename;
+      a.download = name;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
     }
 
-    function renderResults() {
-      results.innerHTML = "";
-      results.hidden = processed.length === 0;
-      downloadAllBtn.disabled = processed.length === 0;
+    function render() {
+      list.innerHTML = "";
+      list.hidden = outputs.length === 0;
+      clearBtn.disabled = outputs.length === 0;
 
-      for (const item of processed) {
-        const card = document.createElement("article");
-        card.className = "item";
+      for (const item of outputs) {
+        const row = document.createElement("div");
+        row.className = "row";
 
-        const saved = item.originalSize - item.outputSize;
-        const savedLabel = saved > 0 ? `${formatBytes(saved)} smaller` : `${formatBytes(Math.abs(saved))} larger`;
-
-        card.innerHTML = `
-          <div class="thumb"><img alt="" src="${item.preview}"></div>
-          <div class="item-body">
+        row.innerHTML = `
+          <div>
             <div class="name">${item.outputName}</div>
-            <div class="meta">
-              <span>${item.width} × ${item.height}</span>
-              <span>${formatBytes(item.originalSize)} → ${formatBytes(item.outputSize)}</span>
-              <span>${savedLabel}</span>
-            </div>
-            <div class="item-actions">
-              <button class="small primary" type="button">Download</button>
-            </div>
+            <div class="meta">${formatBytes(item.originalSize)} → ${formatBytes(item.outputSize)} · metadata stripped</div>
           </div>
+          <button class="download" type="button">Download</button>
         `;
 
-        card.querySelector("button").addEventListener("click", () => {
-          downloadBlob(item.blob, item.outputName);
+        row.querySelector("button").addEventListener("click", () => {
+          download(item.blob, item.outputName);
         });
 
-        results.appendChild(card);
+        list.appendChild(row);
       }
     }
 
     async function processFiles(files) {
-      const imageFiles = [...files].filter(file => file.type.startsWith("image/"));
+      const imageFiles = [...files].filter(file => ["image/png", "image/jpeg", "image/webp"].includes(file.type));
 
       if (imageFiles.length === 0) {
         setStatus("No supported images selected.", "error");
         return;
       }
 
-      setStatus(`Processing ${imageFiles.length} image${imageFiles.length === 1 ? "" : "s"} locally...`);
+      setStatus(`Stripping metadata from ${imageFiles.length} image${imageFiles.length === 1 ? "" : "s"} locally...`);
 
       try {
-        const outputs = [];
+        const newOutputs = [];
         for (const file of imageFiles) {
-          outputs.push(await stripMetadata(file));
+          newOutputs.push(await stripMetadata(file));
         }
 
-        processed = [...processed, ...outputs];
-        renderResults();
-        setStatus(`✓ Stripped metadata from ${outputs.length} image${outputs.length === 1 ? "" : "s"} locally`);
+        outputs = outputs.concat(newOutputs);
+        render();
+        setStatus(`✓ Metadata stripped from ${newOutputs.length} image${newOutputs.length === 1 ? "" : "s"} locally`);
       } catch (error) {
         setStatus(`Error: ${error.message}`, "error");
       }
@@ -592,14 +464,14 @@
       fileInput.value = "";
     });
 
-    ["dragenter", "dragover"].forEach(eventName => {
+    ["dragenter", "dragover"].forEach((eventName) => {
       dropzone.addEventListener(eventName, (event) => {
         event.preventDefault();
         dropzone.classList.add("dragover");
       });
     });
 
-    ["dragleave", "drop"].forEach(eventName => {
+    ["dragleave", "drop"].forEach((eventName) => {
       dropzone.addEventListener(eventName, (event) => {
         event.preventDefault();
         dropzone.classList.remove("dragover");
@@ -612,34 +484,9 @@
     });
 
     clearBtn.addEventListener("click", () => {
-      processed = [];
-      renderResults();
+      outputs = [];
+      render();
       setStatus("✓ Cleared · ready");
-    });
-
-    downloadAllBtn.addEventListener("click", () => {
-      if (processed.length === 0) return;
-
-      if (processed.length === 1) {
-        downloadBlob(processed[0].blob, processed[0].outputName);
-        return;
-      }
-
-      // Minimal browser-only multi-download fallback.
-      // No external zip dependency, no upload.
-      processed.forEach((item, index) => {
-        setTimeout(() => downloadBlob(item.blob, item.outputName), index * 250);
-      });
-
-      setStatus("✓ Started local downloads");
-    });
-
-    [formatSelect, qualitySelect].forEach(control => {
-      control.addEventListener("change", () => {
-        if (processed.length > 0) {
-          setStatus("Output settings changed. Re-open images to regenerate with the new format.");
-        }
-      });
     });
   </script>
 </body>
