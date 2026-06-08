@@ -1,21 +1,20 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>runlocal.tools — Local tools. Verifiable receipts.</title>
+  <title>runlocal.tools — Local-first browser tools</title>
 
   <meta
     name="description"
-    content="runlocal.tools provides open-source browser tools that run locally, with optional verifiable execution receipts for AI agents powered by x402 on Algorand."
+    content="runlocal.tools is an open-source toolbox for everyday file and media tasks. Tools run locally in the browser, without uploads or server-side processing."
   />
 
   <style>
     :root {
       --bg-soft-2: #eef8f5;
-      --surface: rgba(255, 255, 255, 0.82);
+      --surface: rgba(255, 255, 255, 0.84);
       --text: #171717;
       --muted: #5f6673;
       --line: #e7e8ee;
@@ -25,9 +24,6 @@
       --accent-2: #0f8a5f;
       --accent-2-soft: #e9f8f1;
       --green: #16a34a;
-      --green-soft: #ecfdf5;
-      --purple: #5b3fd6;
-      --purple-soft: #f3f0ff;
       --shadow: 0 10px 30px rgba(27, 35, 69, 0.07);
       --shadow-strong: 0 24px 70px rgba(27, 35, 69, 0.12);
       --radius: 18px;
@@ -35,13 +31,8 @@
       --content: 760px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -56,14 +47,8 @@
       text-rendering: optimizeLegibility;
     }
 
-    a {
-      color: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
 
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -79,16 +64,14 @@
       margin: 0 auto;
     }
 
-    .content-width {
-      width: min(100%, var(--content));
-    }
+    .content-width { width: min(100%, var(--content)); }
 
     .site-header {
       position: sticky;
       top: 0;
       z-index: 50;
       backdrop-filter: blur(14px);
-      background: rgba(251, 251, 253, 0.8);
+      background: rgba(251, 251, 253, 0.82);
       border-bottom: 1px solid rgba(231, 232, 238, 0.85);
     }
 
@@ -121,17 +104,8 @@
       font-size: 16px;
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
+    .nav { display: flex; align-items: center; gap: 22px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; }
 
     .nav-links a {
       color: var(--muted);
@@ -141,9 +115,7 @@
     }
 
     .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: var(--text);
-    }
+    .nav-links a:focus-visible { color: var(--text); }
 
     .button {
       appearance: none;
@@ -160,30 +132,18 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition:
-        transform 0.18s ease,
-        background-color 0.18s ease,
-        border-color 0.18s ease,
-        color 0.18s ease,
-        box-shadow 0.18s ease;
+      transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
       cursor: pointer;
       white-space: nowrap;
     }
 
     .button:hover,
-    .button:focus-visible {
-      transform: translateY(-1px);
-    }
+    .button:focus-visible { transform: translateY(-1px); }
 
     .button-primary {
       background: var(--text);
       color: white;
       box-shadow: 0 8px 18px rgba(23, 23, 23, 0.12);
-    }
-
-    .button-primary:hover,
-    .button-primary:focus-visible {
-      background: #262626;
     }
 
     .button-secondary {
@@ -192,31 +152,23 @@
       color: var(--text);
     }
 
-    .button-secondary:hover,
-    .button-secondary:focus-visible {
-      background: white;
-      border-color: var(--line-strong);
-    }
-
     .button-accent {
       background: linear-gradient(135deg, var(--green), var(--accent-2));
       color: white;
       box-shadow: 0 10px 24px rgba(15, 138, 95, 0.18);
     }
 
-    .hero {
-      padding: 84px 0 44px;
-    }
+    .hero { padding: 84px 0 44px; }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--accent);
-      background: rgba(79, 70, 229, 0.08);
-      border: 1px solid rgba(79, 70, 229, 0.12);
+      font-weight: 700;
+      color: var(--accent-2);
+      background: rgba(15, 138, 95, 0.08);
+      border: 1px solid rgba(15, 138, 95, 0.14);
       border-radius: 999px;
       padding: 7px 12px;
       margin-bottom: 22px;
@@ -227,20 +179,20 @@
       font-size: clamp(2.7rem, 7vw, 5rem);
       line-height: 1.02;
       letter-spacing: -0.05em;
-      max-width: 14ch;
+      max-width: 13ch;
     }
 
     .hero-lead {
       font-size: clamp(1.05rem, 2.2vw, 1.3rem);
       color: var(--muted);
-      max-width: 48rem;
+      max-width: 50rem;
       margin: 0 0 18px;
     }
 
     .hero-copy {
       font-size: 1.02rem;
       color: var(--text);
-      max-width: 44rem;
+      max-width: 46rem;
       margin: 0 0 14px;
     }
 
@@ -279,18 +231,8 @@
       box-shadow: var(--shadow);
     }
 
-    .section h2,
-    .cta-panel h2 {
-      letter-spacing: -0.03em;
-    }
-
-    .section {
-      padding: 36px 0;
-    }
-
-    .section-header {
-      margin-bottom: 24px;
-    }
+    .section { padding: 36px 0; }
+    .section-header { margin-bottom: 24px; }
 
     .section-kicker {
       display: inline-block;
@@ -302,159 +244,49 @@
       margin-bottom: 10px;
     }
 
-    .section h2 {
+    .section h2,
+    .cta-panel h2 {
       margin: 0 0 10px;
       font-size: clamp(2rem, 4vw, 2.8rem);
       line-height: 1.08;
+      letter-spacing: -0.03em;
     }
 
     .section-intro {
       margin: 0;
-      max-width: 52rem;
+      max-width: 54rem;
       color: var(--muted);
       font-size: 1.04rem;
     }
 
-    .agent-receipts {
-      padding-top: 18px;
-    }
-
-    .agent-panel {
-      padding: 34px;
-      background:
-        radial-gradient(circle at top left, rgba(15, 138, 95, 0.12), transparent 34%),
-        radial-gradient(circle at top right, rgba(79, 70, 229, 0.12), transparent 36%),
-        rgba(255,255,255,0.88);
-      box-shadow: var(--shadow-strong);
-      overflow: hidden;
-    }
-
-    .agent-top {
+    .principles,
+    .tool-groups,
+    .steps,
+    .roadmap-grid,
+    .receipt-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    .agent-copy h2 {
-      max-width: 12ch;
-    }
-
-    .agent-copy p {
-      color: var(--muted);
-      max-width: 45rem;
-      margin: 0 0 14px;
-    }
-
-    .proof-card {
-      background: rgba(255,255,255,0.9);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 24px;
-      box-shadow: 0 18px 45px rgba(27,35,69,0.08);
-    }
-
-    .proof-status {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .proof-check {
-      width: 46px;
-      height: 46px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #22c55e, #0f8a5f);
-      color: white;
-      font-weight: 900;
-      font-size: 24px;
-    }
-
-    .proof-title {
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-    }
-
-    .proof-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .proof-row {
-      display: grid;
-      grid-template-columns: 130px minmax(0, 1fr);
-      gap: 14px;
-      padding: 12px 0;
-      border-top: 1px solid #eef0f6;
-      font-size: 14px;
-    }
-
-    .proof-label {
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 800;
-    }
-
-    .proof-value {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      overflow-wrap: anywhere;
-    }
-
-    .agent-steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .agent-step {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.7);
-    }
-
-    .agent-step strong {
-      display: inline-grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-
-    .agent-step h3 {
-      margin: 0 0 6px;
-      font-size: 17px;
-      line-height: 1.2;
-    }
-
-    .agent-step p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
-      margin-top: 22px;
     }
 
-    .principle {
+    .principles { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; }
+    .tool-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; }
+    .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 18px; }
+    .roadmap-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .receipt-grid { grid-template-columns: 1.05fr 0.95fr; align-items: start; }
+
+    .principle,
+    .tool-category,
+    .step,
+    .roadmap-card,
+    .faq-item,
+    .editorial-card,
+    .pipe-card,
+    .receipt-card {
       padding: 22px;
     }
 
-    .principle-icon {
+    .principle-icon,
+    .pipe-icon {
       width: 40px;
       height: 40px;
       border-radius: 13px;
@@ -470,7 +302,9 @@
     .tool-category h3,
     .roadmap-card h3,
     .faq-item h3,
-    .step h3 {
+    .step h3,
+    .pipe-card h3,
+    .receipt-card h3 {
       margin: 0 0 8px;
       font-size: 18px;
       line-height: 1.2;
@@ -479,9 +313,12 @@
     .principle p,
     .tool-category p,
     .roadmap-card p,
-    .open-source-grid p,
     .faq-item p,
-    .step p {
+    .step p,
+    .pipe-card p,
+    .receipt-card p,
+    .editorial-card p,
+    .open-source-grid p {
       margin: 0;
       color: var(--muted);
     }
@@ -493,25 +330,8 @@
       align-items: start;
     }
 
-    .editorial-card,
-    .tool-directory,
-    .open-source-grid,
-    .roadmap-grid,
-    .faq-grid,
-    .cta-panel {
-      padding: 24px;
-    }
-
-    .editorial-card p:last-child,
-    .faq-item p:last-child,
-    .roadmap-card p:last-child {
-      margin-bottom: 0;
-    }
-
-    .editorial-card p {
-      margin-top: 0;
-      margin-bottom: 14px;
-    }
+    .editorial-card p { margin-top: 0; margin-bottom: 14px; }
+    .editorial-card p:last-child { margin-bottom: 0; }
 
     .plain-list,
     .tool-list,
@@ -535,15 +355,16 @@
       color: var(--accent);
     }
 
-    .tool-groups {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
+    .tool-directory,
+    .open-source-grid,
+    .roadmap-card,
+    .cta-panel,
+    .pipe-panel,
+    .receipt-panel {
+      padding: 24px;
     }
 
     .tool-category {
-      padding: 20px;
       border: 1px solid var(--line);
       border-radius: 16px;
       background: rgba(255,255,255,0.6);
@@ -554,6 +375,11 @@
       color: var(--muted);
       padding: 7px 0;
       border-bottom: 1px solid #eff1f6;
+    }
+
+    .tool-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
     }
 
     .tool-list-link-item {
@@ -573,10 +399,7 @@
       font-weight: 700;
       padding: 6px 12px;
       text-decoration: none;
-      transition:
-        background-color 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease;
+      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
 
     .tool-link:hover,
@@ -589,11 +412,6 @@
     .tool-link-meta {
       color: var(--muted);
       font-size: 12px;
-    }
-
-    .tool-list li:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
     }
 
     .tool-route-strip {
@@ -611,17 +429,6 @@
       font-size: 13px;
       color: var(--text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .step {
-      padding: 20px;
     }
 
     .step-number {
@@ -651,16 +458,50 @@
       background: rgba(255,255,255,0.7);
     }
 
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+    .pipe-panel {
+      background:
+        radial-gradient(circle at top left, rgba(15, 138, 95, 0.12), transparent 34%),
+        radial-gradient(circle at top right, rgba(79, 70, 229, 0.10), transparent 36%),
+        rgba(255,255,255,0.88);
+      box-shadow: var(--shadow-strong);
     }
 
-    .roadmap-card {
+    .pipe-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .pipe-card {
+      position: relative;
       border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .pipe-card:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .pipe-example {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
       border-radius: 16px;
-      background: rgba(255,255,255,0.68);
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--text);
+      font-size: 14px;
     }
 
     .roadmap-tag {
@@ -682,8 +523,44 @@
     .faq-item {
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 22px;
       background: rgba(255,255,255,0.72);
+    }
+
+    .receipt-panel {
+      background: rgba(255,255,255,0.78);
+    }
+
+    .receipt-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.76);
+    }
+
+    .receipt-muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .proof-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 14px;
+      padding: 10px 0;
+      border-top: 1px solid #eef0f6;
+      font-size: 14px;
+    }
+
+    .proof-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+    }
+
+    .proof-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow-wrap: anywhere;
     }
 
     .cta-panel {
@@ -691,17 +568,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      background:
-        linear-gradient(135deg, rgba(236,235,255,0.92), rgba(233,248,241,0.92));
+      background: linear-gradient(135deg, rgba(236,235,255,0.92), rgba(233,248,241,0.92));
       border: 1px solid rgba(220, 225, 239, 0.95);
       border-radius: 24px;
       box-shadow: var(--shadow);
-    }
-
-    .cta-panel h2 {
-      margin: 0 0 10px;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      line-height: 1.08;
     }
 
     .cta-panel p {
@@ -725,9 +595,7 @@
       gap: 18px;
     }
 
-    .footer-copy {
-      font-size: 14px;
-    }
+    .footer-copy { font-size: 14px; }
 
     .footer-links {
       display: flex;
@@ -742,9 +610,7 @@
     }
 
     .footer-links a:hover,
-    .footer-links a:focus-visible {
-      color: var(--text);
-    }
+    .footer-links a:focus-visible { color: var(--text); }
 
     .mobile-nav-toggle {
       display: none;
@@ -763,90 +629,28 @@
       .steps,
       .roadmap-grid,
       .open-source-grid,
-      .agent-top,
-      .agent-steps {
+      .pipe-flow,
+      .receipt-grid {
         grid-template-columns: 1fr;
+      }
+
+      .pipe-card:not(:last-child)::after {
+        content: "↓";
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: -18px;
+        transform: translateX(-50%);
       }
 
       .cta-panel {
         flex-direction: column;
         align-items: flex-start;
       }
-
-      .agent-panel {
-        padding: 26px;
-      }
     }
 
-    .flow-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.flow-card {
-  position: relative;
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.82);
-  box-shadow: var(--shadow);
-}
-
-.flow-card:not(:last-child)::after {
-  content: "→";
-  position: absolute;
-  right: -14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent);
-  font-weight: 900;
-  z-index: 2;
-}
-
-.flow-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 14px;
-  background: linear-gradient(135deg, var(--accent-soft), var(--accent-2-soft));
-  border: 1px solid var(--line);
-}
-
-.flow-card h3 {
-  margin: 0 0 8px;
-  font-size: 17px;
-  line-height: 1.2;
-}
-
-.flow-card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-@media (max-width: 980px) {
-  .flow-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .flow-card:not(:last-child)::after {
-    content: "↓";
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: -18px;
-    transform: translateX(-50%);
-  }
-}
-
     @media (max-width: 760px) {
-      .header-inner {
-        min-height: 64px;
-      }
+      .header-inner { min-height: 64px; }
 
       .mobile-nav-toggle {
         display: inline-flex;
@@ -854,9 +658,7 @@
         justify-content: center;
       }
 
-      .nav {
-        position: relative;
-      }
+      .nav { position: relative; }
 
       .nav-links {
         position: absolute;
@@ -874,45 +676,15 @@
         gap: 12px;
       }
 
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav .button {
-        display: none;
-      }
-
-      .hero {
-        padding-top: 56px;
-      }
-
-      .editorial-card,
-      .tool-directory,
-      .open-source-grid,
-      .roadmap-grid,
-      .faq-grid,
-      .cta-panel {
-        padding: 20px;
-      }
-
-      .container {
-        width: min(calc(100% - 28px), var(--max));
-      }
-
-      .proof-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
+      .nav-links.open { display: flex; }
+      .hero { padding-top: 56px; }
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .proof-row { grid-template-columns: 1fr; gap: 4px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
         animation: none !important;
         transition: none !important;
       }
@@ -929,16 +701,15 @@
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <button class="mobile-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">
-          ☰
-        </button>
+        <button class="mobile-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">☰</button>
 
         <div class="nav-links" id="navLinks">
-          <a href="#tools">Tools</a>
-          <a href="#agent-receipts">Agent receipts</a>
           <a href="#why-local">Why local</a>
+          <a href="#pipes">Pipelines</a>
+          <a href="#tools">Tools</a>
           <a href="#open-source">Open source</a>
-          <a href="#about">About</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#verification">Verification</a>
         </div>
       </nav>
     </div>
@@ -948,164 +719,33 @@
     <section class="hero">
       <div class="container">
         <div class="content-width">
-          <div class="eyebrow">Open tools · Run locally in your browser · Verifiable receipts</div>
+          <div class="eyebrow">Privacy-first · Open source · Browser-native</div>
 
-          <h1>Open tools. Local execution. Verifiable results.</h1>
+          <h1>Local tools for private files.</h1>
 
           <p class="hero-lead">
-            Practical browser tools for images, data, and media — designed to run locally in your browser without uploading private files.
+            runlocal.tools is an open toolbox for everyday file and media tasks — designed to run entirely in your browser.
           </p>
 
           <p class="hero-copy">
-            Humans use the tools for free. Agents can optionally pay for verifiable execution receipts when they need auditability, governance, or compliance.
+            Open a tool, drop a file, process it locally, and download the result. No upload step. No server-side processing. No account required.
           </p>
 
           <p class="hero-copy">
-            The tool stays local. The proof becomes verifiable.
+            The long-term goal is a Unix-like toolbox for the web: small, focused tools that can be shared by URL and composed into local browser-native pipelines.
           </p>
 
           <div class="hero-actions">
             <a class="button button-primary" href="/images/merge/index.html">Open Image Merge Tool</a>
-            <a class="button button-accent" href="#agent-receipts">See agent receipts</a>
-            <a class="button button-secondary" href="https://verify.runlocal.tools">Verify a receipt</a>
+            <a class="button button-secondary" href="#pipes">See pipeline idea</a>
+            <a class="button button-secondary" href="https://github.com/panndabea/runlocal.tools">View on GitHub</a>
           </div>
 
           <div class="hero-meta" aria-label="Project highlights">
-            <div class="chip">🔒 Files stay on the user's device</div>
-            <div class="chip">🌐 Run locally in your browser</div>
-            <div class="chip">🧾 Optional paid receipts for agents</div>
-            <div class="chip">⚡ x402 on Algorand TestNet</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="agent-flow">
-  <div class="container">
-    <div class="section-header content-width">
-      <div class="section-kicker">Agent flow</div>
-      <h2>From local execution to public proof.</h2>
-      <p class="section-intro">
-        Humans use tools for free. Agents can optionally pay for proof when they need auditability.
-      </p>
-    </div>
-
-    <div class="flow-grid">
-      <div class="flow-card">
-        <div class="flow-icon">🖥️</div>
-        <h3>Local Tool</h3>
-        <p>Image Merge runs locally in the browser.</p>
-      </div>
-
-      <div class="flow-card">
-        <div class="flow-icon">🧾</div>
-        <h3>Request Proof</h3>
-        <p>The agent asks for a verifiable execution receipt.</p>
-      </div>
-
-      <div class="flow-card">
-        <div class="flow-icon">⚡</div>
-        <h3>Pay via x402</h3>
-        <p>0.001 USDC paid on Algorand TestNet.</p>
-      </div>
-
-      <div class="flow-card">
-        <div class="flow-icon">🔐</div>
-        <h3>Receipt Issued</h3>
-        <p>A hashed receipt is created and stored.</p>
-      </div>
-
-      <div class="flow-card">
-        <div class="flow-icon">✅</div>
-        <h3>Public Verify</h3>
-        <p>Anyone can verify the receipt URL.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <section class="section agent-receipts" id="agent-receipts">
-      <div class="container">
-        <div class="card agent-panel">
-          <div class="agent-top">
-            <div class="agent-copy">
-              <div class="section-kicker">Agentic commerce</div>
-              <h2>Agents pay for proof, not tool usage.</h2>
-
-              <p>
-                Runlocal tools are free to use and run locally in the browser. When an AI agent needs a compliance trail, it can request a verifiable execution receipt.
-              </p>
-
-              <p>
-                Receipt creation can be protected by <strong>x402</strong>. In the demo flow, an agent pays <strong>0.001 USDC</strong> on <strong>Algorand TestNet</strong> and receives a hashed receipt with a public verification URL.
-              </p>
-
-              <div class="hero-actions">
-                <a class="button button-primary" href="https://verify.runlocal.tools">Open verifier</a>
-                <a class="button button-secondary" href="/api/tools/image-merge">View tool metadata API</a>
-              </div>
-            </div>
-
-            <div class="proof-card">
-              <div class="proof-status">
-                <div class="proof-check">✓</div>
-                <div>
-                  <div class="proof-title">VERIFIABLE EXECUTION RECEIPT</div>
-                  <div class="proof-subtitle">Example receipt metadata</div>
-                </div>
-              </div>
-
-              <div class="proof-row">
-                <div class="proof-label">Tool</div>
-                <div class="proof-value">image-merge</div>
-              </div>
-
-              <div class="proof-row">
-                <div class="proof-label">Version</div>
-                <div class="proof-value">1.0.0</div>
-              </div>
-
-              <div class="proof-row">
-                <div class="proof-label">Proof type</div>
-                <div class="proof-value">verifiable_execution_receipt</div>
-              </div>
-
-              <div class="proof-row">
-                <div class="proof-label">Payment</div>
-                <div class="proof-value">0.001 USDC · x402 · Algorand TestNet</div>
-              </div>
-
-              <div class="proof-row">
-                <div class="proof-label">Receipt hash</div>
-                <div class="proof-value">sha256:...</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="agent-steps">
-            <div class="agent-step">
-              <strong>1</strong>
-              <h3>Run locally</h3>
-              <p>The tool executes in the browser. No upload required.</p>
-            </div>
-
-            <div class="agent-step">
-              <strong>2</strong>
-              <h3>Request receipt</h3>
-              <p>An agent asks for proof of the execution metadata.</p>
-            </div>
-
-            <div class="agent-step">
-              <strong>3</strong>
-              <h3>Pay via x402</h3>
-              <p>The receipt endpoint returns 402 and accepts 0.001 USDC.</p>
-            </div>
-
-            <div class="agent-step">
-              <strong>4</strong>
-              <h3>Verify publicly</h3>
-              <p>The agent receives a public Runlocal verification URL.</p>
-            </div>
+            <div class="chip">🔒 Files stay on your device</div>
+            <div class="chip">🌐 Runs in the browser runtime</div>
+            <div class="chip">🔗 Share tools, not files</div>
+            <div class="chip">🧩 Composable by design</div>
           </div>
         </div>
       </div>
@@ -1115,35 +755,29 @@
       <div class="container">
         <div class="section-header content-width">
           <div class="section-kicker">Why local</div>
-          <h2>A local-first toolbox for the web.</h2>
+          <h2>Everyday file tasks should not require blind trust.</h2>
           <p class="section-intro">
-            runlocal.tools is a growing collection of practical tools for everyday file and media tasks. Each tool has a stable URL and runs where the data already is: on the user's device.
+            Many simple web utilities still require users to upload private files to remote servers. For image, data, and media processing, that is often unnecessary: modern browsers are capable enough to do the work locally.
           </p>
         </div>
 
         <div class="principles">
           <div class="card principle">
-            <div class="principle-icon">🖥️</div>
-            <h3>Local execution by default</h3>
-            <p>
-              Processing happens in the browser runtime using browser APIs, Web Workers, WASM, and related client-side capabilities.
-            </p>
-          </div>
-
-          <div class="card principle">
             <div class="principle-icon">🔐</div>
             <h3>No upload step</h3>
-            <p>
-              Core workflows do not depend on sending files to a server. The tool opens, the file is dropped, and processing happens locally.
-            </p>
+            <p>Core workflows process files directly on the user's device. The file does not need to be transferred to a third-party service.</p>
           </div>
 
           <div class="card principle">
-            <div class="principle-icon">🌐</div>
-            <h3>Stable, shareable routes</h3>
-            <p>
-              Tools are directly addressable through simple routes such as <code>/images/resize</code> or <code>/csv/to-json</code>.
-            </p>
+            <div class="principle-icon">🖥️</div>
+            <h3>Browser-native execution</h3>
+            <p>Tools use browser APIs, Web Workers, Streams, Canvas, and eventually WASM to perform useful work in the client runtime.</p>
+          </div>
+
+          <div class="card principle">
+            <div class="principle-icon">🧭</div>
+            <h3>Clear, stable routes</h3>
+            <p>Each tool has a simple URL such as <code>/images/merge</code>, <code>/images/resize</code>, or <code>/csv/to-json</code>.</p>
           </div>
         </div>
       </div>
@@ -1153,30 +787,78 @@
       <div class="container two-col">
         <div class="card editorial-card">
           <div class="section-kicker">Core idea</div>
-          <h2>Open the tool, not the file transfer workflow.</h2>
+          <h2>Share tools, not files.</h2>
           <p>
-            Instead of sending files to remote services, users run tools locally. A person can open a stable URL, drop a file, and get a result — without handing that file to third-party infrastructure.
+            Instead of sending data to remote processing services, users can share links to local tools. The recipient opens the tool and runs it in their own browser, on their own device, with their own files.
           </p>
           <p>
-            This changes the default relationship between utility tools and user data. It removes an unnecessary upload step, reduces dependency on centralized services, and makes the system easier to inspect and reason about.
-          </p>
-          <p>
-            The new receipt layer extends this idea to AI agents: the work remains local, while the proof can be verified.
+            That small shift changes the default relationship between web utilities and user data. The useful functionality becomes shareable while the private data remains local.
           </p>
         </div>
 
         <div class="card editorial-card">
-          <div class="section-kicker">Why this matters</div>
-          <h2>Everyday file tasks should not require blind trust.</h2>
+          <div class="section-kicker">Privacy first</div>
+          <h2>Users stay in control of their data.</h2>
           <p>
-            Many simple web tools quietly assume server-side processing, even when modern browsers are capable of doing the work locally. That makes ordinary tasks slower, more opaque, and more privacy-invasive than they need to be.
+            runlocal.tools avoids unnecessary accounts, uploads, opaque backends, and hidden retention. If a task can run locally, it should run locally.
           </p>
           <ul class="plain-list">
-            <li>Files often end up on systems the user cannot inspect.</li>
-            <li>Temporary or invisible retention is hard to verify.</li>
-            <li>Simple tasks become dependent on external infrastructure.</li>
-            <li>Agents need receipts when compliance requires proof.</li>
+            <li>Private files stay on the user's device.</li>
+            <li>Processing logic is inspectable and open source.</li>
+            <li>Tools are reusable, self-hostable, and extension-friendly.</li>
+            <li>The platform is built as public digital infrastructure.</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pipes">
+      <div class="container">
+        <div class="card pipe-panel">
+          <div class="section-header content-width">
+            <div class="section-kicker">Composable tools</div>
+            <h2>Unix pipes, adapted to browser-native workflows.</h2>
+            <p class="section-intro">
+              The project starts with small focused tools. The direction is composability: outputs from one local tool can become inputs for another, creating workflows without moving files to a remote service.
+            </p>
+          </div>
+
+          <div class="pipe-flow">
+            <div class="pipe-card">
+              <div class="pipe-icon">📥</div>
+              <h3>Input</h3>
+              <p>A file is selected locally through the browser.</p>
+            </div>
+
+            <div class="pipe-card">
+              <div class="pipe-icon">🔧</div>
+              <h3>Tool</h3>
+              <p>A focused operation runs in the client runtime.</p>
+            </div>
+
+            <div class="pipe-card">
+              <div class="pipe-icon">🧩</div>
+              <h3>Intermediate result</h3>
+              <p>The output remains local and can be reused.</p>
+            </div>
+
+            <div class="pipe-card">
+              <div class="pipe-icon">🔁</div>
+              <h3>Next tool</h3>
+              <p>The next local step receives the previous output.</p>
+            </div>
+
+            <div class="pipe-card">
+              <div class="pipe-icon">📤</div>
+              <h3>Export</h3>
+              <p>The final file is downloaded or passed onward locally.</p>
+            </div>
+          </div>
+
+          <div class="pipe-example" aria-label="Example browser pipeline">
+            /images/resize → /images/compress → /images/convert<br />
+            /csv/validate → /csv/to-json → /json/format
+          </div>
         </div>
       </div>
     </section>
@@ -1185,25 +867,25 @@
       <div class="container">
         <div class="card tool-directory">
           <div class="section-kicker">Tool overview</div>
-          <h2>Organized as a growing browser-native toolbox.</h2>
+          <h2>A growing local-first toolbox.</h2>
           <p class="section-intro">
-            The initial focus is on practical, everyday tools. The long-term direction is broader: a universal set of local-first browser tools for common file and media tasks.
+            The first tools focus on common image and data tasks. The architecture is designed around reusable processing primitives so new tools do not require reinventing the platform.
           </p>
 
           <div class="tool-groups">
             <div class="tool-category">
               <h3>Image tools</h3>
-              <p>Focused tools for common image workflows.</p>
+              <p>Focused tools for common browser-side image workflows.</p>
               <ul class="tool-list">
+                <li class="tool-list-link-item">
+                  <a class="tool-link" href="/images/merge/index.html">Open Merge Images Tool →</a>
+                  <span class="tool-link-meta">Live now · runs locally in your browser</span>
+                </li>
                 <li>Resize</li>
                 <li>Convert</li>
                 <li>Compress</li>
                 <li>Crop</li>
                 <li>Optimize</li>
-                <li class="tool-list-link-item">
-                  <a class="tool-link" href="/images/merge/index.html">Open Merge Images Tool →</a>
-                  <span class="tool-link-meta">Live now · runs locally in your browser</span>
-                </li>
               </ul>
             </div>
 
@@ -1219,22 +901,23 @@
             </div>
 
             <div class="tool-category">
-              <h3>Agent APIs</h3>
-              <p>Machine-readable endpoints for tool discovery and receipts.</p>
+              <h3>Media tools</h3>
+              <p>Planned tools for browser-native media processing.</p>
               <ul class="tool-list">
-                <li><code>GET /api/tools/image-merge</code></li>
-                <li><code>POST /api/receipts</code></li>
-                <li><code>GET /api/receipts/:id</code></li>
-                <li><code>verify.runlocal.tools</code></li>
+                <li>Video trim</li>
+                <li>Video convert</li>
+                <li>Video compress</li>
+                <li>Frame extraction</li>
               </ul>
             </div>
           </div>
 
           <div class="tool-route-strip" aria-label="Example tool routes">
             <span class="route-pill">/images/merge</span>
-            <span class="route-pill">/api/tools/image-merge</span>
-            <span class="route-pill">/api/receipts</span>
-            <span class="route-pill">verify.runlocal.tools</span>
+            <span class="route-pill">/images/resize</span>
+            <span class="route-pill">/images/convert</span>
+            <span class="route-pill">/csv/to-json</span>
+            <span class="route-pill">/json/to-csv</span>
           </div>
         </div>
       </div>
@@ -1243,10 +926,10 @@
     <section class="section">
       <div class="container">
         <div class="section-header content-width">
-          <div class="section-kicker">How it works for humans</div>
-          <h2>Simple, direct, and local.</h2>
+          <div class="section-kicker">How it works</div>
+          <h2>Simple, direct, local.</h2>
           <p class="section-intro">
-            The model is intentionally straightforward: a tool route, a local file input, processing in the browser, and a downloadable result.
+            The basic interaction should feel obvious: open a URL, choose a file, process it in the browser, and keep control of the output.
           </p>
         </div>
 
@@ -1271,8 +954,8 @@
 
           <div class="card step">
             <div class="step-number">4</div>
-            <h3>Download the result</h3>
-            <p>Export the transformed output without a server-side handoff.</p>
+            <h3>Download or pipe</h3>
+            <p>Export the result or pass it to another local tool in a future pipeline.</p>
           </div>
         </div>
       </div>
@@ -1291,68 +974,109 @@
         <div class="card open-source-grid">
           <div class="open-source-block">
             <h3>Open by default</h3>
-            <p>
-              The platform is meant to be inspectable and understandable, with clear routes, clear behavior, and no hidden remote processing behind the scenes.
-            </p>
+            <p>The platform is meant to be inspectable and understandable, with clear routes, clear behavior, and no hidden remote processing behind the scenes.</p>
           </div>
 
           <div class="open-source-block">
             <h3>Reusable primitives</h3>
-            <p>
-              Shared browser-side processing components can support multiple tools, reducing duplication and making the system easier to extend.
-            </p>
+            <p>Shared browser-side processing components can support multiple tools, reducing duplication and making the system easier to extend.</p>
           </div>
 
           <div class="open-source-block">
-            <h3>Built for extension</h3>
-            <p>
-              New tools should not require reinventing the whole platform. The long-term value is in reusable local processing building blocks.
-            </p>
+            <h3>Self-hostable</h3>
+            <p>Organizations, communities, and individuals should be able to run their own version of the toolbox when they need control over deployment.</p>
           </div>
 
           <div class="open-source-block">
             <h3>Digital commons</h3>
-            <p>
-              Practical utilities should be accessible without ads, opaque infrastructure, unnecessary lock-in, or unnecessary upload steps.
-            </p>
+            <p>Practical utilities should be accessible without ads, opaque infrastructure, unnecessary lock-in, or unnecessary upload steps.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="roadmap">
       <div class="container">
         <div class="section-header content-width">
           <div class="section-kicker">Roadmap</div>
-          <h2>Start small. Build shared infrastructure. Expand carefully.</h2>
+          <h2>Start with dependable tools. Grow into shared infrastructure.</h2>
           <p class="section-intro">
-            The first step is a reliable set of image and data tools. From there, the project can evolve into a broader local-first toolbox with composable workflows and verifiable agent receipts.
+            The immediate focus is a reliable local-first toolbox. The longer-term direction is a shared local processing layer for composable browser-native workflows.
           </p>
         </div>
 
         <div class="roadmap-grid">
-          <div class="roadmap-card">
+          <div class="card roadmap-card">
             <div class="roadmap-tag">Now</div>
             <h3>Core tools</h3>
-            <p>
-              Establish dependable browser-native tools, starting with image merge and then expanding into resize, convert, compress, and CSV workflows.
-            </p>
+            <p>Improve the Image Merge tool and expand into resize, convert, compress, crop, and CSV workflows.</p>
           </div>
 
-          <div class="roadmap-card">
-            <div class="roadmap-tag">Hackathon</div>
-            <h3>x402 receipt layer</h3>
-            <p>
-              Let agents pay for optional verifiable execution receipts using x402 and USDC on Algorand TestNet.
-            </p>
-          </div>
-
-          <div class="roadmap-card">
+          <div class="card roadmap-card">
             <div class="roadmap-tag">Next</div>
-            <h3>Composable workflows</h3>
-            <p>
-              Enable tools to work together, allowing outputs from one task to become inputs for another in browser-native pipelines.
-            </p>
+            <h3>Shared processing layer</h3>
+            <p>Define reusable browser-side primitives for files, previews, transformations, streaming, and exports.</p>
+          </div>
+
+          <div class="card roadmap-card">
+            <div class="roadmap-tag">Direction</div>
+            <h3>Composable pipelines</h3>
+            <p>Enable outputs from one local tool to become inputs for another, inspired by Unix pipelines but adapted to the web.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="verification">
+      <div class="container">
+        <div class="card receipt-panel">
+          <div class="receipt-grid">
+            <div>
+              <div class="section-kicker">Optional verification layer</div>
+              <h2>Verifiable receipts when proof matters.</h2>
+              <p class="section-intro">
+                The main project is local-first tooling. For automated or compliance-sensitive use cases, runlocal.tools can also explore optional execution receipts: small metadata records that prove which tool and version were used without exposing private files.
+              </p>
+
+              <div class="hero-actions">
+                <a class="button button-secondary" href="https://verify.runlocal.tools">Verify a receipt</a>
+                <a class="button button-secondary" href="/api/tools/image-merge">View metadata API</a>
+              </div>
+
+              <p class="receipt-muted">
+                This layer is intentionally separate from the core toolbox. Human users can use the tools for free; verification is an optional proof mechanism for agents, automation, and governance.
+              </p>
+            </div>
+
+            <div class="receipt-card">
+              <h3>Example receipt metadata</h3>
+              <p class="receipt-muted">Private files are not stored. A receipt can reference hashes and tool metadata.</p>
+
+              <div class="proof-row">
+                <div class="proof-label">Tool</div>
+                <div class="proof-value">image-merge</div>
+              </div>
+
+              <div class="proof-row">
+                <div class="proof-label">Version</div>
+                <div class="proof-value">1.0.0</div>
+              </div>
+
+              <div class="proof-row">
+                <div class="proof-label">Proof</div>
+                <div class="proof-value">verifiable_execution_receipt</div>
+              </div>
+
+              <div class="proof-row">
+                <div class="proof-label">Hash</div>
+                <div class="proof-value">sha256:...</div>
+              </div>
+
+              <div class="proof-row">
+                <div class="proof-label">Optional</div>
+                <div class="proof-value">x402 · Algorand TestNet</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1367,31 +1091,23 @@
 
         <div class="faq-grid">
           <div class="faq-item">
-            <h3>Does the platform upload files?</h3>
-            <p>
-              No. The core model is local execution in the browser. Files are processed on the user's device rather than handed to a remote processing service.
-            </p>
+            <h3>Does runlocal.tools upload files?</h3>
+            <p>No. The core model is local execution in the browser. Files are processed on the user's device rather than handed to a remote processing service.</p>
           </div>
 
           <div class="faq-item">
-            <h3>What are verifiable receipts?</h3>
-            <p>
-              A receipt is a metadata record tying a tool, version, timestamp, input/output hashes, payment status, and receipt hash to a claimed execution.
-            </p>
+            <h3>What does “share tools, not files” mean?</h3>
+            <p>A user shares a URL to a tool, not the data itself. The recipient opens the same tool and processes their own local files in their own browser.</p>
           </div>
 
           <div class="faq-item">
-            <h3>Do humans have to pay?</h3>
-            <p>
-              No. Humans can use the tools for free. The paid layer is for agents or workflows that need proof, auditability, or compliance records.
-            </p>
+            <h3>How are pipelines different from normal web apps?</h3>
+            <p>Each tool is a small focused unit. Future workflows can connect these units so an output from one local tool becomes the input for another, similar to Unix pipes.</p>
           </div>
 
           <div class="faq-item">
-            <h3>What does x402 add?</h3>
-            <p>
-              x402 lets an agent pay directly for a receipt endpoint. In the demo, the receipt costs 0.001 USDC on Algorand TestNet.
-            </p>
+            <h3>Are receipts the main product?</h3>
+            <p>No. The main project is an open local-first toolbox. Receipts are an optional layer for automated workflows, auditability, or compliance-sensitive environments.</p>
           </div>
         </div>
       </div>
@@ -1401,15 +1117,15 @@
       <div class="container">
         <div class="cta-panel">
           <div>
-            <h2>Run locally in your browser. Verify when it matters.</h2>
+            <h2>Run locally in your browser.</h2>
             <p>
-              runlocal.tools is a proposal for how practical web tools should work: local-first, inspectable, shareable, and ready for agentic commerce.
+              Practical open-source tools for private file work: local-first, inspectable, shareable, self-hostable, and designed for composable browser-native workflows.
             </p>
           </div>
 
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <a class="button button-primary" href="/images/merge/index.html">Open tool</a>
-            <a class="button button-secondary" href="https://verify.runlocal.tools">Verify receipt</a>
+            <a class="button button-secondary" href="https://github.com/panndabea/runlocal.tools">GitHub</a>
           </div>
         </div>
       </div>
@@ -1420,14 +1136,15 @@
     <div class="container footer-inner">
       <div class="footer-copy">
         <strong>runlocal.tools</strong><br />
-        Local-first browser tools with optional verifiable receipts.
+        Local-first browser tools for file and media processing.
       </div>
 
       <ul class="footer-links">
         <li><a href="https://github.com/panndabea/runlocal.tools">GitHub</a></li>
-        <li><a href="#agent-receipts">Agent receipts</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="#why-local">Why local</a></li>
+        <li><a href="#pipes">Pipelines</a></li>
         <li><a href="#tools">Tool index</a></li>
+        <li><a href="#verification">Verification</a></li>
       </ul>
     </div>
   </footer>
@@ -1452,4 +1169,3 @@
   </script>
 </body>
 </html>
-```
