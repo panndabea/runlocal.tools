@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>runlocal.tools — Local-first tools for the open web</title>
+  <title>runlocal.tools — Local-first browser tools</title>
 
   <meta
     name="description"
-    content="runlocal.tools is an open-source, local-first toolbox for file and media processing. Tools run in the browser, without uploads or server-side processing."
+    content="runlocal.tools is an open-source, local-first toolbox with live browser tools for image merging, metadata stripping, CSV to JSON conversion, and optional receipt verification."
   />
 
   <style>
@@ -267,6 +267,33 @@
       letter-spacing: 0.08em;
     }
 
+    .hero-note ul {
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-note li {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      border-top: 1px solid rgba(18, 20, 17, 0.09);
+      padding-top: 10px;
+    }
+
+    .hero-note a {
+      color: var(--green-dark);
+      font-weight: 730;
+      text-decoration: none;
+    }
+
+    .hero-note span {
+      color: var(--faint);
+      text-align: right;
+    }
+
     .thesis {
       padding: 52px 0 76px;
     }
@@ -489,7 +516,7 @@
 
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
       margin-top: 34px;
     }
@@ -499,6 +526,11 @@
       border-radius: 20px;
       padding: 24px;
       background: rgba(255, 253, 248, 0.62);
+    }
+
+    .tool-card.is-live {
+      border-color: rgba(8, 118, 79, 0.24);
+      background: linear-gradient(180deg, rgba(229, 243, 236, 0.48), rgba(255, 253, 248, 0.72));
     }
 
     .tool-list {
@@ -530,6 +562,14 @@
       white-space: nowrap;
     }
 
+    .status-live {
+      color: var(--green-dark);
+    }
+
+    .status-api {
+      color: var(--blue);
+    }
+
     .routes {
       display: flex;
       flex-wrap: wrap;
@@ -545,6 +585,14 @@
       background: rgba(255,253,248,0.58);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 13px;
+      text-decoration: none;
+    }
+
+    .route:hover,
+    .route:focus-visible {
+      border-color: var(--line-strong);
+      color: var(--green-dark);
+      background: var(--paper);
     }
 
     .commons-grid {
@@ -724,7 +772,7 @@
       .commons-grid,
       .roadmap-grid,
       .split {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .pipeline-steps {
@@ -806,6 +854,23 @@
         padding: 24px;
       }
 
+      .principles,
+      .tools-grid,
+      .commons-grid,
+      .roadmap-grid,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-note li {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .hero-note span {
+        text-align: left;
+      }
+
       .proof-row {
         grid-template-columns: 1fr;
         gap: 4px;
@@ -844,7 +909,8 @@
         <div class="nav-links" id="navLinks">
           <a href="#principles">Principles</a>
           <a href="#pipes">Pipelines</a>
-          <a href="#tools">Tools</a>
+          <a href="#tools">Live Tools</a>
+          <a href="#verification">Verification</a>
           <a href="#commons">Commons</a>
           <a href="#roadmap">Roadmap</a>
         </div>
@@ -861,23 +927,29 @@
           <h1>Run tools locally.</h1>
 
           <p class="hero-lede">
-            An open-source toolbox for everyday file and media processing — built for a web where users keep control of their data.
+            An open-source toolbox for everyday file and media processing — already shipping focused tools that run in your browser.
           </p>
 
           <p class="hero-sub">
-            Open a tool, drop a file, process it in the browser, and download the result. No upload step. No account. No remote processing service required.
+            Merge image sets, strip hidden metadata, convert CSV to JSON, and verify optional execution receipts. No upload step. No account. No remote processing service required for core file work.
           </p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="/images/merge/index.html">Open Image Merge</a>
-            <a class="button button-secondary" href="#pipes">Explore pipelines</a>
-            <a class="button button-secondary" href="https://github.com/panndabea/runlocal.tools">GitHub</a>
+            <a class="button button-primary" href="/images/merge/">Open Image Merge</a>
+            <a class="button button-secondary" href="/images/strip-metadata/">Strip Metadata</a>
+            <a class="button button-secondary" href="/data/csv-to-json/">CSV to JSON</a>
           </div>
         </div>
 
         <aside class="hero-note">
-          <strong>Project direction</strong>
-          runlocal.tools starts as a practical local-first toolbox. The larger vision is a Unix-inspired layer of small, focused browser tools that can be shared by URL and composed into private local workflows.
+          <strong>Live today</strong>
+          Three browser tools are available now, with optional receipt verification alongside them for accountability workflows.
+          <ul>
+            <li><a href="/images/merge/">Image Merge</a><span>PNG, WebP, HEIC</span></li>
+            <li><a href="/images/strip-metadata/">Metadata Strip</a><span>PNG, JPEG, WebP</span></li>
+            <li><a href="/data/csv-to-json/">CSV to JSON</a><span>paste or file input</span></li>
+            <li><a href="/verify.html">Receipt Verify</a><span>optional proof layer</span></li>
+          </ul>
         </aside>
       </div>
     </section>
@@ -907,7 +979,7 @@
           <article class="principle">
             <div class="principle-number">01</div>
             <h3>No upload step</h3>
-            <p>Core workflows process files directly on the user's device. The file does not need to leave the browser to be resized, converted, merged, validated, or transformed.</p>
+            <p>Core workflows process files directly on the user's device. The file does not need to leave the browser to be merged, cleaned of metadata, converted, or transformed.</p>
           </article>
 
           <article class="principle">
@@ -962,7 +1034,7 @@
             <div>
               <h2>Unix pipes, adapted to the browser.</h2>
               <p class="section-intro">
-                The first step is dependable single-purpose tools. The larger vision is composability: outputs from one local tool become inputs for another, creating browser-native workflows without handing private files to remote infrastructure.
+                The first step is already here: dependable single-purpose tools. The larger vision is composability, where outputs from one local tool become inputs for another without handing private files to remote infrastructure.
               </p>
             </div>
           </div>
@@ -1000,9 +1072,9 @@
           </div>
 
           <div class="code-line">
-            <span># browser-native pipeline examples</span><br />
-            /images/resize → /images/compress → /images/convert<br />
-            /csv/validate → /csv/to-json → /json/format
+            <span># live routes and near-term composition targets</span><br />
+            /images/merge → /images/strip-metadata → local download<br />
+            /data/csv-to-json → local JSON export
           </div>
         </div>
       </div>
@@ -1016,17 +1088,18 @@
             <div>
               <h2>A growing local-first toolbox.</h2>
               <p class="section-intro">
-                The project starts with a small number of dependable tools and grows through shared processing primitives. The goal is quality, clarity, and reusability — not a noisy marketplace.
+                The project now has working tools across image and data workflows, plus a small verification layer. Planned tools stay visible here without hiding what is already usable.
               </p>
             </div>
           </div>
 
           <div class="tools-grid">
-            <article class="tool-card">
+            <article class="tool-card is-live">
               <h3>Images</h3>
-              <p>Focused tools for common browser-side image workflows.</p>
+              <p>Focused tools for common browser-side image workflows, including batch and privacy tasks.</p>
               <ul class="tool-list">
-                <li><a href="/images/merge/index.html">Merge Images</a><span class="status">Live</span></li>
+                <li><a href="/images/merge/">Merge Images</a><span class="status status-live">Live</span></li>
+                <li><a href="/images/strip-metadata/">Strip Metadata</a><span class="status status-live">Live</span></li>
                 <li>Resize <span class="status">Planned</span></li>
                 <li>Convert <span class="status">Planned</span></li>
                 <li>Compress <span class="status">Planned</span></li>
@@ -1034,14 +1107,26 @@
               </ul>
             </article>
 
-            <article class="tool-card">
+            <article class="tool-card is-live">
               <h3>Data</h3>
               <p>Small utilities for structured text and common formats.</p>
               <ul class="tool-list">
-                <li>CSV ↔ JSON <span class="status">Planned</span></li>
+                <li><a href="/data/csv-to-json/">CSV to JSON</a><span class="status status-live">Live</span></li>
+                <li>JSON to CSV <span class="status">Planned</span></li>
                 <li>Formatting <span class="status">Planned</span></li>
                 <li>Validation <span class="status">Planned</span></li>
                 <li>Inspection <span class="status">Planned</span></li>
+              </ul>
+            </article>
+
+            <article class="tool-card is-live">
+              <h3>Verification</h3>
+              <p>Optional receipts for workflows that need a public record of tool metadata and hashes.</p>
+              <ul class="tool-list">
+                <li><a href="/verify.html">Receipt verification UI</a><span class="status status-live">Live</span></li>
+                <li><a href="/api/tools/image-merge">Tool metadata API</a><span class="status status-api">API</span></li>
+                <li><code>POST /api/receipts</code><span class="status status-api">API</span></li>
+                <li><code>GET /api/receipts/:id</code><span class="status status-api">API</span></li>
               </ul>
             </article>
 
@@ -1058,11 +1143,11 @@
           </div>
 
           <div class="routes" aria-label="Example routes">
-            <span class="route">/images/merge</span>
-            <span class="route">/images/resize</span>
-            <span class="route">/images/convert</span>
-            <span class="route">/csv/to-json</span>
-            <span class="route">/json/to-csv</span>
+            <a class="route" href="/images/merge/">/images/merge</a>
+            <a class="route" href="/images/strip-metadata/">/images/strip-metadata</a>
+            <a class="route" href="/data/csv-to-json/">/data/csv-to-json</a>
+            <a class="route" href="/verify.html">/verify.html</a>
+            <a class="route" href="/api/tools/image-merge">/api/tools/image-merge</a>
           </div>
         </div>
       </div>
@@ -1111,7 +1196,7 @@
           <div>
             <h2>Start useful. Grow carefully.</h2>
             <p class="section-intro">
-              The near-term goal is reliable tools for images and data. The long-term goal is a shared local processing layer for composable browser workflows.
+              The site is past the blank-slate stage: image merge, metadata stripping, CSV conversion, and receipt verification are live. The next work is to strengthen those foundations and add adjacent tools deliberately.
             </p>
           </div>
         </div>
@@ -1119,8 +1204,8 @@
         <div class="roadmap-grid">
           <article class="roadmap-card">
             <div class="tag">Now</div>
-            <h3>Dependable core tools</h3>
-            <p>Improve Image Merge and expand into resize, convert, compress, crop, and CSV workflows.</p>
+            <h3>Polish the live tools</h3>
+            <p>Harden Image Merge, Metadata Strip, CSV to JSON, and receipt verification with better shared UI, tests, accessibility, and edge-case handling.</p>
           </article>
 
           <article class="roadmap-card">
@@ -1131,8 +1216,8 @@
 
           <article class="roadmap-card">
             <div class="tag">Direction</div>
-            <h3>Composable local pipelines</h3>
-            <p>Enable outputs from one local tool to become inputs for another, inspired by Unix pipelines and adapted to the web.</p>
+            <h3>Broader file coverage</h3>
+            <p>Add resize, convert, compress, crop, JSON-to-CSV, formatting, validation, and media tools once the common primitives are solid.</p>
           </article>
         </div>
       </div>
@@ -1145,11 +1230,11 @@
             <div class="label">Optional verification</div>
             <h2>Proof when workflows need accountability.</h2>
             <p class="section-intro">
-              The main project is local-first tooling. For automated or compliance-sensitive contexts, runlocal.tools can also explore optional execution receipts: small metadata records that reference the tool, version, and hashes without exposing private files.
+              The main project is local-first tooling. For automated or compliance-sensitive contexts, runlocal.tools also has optional execution receipts: small metadata records that reference the tool, version, and hashes without exposing private files.
             </p>
 
             <div class="hero-actions">
-              <a class="button button-secondary" href="https://verify.runlocal.tools">Verify a receipt</a>
+              <a class="button button-secondary" href="/verify.html">Verify a receipt</a>
               <a class="button button-secondary" href="/api/tools/image-merge">View metadata API</a>
             </div>
           </div>
@@ -1209,7 +1294,7 @@
 
           <article class="faq-item">
             <h3>Are receipts the main product?</h3>
-            <p>No. The main project is an open local-first toolbox. Receipts are an optional layer for automated workflows, auditability, or compliance-sensitive environments.</p>
+            <p>No. The main project is an open local-first toolbox. Receipts are a working optional layer for automated workflows, auditability, or compliance-sensitive environments.</p>
           </article>
         </div>
       </div>
@@ -1221,12 +1306,13 @@
           <div>
             <h2>Local-first tools for the open web.</h2>
             <p>
-              Practical utilities for private file work: open-source, inspectable, shareable, self-hostable, and designed for composable browser-native workflows.
+              Practical utilities for private file work: image merging, metadata stripping, CSV conversion, optional verification, and a path toward composable browser-native workflows.
             </p>
           </div>
 
           <div class="hero-actions" style="margin:0;">
-            <a class="button button-primary" href="/images/merge/index.html">Open tool</a>
+            <a class="button button-primary" href="/images/merge/">Open Image Merge</a>
+            <a class="button button-secondary" href="/data/csv-to-json/">CSV to JSON</a>
             <a class="button button-secondary" href="https://github.com/panndabea/runlocal.tools">GitHub</a>
           </div>
         </div>
