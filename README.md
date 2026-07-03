@@ -139,6 +139,12 @@ The goal is to provide simple, reliable tools that:
 * Enable composable workflows between tools
 * Explore optional local AI-assisted processing
 
+For the canonical product direction, see:
+
+* [Product Strategy](docs/Product-Strategy.md)
+* [Product Requirements](docs/PRD.md)
+* [Roadmap](docs/Roadmap.md)
+
 ---
 
 ## 🤝 Contributing
