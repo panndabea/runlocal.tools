@@ -162,6 +162,4 @@ Pull requests are welcome for:
 
 ## 📄 License
 
-Not specified yet.
-
-(Recommended: MIT or Apache 2.0)
+MIT. See [LICENSE](LICENSE).
