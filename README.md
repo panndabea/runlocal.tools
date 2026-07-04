@@ -100,7 +100,7 @@ Live tools are described through a small registry:
 * `/api/tools` for the full machine-readable index
 * `/api/tools/:id` for individual tool metadata
 
-Current live tool IDs: `image-merge`, `strip-metadata`, `csv-to-json`, `receipt-verification`.
+Current live tool IDs: `image-merge`, `strip-metadata`, `csv-to-json`, `json-to-csv`, `json-formatter`, `receipt-verification`.
 
 ---
 

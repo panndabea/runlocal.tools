@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>JSON Formatter - runlocal.tools</title>
+  <meta name="description" content="Format, minify, and validate JSON locally in your browser. No upload required." />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+
+  <style>
+    :root {
+      --bg: #f5efe5;
+      --paper: #fffaf1;
+      --ink: #16110d;
+      --muted: #6f6257;
+      --faint: #a99c90;
+      --line: rgba(54, 42, 32, 0.16);
+      --line-strong: rgba(54, 42, 32, 0.28);
+      --green: #e8441d;
+      --green-dark: #b83116;
+      --green-soft: #fff0e8;
+      --red: #e8441d;
+      --red-soft: #fff0ee;
+      --radius: 8px;
+      --max: 1180px;
+      --shadow: 0 18px 60px rgba(54, 42, 32, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+        linear-gradient(180deg, #fff8ee 0%, var(--bg) 100%);
+      background-size: 72px 72px, 72px 72px, auto;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(calc(100% - 36px), var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(250, 248, 242, 0.82);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 720;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: block;
+      border-radius: var(--radius);
+      box-shadow: 0 9px 22px rgba(184, 49, 22, 0.18);
+    }
+
+    .privacy {
+      color: var(--green-dark);
+      background: var(--green-soft);
+      border: 1px solid rgba(232, 68, 29, 0.16);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    main {
+      padding: 70px 0 90px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 46px;
+      align-items: end;
+      margin-bottom: 36px;
+    }
+
+    .kicker {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 780;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 11ch;
+      font-size: 6.8rem;
+      line-height: 0.92;
+      letter-spacing: 0;
+      font-weight: 760;
+    }
+
+    .lede {
+      margin: 24px 0 0;
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .note {
+      border-left: 1px solid var(--line);
+      padding-left: 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .note strong {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 7px;
+    }
+
+    .tool {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 241, 0.72);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button, .file-label, select {
+      min-height: 42px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 250, 241, 0.72);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      padding: 0 14px;
+    }
+
+    button, .file-label {
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    button:hover, .file-label:hover {
+      transform: translateY(-1px);
+      background: var(--paper);
+      border-color: var(--line-strong);
+    }
+
+    .primary {
+      background: var(--green);
+      color: var(--paper);
+      border-color: var(--green-dark);
+    }
+
+    .primary:hover {
+      background: var(--green-dark);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 580px;
+    }
+
+    .panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel:first-child {
+      border-right: 1px solid var(--line);
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    textarea, pre {
+      flex: 1;
+      width: 100%;
+      min-height: 520px;
+      border: 0;
+      outline: 0;
+      margin: 0;
+      padding: 18px;
+      resize: none;
+      background: rgba(255, 250, 241, 0.38);
+      color: var(--ink);
+      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    pre {
+      user-select: text;
+    }
+
+    .status {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 13px 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status.ok { color: var(--green-dark); }
+    .status.error {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 5px 9px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 3.45rem;
+      }
+
+      .lede {
+        font-size: 1.1rem;
+      }
+
+      .note {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        padding: 20px 0 0;
+      }
+
+      .panel:first-child {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      textarea, pre {
+        min-height: 360px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/design-tokens.css" />
+</head>
+
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="/assets/runlocal-mark.svg" alt="" width="34" height="34" />
+        <span>runlocal.tools</span>
+      </a>
+      <div class="privacy">No upload - runs locally</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div>
+          <div class="kicker">/data/json-formatter</div>
+          <h1>JSON formatter.</h1>
+          <p class="lede">
+            Format, minify, and validate JSON directly in your browser. Paste data or open a local JSON file and keep the result on your device.
+          </p>
+        </div>
+
+        <aside class="note">
+          <strong>Local-first</strong>
+          JSON is parsed by the browser runtime. The page does not send your data to a remote validator or formatting service.
+        </aside>
+      </section>
+
+      <section class="tool" aria-label="JSON formatter and validator">
+        <div class="toolbar">
+          <div class="controls">
+            <label class="file-label">
+              Open JSON
+              <input id="fileInput" type="file" accept=".json,application/json,text/plain" />
+            </label>
+
+            <button id="sampleBtn" type="button">Load sample</button>
+
+            <select id="indent" aria-label="Indentation">
+              <option value="2">2 spaces</option>
+              <option value="4">4 spaces</option>
+              <option value="tab">Tab</option>
+            </select>
+
+            <button id="formatBtn" type="button">Format</button>
+            <button id="minifyBtn" type="button">Minify</button>
+          </div>
+
+          <div class="controls">
+            <button id="copyBtn" type="button">Copy JSON</button>
+            <button id="downloadBtn" class="primary" type="button">Download JSON</button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <span>JSON input</span>
+              <span id="inputMeta" class="pill">0 chars</span>
+            </div>
+            <textarea id="jsonInput" spellcheck="false" placeholder="Paste JSON here..."></textarea>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <span>Formatted output</span>
+              <span id="outputMeta" class="pill">0 chars</span>
+            </div>
+            <pre id="jsonOutput" aria-live="polite"></pre>
+          </div>
+        </div>
+
+        <div id="status" class="status ok" aria-live="polite">Ready - processing happens locally</div>
+      </section>
+
+      <div class="footer">
+        Tip: validation happens while you type. Use Minify for compact API payloads and Format when you need readable JSON.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const jsonInput = document.getElementById("jsonInput");
+    const jsonOutput = document.getElementById("jsonOutput");
+    const fileInput = document.getElementById("fileInput");
+    const indentSelect = document.getElementById("indent");
+    const statusEl = document.getElementById("status");
+    const inputMeta = document.getElementById("inputMeta");
+    const outputMeta = document.getElementById("outputMeta");
+
+    let outputMode = "format";
+
+    const sample = `{
+  "tool": "csv-to-json",
+  "runs_locally": true,
+  "formats": ["csv", "json"],
+  "limits": {
+    "uploads": false,
+    "accounts": false
+  }
+}`;
+
+    function setStatus(message, type = "ok") {
+      statusEl.className = `status ${type}`;
+      statusEl.textContent = message;
+    }
+
+    function spacing() {
+      return indentSelect.value === "tab" ? "\t" : Number(indentSelect.value);
+    }
+
+    function describeJson(value) {
+      if (Array.isArray(value)) return `array - ${value.length.toLocaleString()} item${value.length === 1 ? "" : "s"}`;
+      if (value === null) return "null";
+      if (typeof value === "object") return `object - ${Object.keys(value).length.toLocaleString()} key${Object.keys(value).length === 1 ? "" : "s"}`;
+      return typeof value;
+    }
+
+    function render() {
+      const text = jsonInput.value;
+      inputMeta.textContent = `${text.length.toLocaleString()} chars`;
+
+      if (!text.trim()) {
+        jsonOutput.textContent = "";
+        outputMeta.textContent = "0 chars";
+        setStatus("Ready - processing happens locally");
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(text);
+        const formatted = outputMode === "minify"
+          ? JSON.stringify(parsed)
+          : JSON.stringify(parsed, null, spacing());
+
+        jsonOutput.textContent = formatted;
+        outputMeta.textContent = `${formatted.length.toLocaleString()} chars`;
+        setStatus(`Valid JSON - ${describeJson(parsed)}`);
+      } catch (error) {
+        jsonOutput.textContent = "";
+        outputMeta.textContent = "0 chars";
+        setStatus(`Invalid JSON: ${error.message}`, "error");
+      }
+    }
+
+    jsonInput.addEventListener("input", render);
+    indentSelect.addEventListener("change", render);
+
+    document.getElementById("formatBtn").addEventListener("click", () => {
+      outputMode = "format";
+      render();
+    });
+
+    document.getElementById("minifyBtn").addEventListener("click", () => {
+      outputMode = "minify";
+      render();
+    });
+
+    document.getElementById("sampleBtn").addEventListener("click", () => {
+      jsonInput.value = sample;
+      outputMode = "format";
+      render();
+    });
+
+    fileInput.addEventListener("change", async () => {
+      const file = fileInput.files?.[0];
+      if (!file) return;
+
+      const text = await file.text();
+      jsonInput.value = text;
+      outputMode = "format";
+      render();
+      setStatus(`Loaded ${file.name} locally - no upload`);
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(jsonOutput.textContent);
+        setStatus("JSON copied to clipboard");
+      } catch {
+        setStatus("Could not copy automatically. Select the output manually.", "error");
+      }
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      if (!jsonOutput.textContent.trim()) {
+        setStatus("Nothing to download yet.", "error");
+        return;
+      }
+
+      const blob = new Blob([jsonOutput.textContent], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = outputMode === "minify" ? "minified.json" : "formatted.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("JSON downloaded");
+    });
+
+    render();
+  </script>
+</body>
+</html>

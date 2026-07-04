@@ -67,6 +67,8 @@ Live human-facing tools:
 - `/images/merge/`
 - `/images/strip-metadata/`
 - `/data/csv-to-json/`
+- `/data/json-to-csv/`
+- `/data/json-formatter/`
 - `/verify.html`
 
 Live or planned machine-facing surfaces:
@@ -75,6 +77,8 @@ Live or planned machine-facing surfaces:
 - `/api/tools/image-merge`
 - `/api/tools/strip-metadata`
 - `/api/tools/csv-to-json`
+- `/api/tools/json-to-csv`
+- `/api/tools/json-formatter`
 - `/api/tools/receipt-verification`
 - `POST /api/receipts`
 - `GET /api/receipts/:id`

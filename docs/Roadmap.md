@@ -1,7 +1,7 @@
 # Roadmap
 
 Status: canonical roadmap  
-Last updated: 2026-07-03  
+Last updated: 2026-07-04
 Related docs: `docs/Product-Strategy.md`, `docs/PRD.md`
 
 ## Roadmap Principle
@@ -29,6 +29,7 @@ Work:
 - Bring `/images/merge/` visually closer to `/images/strip-metadata/` and `/data/csv-to-json/`.
 - Define a small shared design/token layer before adding more visual variants.
 - Define tool metadata shape for every live tool.
+- Expand the data family with JSON to CSV and JSON formatter/validator routes.
 - Add basic happy-path and failure-path checks for live tools.
 - Document local-only behavior and receipt boundaries.
 
@@ -59,9 +60,7 @@ Work:
   - Image convert
   - Image compress
   - Image crop
-  - JSON to CSV
-  - JSON formatter
-  - JSON validator
+  - JSON inspector
   - File hash
   - Bulk rename
   - HAR cleaner
@@ -141,4 +140,3 @@ Do not prioritize until the foundation is strong:
 - Video conversion at scale
 - On-device semantic search
 - Advanced OCR and vision tools
-
