@@ -119,6 +119,8 @@ The next tools should reinforce the existing image and data wedge:
 - File hash
 - HAR cleaner
 
+For the full implementation backlog, see [Priority Implementation Tools](Priority-Implementation-Tools.md).
+
 ## Brand Direction
 
 The brand should feel calm, precise, warm, and trustworthy.

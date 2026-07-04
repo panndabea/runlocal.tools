@@ -2,7 +2,7 @@
 
 Status: canonical roadmap  
 Last updated: 2026-07-04
-Related docs: `docs/Product-Strategy.md`, `docs/PRD.md`
+Related docs: `docs/Product-Strategy.md`, `docs/PRD.md`, `docs/Priority-Implementation-Tools.md`
 
 ## Roadmap Principle
 
