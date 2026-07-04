@@ -92,6 +92,18 @@ Inspired by Unix pipelines — adapted to browser-native workflows.
 
 ---
 
+## 🧾 Tool metadata
+
+Live tools are described through a small registry:
+
+* `/data/tools.json` for static consumers
+* `/api/tools` for the full machine-readable index
+* `/api/tools/:id` for individual tool metadata
+
+Current live tool IDs: `image-merge`, `strip-metadata`, `csv-to-json`, `receipt-verification`.
+
+---
+
 ## 🌍 Why this matters
 
 Everyday file tasks often require uploading data to external services.

@@ -71,7 +71,11 @@ Live human-facing tools:
 
 Live or planned machine-facing surfaces:
 
+- `/api/tools`
 - `/api/tools/image-merge`
+- `/api/tools/strip-metadata`
+- `/api/tools/csv-to-json`
+- `/api/tools/receipt-verification`
 - `POST /api/receipts`
 - `GET /api/receipts/:id`
 

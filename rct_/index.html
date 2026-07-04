@@ -1,127 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Runlocal Receipt Verification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="refresh" content="0; url=/verify.html" />
+  <title>Redirecting to Receipt Verification - runlocal.tools</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/design-tokens.css" />
   <style>
-    body {
-      font-family: var(--rlt-font-sans);
-      background: var(--bg);
-      color: var(--ink);
-      max-width: 760px;
-      margin: 60px auto;
-      padding: 24px;
+    * {
+      box-sizing: border-box;
     }
 
-    .card {
-      background: var(--paper);
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+        var(--bg);
+      background-size: 72px 72px, 72px 72px, auto;
+      font-family: var(--rlt-font-sans);
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(100%, 560px);
+      padding: 28px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      background: rgba(255, 250, 241, 0.74);
+      box-shadow: var(--shadow);
     }
 
-    h1 { margin-top: 0; }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin: 12px 0;
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
     }
 
-    button {
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    a {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
       border: 1px solid var(--green-dark);
       border-radius: var(--radius);
       background: var(--green);
       color: var(--paper);
-      padding: 12px 18px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .verified {
-      color: var(--green-dark);
       font-weight: 700;
-      margin-top: 24px;
-      font-size: 22px;
-    }
-
-    .row {
-      margin: 14px 0;
-    }
-
-    .label {
-      font-size: 13px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .value {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      word-break: break-all;
-      margin-top: 4px;
+      text-decoration: none;
     }
   </style>
-  <link rel="stylesheet" href="/assets/design-tokens.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>Runlocal Receipt Verification</h1>
-    <p>Verify a local tool execution receipt.</p>
-
-    <input id="receiptId" placeholder="rct_xxxxx" />
-    <button onclick="verifyReceipt()">Verify Receipt</button>
-
-    <div id="result"></div>
-  </div>
+  <main>
+    <h1>Receipt verification moved.</h1>
+    <p>This route now points to the canonical receipt verification page.</p>
+    <a id="verifyLink" href="/verify.html">Open Receipt Verification</a>
+  </main>
 
   <script>
-    async function verifyReceipt() {
-      const id = document.getElementById("receiptId").value.trim();
-      const result = document.getElementById("result");
-
-      result.innerHTML = "Loading...";
-
-      const response = await fetch(`/api/receipts/${id}`);
-
-      if (!response.ok) {
-        result.innerHTML = "<p>Receipt not found.</p>";
-        return;
-      }
-
-      const receipt = await response.json();
-
-      result.innerHTML = `
-        <div class="verified">✅ VERIFIED RECEIPT</div>
-
-        <div class="row">
-          <div class="label">Receipt ID</div>
-          <div class="value">${receipt.receipt_id}</div>
-        </div>
-
-        <div class="row">
-          <div class="label">Tool</div>
-          <div class="value">${receipt.tool}</div>
-        </div>
-
-        <div class="row">
-          <div class="label">Version</div>
-          <div class="value">${receipt.version}</div>
-        </div>
-
-        <div class="row">
-          <div class="label">Timestamp</div>
-          <div class="value">${receipt.timestamp}</div>
-        </div>
-
-        <div class="row">
-          <div class="label">Output Hash</div>
-          <div class="value">${receipt.output_hash}</div>
-        </div>
-      `;
-    }
+    const target = new URL("/verify.html", window.location.origin);
+    target.search = window.location.search;
+    document.getElementById("verifyLink").href = target.toString();
+    window.location.replace(target.toString());
   </script>
 </body>
 </html>
