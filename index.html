@@ -10,6 +10,8 @@
     name="description"
     content="runlocal.tools is an open-source, local-first toolbox with live browser tools for image merging, metadata stripping, CSV to JSON conversion, and optional receipt verification."
   />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#f7f4ed" />
 
   <style>
     :root {
@@ -26,6 +28,11 @@
       --green-soft: #e5f3ec;
       --blue: #2636c7;
       --blue-soft: #edf0ff;
+      --rose: #e8d6d1;
+      --sage: #d9e3da;
+      --powder: #d8e3ec;
+      --butter: #efe4c8;
+      --clay: #c9b4a4;
       --warm: #eee7d9;
       --panel: rgba(255, 253, 248, 0.76);
       --radius: 22px;
@@ -47,9 +54,10 @@
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(circle at 6% 0%, rgba(8, 118, 79, 0.13), transparent 34rem),
-        radial-gradient(circle at 96% 8%, rgba(38, 54, 199, 0.08), transparent 32rem),
+        linear-gradient(rgba(18, 20, 17, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 20, 17, 0.035) 1px, transparent 1px),
         linear-gradient(180deg, #faf8f2 0%, var(--bg) 45%, #fbfaf5 100%);
+      background-size: 72px 72px, 72px 72px, auto;
       font-family:
         ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", Arial, sans-serif;
@@ -103,16 +111,20 @@
       gap: 10px;
       text-decoration: none;
       font-weight: 720;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       font-size: 15px;
     }
 
     .brand-mark {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--green);
-      box-shadow: 0 0 0 5px rgba(8, 118, 79, 0.11);
+      width: 34px;
+      height: 34px;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 10px 26px rgba(18, 20, 17, 0.09);
+    }
+
+    .brand-word {
+      line-height: 1;
     }
 
     .nav {
@@ -146,7 +158,16 @@
     }
 
     .hero {
-      padding: 112px 0 74px;
+      padding: 92px 0 56px;
+    }
+
+    .hero-stage {
+      display: grid;
+      gap: 42px;
+    }
+
+    .hero-main {
+      max-width: 980px;
     }
 
     .hero-kicker {
@@ -157,7 +178,7 @@
       color: var(--green-dark);
       font-size: 13px;
       font-weight: 760;
-      letter-spacing: 0.01em;
+      letter-spacing: 0;
     }
 
     .hero-kicker::before {
@@ -169,27 +190,24 @@
 
     h1 {
       margin: 0;
-      max-width: 10ch;
-      font-size: clamp(3.8rem, 10vw, 9rem);
+      max-width: 9ch;
+      font-size: 8.2rem;
       line-height: 0.93;
-      letter-spacing: -0.07em;
+      letter-spacing: 0;
       font-weight: 760;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      gap: 64px;
-      align-items: end;
+    h1 span {
+      display: block;
     }
 
     .hero-lede {
       margin: 30px 0 0;
-      max-width: 720px;
+      max-width: 860px;
       color: var(--ink-soft);
-      font-size: clamp(1.28rem, 2.1vw, 1.72rem);
+      font-size: 1.58rem;
       line-height: 1.35;
-      letter-spacing: -0.026em;
+      letter-spacing: 0;
       font-weight: 430;
     }
 
@@ -199,6 +217,26 @@
       color: var(--muted);
       font-size: 1.05rem;
       line-height: 1.7;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border: 1px solid rgba(8, 118, 79, 0.15);
+      border-radius: 999px;
+      background: rgba(229, 243, 236, 0.72);
+      color: var(--green-dark);
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 720;
     }
 
     .hero-actions {
@@ -249,49 +287,56 @@
       border-color: var(--line-strong);
     }
 
-    .hero-note {
-      align-self: stretch;
-      border-left: 1px solid var(--line);
-      padding-left: 26px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.65;
-    }
-
-    .hero-note strong {
-      display: block;
-      color: var(--ink);
-      font-size: 14px;
-      margin-bottom: 7px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .hero-note ul {
-      list-style: none;
-      margin: 18px 0 0;
-      padding: 0;
+    .hero-workbench {
       display: grid;
-      gap: 10px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.48);
+      box-shadow: var(--shadow);
     }
 
-    .hero-note li {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      border-top: 1px solid rgba(18, 20, 17, 0.09);
-      padding-top: 10px;
-    }
-
-    .hero-note a {
-      color: var(--green-dark);
-      font-weight: 730;
+    .workbench-item {
+      min-height: 210px;
+      padding: 24px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
       text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 160ms ease, transform 160ms ease;
     }
 
-    .hero-note span {
-      color: var(--faint);
-      text-align: right;
+    .workbench-item:hover,
+    .workbench-item:focus-visible {
+      background: rgba(255, 253, 248, 0.86);
+      transform: translateY(-2px);
+    }
+
+    .workbench-icon {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 20px;
+    }
+
+    .workbench-route {
+      color: var(--green-dark);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .workbench-item strong {
+      font-size: 21px;
+      line-height: 1.18;
+    }
+
+    .workbench-caption {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
     }
 
     .thesis {
@@ -319,9 +364,9 @@
     .thesis-card p {
       margin: 0;
       max-width: 920px;
-      font-size: clamp(2rem, 4.4vw, 4.4rem);
+      font-size: 3.8rem;
       line-height: 1.02;
-      letter-spacing: -0.055em;
+      letter-spacing: 0;
       font-weight: 620;
     }
 
@@ -340,9 +385,9 @@
     h2 {
       margin: 0;
       max-width: 13ch;
-      font-size: clamp(2.35rem, 5vw, 5rem);
+      font-size: 4.4rem;
       line-height: 0.98;
-      letter-spacing: -0.06em;
+      letter-spacing: 0;
       font-weight: 680;
     }
 
@@ -380,7 +425,7 @@
       margin: 0 0 12px;
       font-size: 22px;
       line-height: 1.15;
-      letter-spacing: -0.035em;
+      letter-spacing: 0;
       font-weight: 650;
     }
 
@@ -410,7 +455,7 @@
     }
 
     .text-card h2 {
-      font-size: clamp(2.15rem, 4vw, 3.9rem);
+      font-size: 3.3rem;
       max-width: 12ch;
     }
 
@@ -444,9 +489,7 @@
     .pipeline {
       border: 1px solid var(--line);
       border-radius: 30px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(8,118,79,0.11), transparent 24rem),
-        rgba(255, 253, 248, 0.58);
+      background: rgba(255, 253, 248, 0.58);
       padding: 38px;
       box-shadow: var(--shadow);
     }
@@ -526,11 +569,41 @@
       border-radius: 20px;
       padding: 24px;
       background: rgba(255, 253, 248, 0.62);
+      min-height: 330px;
     }
 
     .tool-card.is-live {
       border-color: rgba(8, 118, 79, 0.24);
-      background: linear-gradient(180deg, rgba(229, 243, 236, 0.48), rgba(255, 253, 248, 0.72));
+    }
+
+    .tool-card-images {
+      background: rgba(217, 227, 218, 0.42);
+    }
+
+    .tool-card-data {
+      background: rgba(239, 228, 200, 0.44);
+    }
+
+    .tool-card-verification {
+      background: rgba(216, 227, 236, 0.44);
+    }
+
+    .tool-card-media {
+      background: rgba(232, 214, 209, 0.42);
+    }
+
+    .tool-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .tool-icon {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 auto;
     }
 
     .tool-list {
@@ -703,9 +776,7 @@
       border-radius: 34px;
       border: 1px solid var(--line);
       padding: 46px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(8,118,79,0.12), transparent 24rem),
-        rgba(255,253,248,0.62);
+      background: rgba(255,253,248,0.62);
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 34px;
@@ -738,6 +809,18 @@
       gap: 24px;
     }
 
+    .footer-brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .footer-brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+    }
+
     .footer-links {
       list-style: none;
       margin: 0;
@@ -753,7 +836,6 @@
     }
 
     @media (max-width: 1040px) {
-      .hero-grid,
       .thesis-card,
       .section-header,
       .receipt,
@@ -761,10 +843,24 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-note {
-        border-left: 0;
-        border-top: 1px solid var(--line);
-        padding: 22px 0 0;
+      h1 {
+        font-size: 6.2rem;
+      }
+
+      h2 {
+        font-size: 3.4rem;
+      }
+
+      .thesis-card p {
+        font-size: 3rem;
+      }
+
+      .text-card h2 {
+        font-size: 2.85rem;
+      }
+
+      .hero-workbench {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .principles,
@@ -835,8 +931,16 @@
       }
 
       h1 {
-        font-size: clamp(3.5rem, 17vw, 5.8rem);
-        letter-spacing: -0.075em;
+        font-size: 3.75rem;
+        line-height: 0.98;
+      }
+
+      h2 {
+        font-size: 2.45rem;
+      }
+
+      .hero-lede {
+        font-size: 1.22rem;
       }
 
       .section {
@@ -844,7 +948,11 @@
       }
 
       .thesis-card p {
-        font-size: clamp(1.75rem, 10vw, 3.1rem);
+        font-size: 2.05rem;
+      }
+
+      .text-card h2 {
+        font-size: 2.2rem;
       }
 
       .text-card,
@@ -855,6 +963,7 @@
       }
 
       .principles,
+      .hero-workbench,
       .tools-grid,
       .commons-grid,
       .roadmap-grid,
@@ -862,13 +971,8 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-note li {
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .hero-note span {
-        text-align: left;
+      .workbench-item {
+        min-height: auto;
       }
 
       .proof-row {
@@ -900,8 +1004,8 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="runlocal.tools home">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>runlocal.tools</span>
+        <img class="brand-mark" src="/assets/runlocal-mark.svg" alt="" width="34" height="34" />
+        <span class="brand-word">runlocal.tools</span>
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
@@ -920,19 +1024,26 @@
 
   <main id="top">
     <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <div class="hero-kicker">Local-first browser tools</div>
+      <div class="wrap hero-stage">
+        <div class="hero-main">
+          <div class="hero-kicker">Private file work, no upload step</div>
 
-          <h1>Run tools locally.</h1>
+          <h1><span>runlocal</span><span>.tools</span></h1>
 
           <p class="hero-lede">
-            An open-source toolbox for everyday file and media processing — already shipping focused tools that run in your browser.
+            The most beautiful, clearest, and most trustworthy home for private file work on the web.
           </p>
 
           <p class="hero-sub">
-            Merge image sets, strip hidden metadata, convert CSV to JSON, and verify optional execution receipts. No upload step. No account. No remote processing service required for core file work.
+            Open a focused browser tool, process files locally, and keep the private data with you. Merge image sets, strip hidden metadata, convert CSV to JSON, and verify optional execution receipts without making upload the default.
           </p>
+
+          <div class="hero-badges" aria-label="Product qualities">
+            <span class="hero-badge">Local execution</span>
+            <span class="hero-badge">Stable tool URLs</span>
+            <span class="hero-badge">Open source</span>
+            <span class="hero-badge">Optional receipts</span>
+          </div>
 
           <div class="hero-actions">
             <a class="button button-primary" href="/images/merge/">Open Image Merge</a>
@@ -941,24 +1052,34 @@
           </div>
         </div>
 
-        <aside class="hero-note">
-          <strong>Live today</strong>
-          Three browser tools are available now, with optional receipt verification alongside them for accountability workflows.
-          <ul>
-            <li><a href="/images/merge/">Image Merge</a><span>PNG, WebP, HEIC</span></li>
-            <li><a href="/images/strip-metadata/">Metadata Strip</a><span>PNG, JPEG, WebP</span></li>
-            <li><a href="/data/csv-to-json/">CSV to JSON</a><span>paste or file input</span></li>
-            <li><a href="/verify.html">Receipt Verify</a><span>optional proof layer</span></li>
-          </ul>
-        </aside>
-      </div>
-    </section>
+        <div class="hero-workbench" aria-label="Live local tools">
+          <a class="workbench-item" href="/images/merge/">
+            <img class="workbench-icon" src="/assets/icons/image-merge.svg" alt="" width="52" height="52" />
+            <span class="workbench-route">/images/merge</span>
+            <strong>Merge Images</strong>
+            <span class="workbench-caption">Combine PNG, WebP, JPEG, HEIC, or HEIF sets into one local output.</span>
+          </a>
 
-    <section class="thesis">
-      <div class="wrap">
-        <div class="thesis-card">
-          <div class="label">Core thesis</div>
-          <p>The web should share capabilities, not require users to surrender their files to use them.</p>
+          <a class="workbench-item" href="/images/strip-metadata/">
+            <img class="workbench-icon" src="/assets/icons/strip-metadata.svg" alt="" width="52" height="52" />
+            <span class="workbench-route">/images/strip-metadata</span>
+            <strong>Strip Metadata</strong>
+            <span class="workbench-caption">Remove hidden image metadata while keeping visible pixels under your control.</span>
+          </a>
+
+          <a class="workbench-item" href="/data/csv-to-json/">
+            <img class="workbench-icon" src="/assets/icons/csv-json.svg" alt="" width="52" height="52" />
+            <span class="workbench-route">/data/csv-to-json</span>
+            <strong>CSV to JSON</strong>
+            <span class="workbench-caption">Paste or choose a CSV file and export structured JSON from this browser.</span>
+          </a>
+
+          <a class="workbench-item" href="/verify.html">
+            <img class="workbench-icon" src="/assets/icons/receipt-verify.svg" alt="" width="52" height="52" />
+            <span class="workbench-route">/verify.html</span>
+            <strong>Verify Receipts</strong>
+            <span class="workbench-caption">Check optional proof metadata without turning verification into the main product.</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1094,7 +1215,11 @@
           </div>
 
           <div class="tools-grid">
-            <article class="tool-card is-live">
+            <article class="tool-card is-live tool-card-images">
+              <div class="tool-card-top">
+                <img class="tool-icon" src="/assets/icons/image-merge.svg" alt="" width="50" height="50" />
+                <span class="status status-live">Live family</span>
+              </div>
               <h3>Images</h3>
               <p>Focused tools for common browser-side image workflows, including batch and privacy tasks.</p>
               <ul class="tool-list">
@@ -1107,7 +1232,11 @@
               </ul>
             </article>
 
-            <article class="tool-card is-live">
+            <article class="tool-card is-live tool-card-data">
+              <div class="tool-card-top">
+                <img class="tool-icon" src="/assets/icons/csv-json.svg" alt="" width="50" height="50" />
+                <span class="status status-live">Live family</span>
+              </div>
               <h3>Data</h3>
               <p>Small utilities for structured text and common formats.</p>
               <ul class="tool-list">
@@ -1119,7 +1248,11 @@
               </ul>
             </article>
 
-            <article class="tool-card is-live">
+            <article class="tool-card is-live tool-card-verification">
+              <div class="tool-card-top">
+                <img class="tool-icon" src="/assets/icons/receipt-verify.svg" alt="" width="50" height="50" />
+                <span class="status status-live">Optional</span>
+              </div>
               <h3>Verification</h3>
               <p>Optional receipts for workflows that need a public record of tool metadata and hashes.</p>
               <ul class="tool-list">
@@ -1130,7 +1263,11 @@
               </ul>
             </article>
 
-            <article class="tool-card">
+            <article class="tool-card tool-card-media">
+              <div class="tool-card-top">
+                <img class="tool-icon" src="/assets/icons/media.svg" alt="" width="50" height="50" />
+                <span class="status">Planned</span>
+              </div>
               <h3>Media</h3>
               <p>Browser-native media processing where local execution is practical.</p>
               <ul class="tool-list">
@@ -1304,9 +1441,9 @@
       <div class="wrap">
         <div class="cta-card">
           <div>
-            <h2>Local-first tools for the open web.</h2>
+            <h2>The tool travels. The file stays.</h2>
             <p>
-              Practical utilities for private file work: image merging, metadata stripping, CSV conversion, optional verification, and a path toward composable browser-native workflows.
+              A beautiful, clear, and trustworthy home for private file work: image merging, metadata stripping, CSV conversion, optional verification, and a path toward composable browser-native workflows.
             </p>
           </div>
 
@@ -1322,9 +1459,12 @@
 
   <footer class="footer">
     <div class="wrap footer-inner">
-      <div>
-        <strong>runlocal.tools</strong><br />
-        Local-first browser tools for file and media processing.
+      <div class="footer-brand">
+        <img src="/assets/runlocal-mark.svg" alt="" width="34" height="34" />
+        <div>
+          <strong>runlocal.tools</strong><br />
+          Local-first browser tools for file and media processing.
+        </div>
       </div>
 
       <ul class="footer-links">

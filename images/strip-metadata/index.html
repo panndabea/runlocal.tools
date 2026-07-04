@@ -6,6 +6,7 @@
 
   <title>Strip Image Metadata — runlocal.tools</title>
   <meta name="description" content="Remove metadata from images locally in your browser. No upload required." />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 
   <style>
     :root {
@@ -29,8 +30,10 @@
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(circle at 6% 0%, rgba(8, 118, 79, 0.13), transparent 34rem),
+        linear-gradient(rgba(18, 20, 17, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 20, 17, 0.035) 1px, transparent 1px),
         linear-gradient(180deg, #faf8f2 0%, var(--bg) 100%);
+      background-size: 72px 72px, 72px 72px, auto;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
@@ -65,15 +68,15 @@
       text-decoration: none;
       color: var(--ink);
       font-weight: 720;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
     }
 
-    .brand-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--green);
-      box-shadow: 0 0 0 5px rgba(8, 118, 79, 0.11);
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 10px 26px rgba(18, 20, 17, 0.09);
     }
 
     .privacy {
@@ -102,9 +105,9 @@
     h1 {
       margin: 0;
       max-width: 10ch;
-      font-size: clamp(3.2rem, 8vw, 7rem);
+      font-size: 6.3rem;
       line-height: 0.92;
-      letter-spacing: -0.07em;
+      letter-spacing: 0;
       font-weight: 760;
     }
 
@@ -112,7 +115,7 @@
       margin: 24px 0 0;
       max-width: 720px;
       color: var(--muted);
-      font-size: clamp(1.08rem, 2vw, 1.35rem);
+      font-size: 1.25rem;
       line-height: 1.5;
     }
 
@@ -172,9 +175,7 @@
       min-height: 260px;
       border: 1.5px dashed rgba(8, 118, 79, 0.28);
       border-radius: 22px;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(8, 118, 79, 0.10), transparent 18rem),
-        rgba(255,253,248,0.42);
+      background: rgba(255,253,248,0.42);
       display: grid;
       place-items: center;
       text-align: center;
@@ -189,7 +190,7 @@
     .dropzone strong {
       display: block;
       font-size: 24px;
-      letter-spacing: -0.04em;
+      letter-spacing: 0;
       margin-bottom: 8px;
     }
 
@@ -255,6 +256,14 @@
     }
 
     @media (max-width: 640px) {
+      h1 {
+        font-size: 3.35rem;
+      }
+
+      .lede {
+        font-size: 1.1rem;
+      }
+
       .row {
         grid-template-columns: 1fr;
       }
@@ -266,7 +275,7 @@
   <header>
     <div class="wrap header-inner">
       <a class="brand" href="/">
-        <span class="brand-dot" aria-hidden="true"></span>
+        <img class="brand-mark" src="/assets/runlocal-mark.svg" alt="" width="34" height="34" />
         <span>runlocal.tools</span>
       </a>
       <div class="privacy">No upload · runs locally</div>

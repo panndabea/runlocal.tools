@@ -8,6 +8,7 @@
       name="description"
       content="Merge images locally in your browser. Choose files, arrange the layout, and export PNG, WebP, or the smallest generated file without uploading images."
     />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <script src="https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <style>
       :root {
@@ -42,8 +43,10 @@
       body {
         align-items: stretch;
         background:
-          radial-gradient(circle at 6% 0%, rgba(8, 118, 79, 0.13), transparent 34rem),
+          linear-gradient(rgba(18, 20, 17, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(18, 20, 17, 0.035) 1px, transparent 1px),
           linear-gradient(180deg, #faf8f2 0%, var(--bg) 100%);
+        background-size: 72px 72px, 72px 72px, auto;
         color: var(--ink);
         display: block;
         font-family:
@@ -88,16 +91,16 @@
         display: inline-flex;
         font-weight: 720;
         gap: 10px;
-        letter-spacing: -0.02em;
+        letter-spacing: 0;
         text-decoration: none;
       }
 
-      .brand-dot {
-        background: var(--green);
-        border-radius: 999px;
-        box-shadow: 0 0 0 5px rgba(8, 118, 79, 0.11);
-        height: 12px;
-        width: 12px;
+      .brand-mark {
+        border-radius: 12px;
+        box-shadow: 0 10px 26px rgba(18, 20, 17, 0.09);
+        display: block;
+        height: 34px;
+        width: 34px;
       }
 
       .privacy {
@@ -131,9 +134,9 @@
       }
 
       h1 {
-        font-size: clamp(3.4rem, 9vw, 7.8rem);
+        font-size: 6.8rem;
         font-weight: 760;
-        letter-spacing: -0.07em;
+        letter-spacing: 0;
         line-height: 0.92;
         margin: 0;
         max-width: 10ch;
@@ -141,7 +144,7 @@
 
       .lede {
         color: var(--muted);
-        font-size: clamp(1.08rem, 2vw, 1.35rem);
+        font-size: 1.25rem;
         line-height: 1.5;
         margin: 24px 0 0;
         max-width: 680px;
@@ -269,9 +272,7 @@
       }
 
       .drop-zone {
-        background:
-          radial-gradient(circle at 20% 10%, rgba(8, 118, 79, 0.1), transparent 18rem),
-          rgba(255, 253, 248, 0.42);
+        background: rgba(255, 253, 248, 0.42);
         border: 1.5px dashed rgba(8, 118, 79, 0.28);
         border-radius: 22px;
         cursor: pointer;
@@ -292,7 +293,7 @@
       .drop-zone strong {
         display: block;
         font-size: 24px;
-        letter-spacing: -0.04em;
+        letter-spacing: 0;
         margin-bottom: 8px;
       }
 
@@ -508,8 +509,8 @@
       }
 
       #result-section h2 {
-        font-size: clamp(1.8rem, 4vw, 3.4rem);
-        letter-spacing: -0.055em;
+        font-size: 3rem;
+        letter-spacing: 0;
         line-height: 1;
         margin: 0 0 14px;
       }
@@ -628,6 +629,10 @@
           grid-template-columns: 1fr;
         }
 
+        h1 {
+          font-size: 4.7rem;
+        }
+
         .note {
           border-left: 0;
           border-top: 1px solid var(--line);
@@ -642,6 +647,18 @@
 
         main.wrap {
           padding: 52px 0 70px;
+        }
+
+        h1 {
+          font-size: 3.45rem;
+        }
+
+        .lede {
+          font-size: 1.1rem;
+        }
+
+        #result-section h2 {
+          font-size: 2.2rem;
         }
 
         .header-inner,
@@ -697,7 +714,7 @@
     <header class="site-header">
       <div class="wrap header-inner">
         <a class="brand" href="/" aria-label="runlocal.tools home">
-          <span class="brand-dot" aria-hidden="true"></span>
+          <img class="brand-mark" src="/assets/runlocal-mark.svg" alt="" width="34" height="34" />
           <span>runlocal.tools</span>
         </a>
         <span class="privacy">No upload. Local only.</span>
