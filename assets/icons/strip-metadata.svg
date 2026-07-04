@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
   <title id="title">Strip metadata</title>
-  <rect x="9" y="8" width="30" height="32" rx="6" fill="#FFFDF8" stroke="#121411" stroke-width="2"/>
-  <path d="M15 17h18M15 23h18M15 29h11" stroke="#9DA49D" stroke-width="2" stroke-linecap="round"/>
-  <path d="M29 32l9-9" stroke="#B42318" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M34.5 22.5l4 4" stroke="#B42318" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M13 36h18" stroke="#08764F" stroke-width="2" stroke-linecap="round"/>
+  <rect x="9" y="8" width="30" height="32" rx="6" fill="#FFFAF1" stroke="#16110D" stroke-width="2"/>
+  <path d="M15 17h18M15 23h18M15 29h11" stroke="#A99C90" stroke-width="2" stroke-linecap="round"/>
+  <path d="M29 32l9-9" stroke="#E8441D" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M34.5 22.5l4 4" stroke="#E8441D" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M13 36h18" stroke="#245B6B" stroke-width="2" stroke-linecap="round"/>
 </svg>

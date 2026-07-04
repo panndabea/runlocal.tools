@@ -142,6 +142,7 @@ The goal is to provide simple, reliable tools that:
 For the canonical product direction, see:
 
 * [Product Strategy](docs/Product-Strategy.md)
+* [Design Foundation](docs/Design-Foundation.md)
 * [Product Requirements](docs/PRD.md)
 * [Roadmap](docs/Roadmap.md)
 

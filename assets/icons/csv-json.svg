@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
   <title id="title">CSV to JSON</title>
-  <rect x="6" y="10" width="17" height="28" rx="5" fill="#EFE4C8" stroke="#121411" stroke-width="2"/>
-  <path d="M11 18h7M11 24h7M11 30h7" stroke="#08764F" stroke-width="2" stroke-linecap="round"/>
-  <path d="M25 24h7" stroke="#121411" stroke-width="2" stroke-linecap="round"/>
-  <path d="M30 20l4 4-4 4" fill="none" stroke="#121411" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="33" y="10" width="9" height="28" rx="4" fill="#D8E3EC" stroke="#121411" stroke-width="2"/>
-  <path d="M37 18c-1.5 1.1-1.5 2.6 0 3.7M37 26.3c-1.5 1.1-1.5 2.6 0 3.7" stroke="#2636C7" stroke-width="2" stroke-linecap="round"/>
+  <rect x="6" y="10" width="17" height="28" rx="5" fill="#F2E4BD" stroke="#16110D" stroke-width="2"/>
+  <path d="M11 18h7M11 24h7M11 30h7" stroke="#E8441D" stroke-width="2" stroke-linecap="round"/>
+  <path d="M25 24h7" stroke="#16110D" stroke-width="2" stroke-linecap="round"/>
+  <path d="M30 20l4 4-4 4" fill="none" stroke="#16110D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="33" y="10" width="9" height="28" rx="4" fill="#E4EEF1" stroke="#16110D" stroke-width="2"/>
+  <path d="M37 18c-1.5 1.1-1.5 2.6 0 3.7M37 26.3c-1.5 1.1-1.5 2.6 0 3.7" stroke="#245B6B" stroke-width="2" stroke-linecap="round"/>
 </svg>

@@ -12,22 +12,22 @@
     <script src="https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <style>
       :root {
-        --bg: #f7f4ed;
-        --paper: #fffdf8;
-        --ink: #121411;
-        --ink-soft: #282c27;
-        --muted: #667069;
-        --faint: #9aa39c;
-        --line: rgba(18, 20, 17, 0.13);
-        --line-strong: rgba(18, 20, 17, 0.22);
-        --green: #08764f;
-        --green-dark: #064c35;
-        --green-soft: #e5f3ec;
-        --red: #b42318;
-        --blue: #2636c7;
-        --blue-soft: #edf0ff;
+        --bg: #f5efe5;
+        --paper: #fffaf1;
+        --ink: #16110d;
+        --ink-soft: #342820;
+        --muted: #6f6257;
+        --faint: #a99c90;
+        --line: rgba(54, 42, 32, 0.16);
+        --line-strong: rgba(54, 42, 32, 0.28);
+        --green: #e8441d;
+        --green-dark: #b83116;
+        --green-soft: #fff0e8;
+        --red: #e8441d;
+        --blue: #245b6b;
+        --blue-soft: #e4eef1;
         --max: 1180px;
-        --shadow: 0 24px 80px rgba(28, 29, 24, 0.08);
+        --shadow: 0 18px 60px rgba(54, 42, 32, 0.08);
       }
 
       *,
@@ -43,9 +43,9 @@
       body {
         align-items: stretch;
         background:
-          linear-gradient(rgba(18, 20, 17, 0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(18, 20, 17, 0.035) 1px, transparent 1px),
-          linear-gradient(180deg, #faf8f2 0%, var(--bg) 100%);
+          linear-gradient(rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(54, 42, 32, 0.028) 1px, transparent 1px),
+          linear-gradient(180deg, #fff8ee 0%, var(--bg) 100%);
         background-size: 72px 72px, 72px 72px, auto;
         color: var(--ink);
         display: block;
@@ -96,8 +96,8 @@
       }
 
       .brand-mark {
-        border-radius: 12px;
-        box-shadow: 0 10px 26px rgba(18, 20, 17, 0.09);
+        border-radius: var(--radius);
+        box-shadow: 0 9px 22px rgba(184, 49, 22, 0.18);
         display: block;
         height: 34px;
         width: 34px;
@@ -105,8 +105,8 @@
 
       .privacy {
         background: var(--green-soft);
-        border: 1px solid rgba(8, 118, 79, 0.12);
-        border-radius: 999px;
+        border: 1px solid rgba(232, 68, 29, 0.16);
+        border-radius: var(--radius);
         color: var(--green-dark);
         font-size: 13px;
         font-weight: 760;
@@ -167,9 +167,9 @@
       }
 
       .tool {
-        background: rgba(255, 253, 248, 0.72);
+        background: rgba(255, 250, 241, 0.72);
         border: 1px solid var(--line);
-        border-radius: 28px;
+        border-radius: var(--radius);
         box-shadow: var(--shadow);
         overflow: hidden;
       }
@@ -207,9 +207,9 @@
       button,
       .file-label,
       select {
-        background: rgba(255, 253, 248, 0.72);
+        background: rgba(255, 250, 241, 0.72);
         border: 1px solid var(--line);
-        border-radius: 999px;
+        border-radius: var(--radius);
         color: var(--ink);
         font: inherit;
         font-size: 14px;
@@ -243,15 +243,15 @@
       }
 
       #combine-btn.primary {
-        background: var(--ink);
-        border-color: var(--ink);
+        background: var(--green);
+        border-color: var(--green-dark);
         color: var(--paper);
         margin-left: 0;
       }
 
       #combine-btn.primary:hover,
       #combine-btn.primary:focus-visible {
-        background: #282c27;
+        background: var(--green-dark);
       }
 
       .tool-body {
@@ -272,9 +272,9 @@
       }
 
       .drop-zone {
-        background: rgba(255, 253, 248, 0.42);
-        border: 1.5px dashed rgba(8, 118, 79, 0.28);
-        border-radius: 22px;
+        background: rgba(255, 250, 241, 0.42);
+        border: 1.5px dashed rgba(232, 68, 29, 0.30);
+        border-radius: var(--radius);
         cursor: pointer;
         display: grid;
         min-height: 260px;
@@ -310,9 +310,9 @@
       }
 
       .format-pill {
-        background: rgba(255, 253, 248, 0.72);
+        background: rgba(255, 250, 241, 0.72);
         border: 1px solid var(--line);
-        border-radius: 999px;
+        border-radius: var(--radius);
         color: var(--green-dark);
         font-size: 12px;
         font-weight: 760;
@@ -332,9 +332,9 @@
 
       .thumb-wrap {
         aspect-ratio: 1;
-        background: rgba(18, 20, 17, 0.06);
+        background: rgba(54, 42, 32, 0.06);
         border: 1px solid var(--line);
-        border-radius: 16px;
+        border-radius: var(--radius);
         overflow: hidden;
         position: relative;
       }
@@ -347,8 +347,8 @@
 
       .thumb-wrap button {
         align-items: center;
-        background: rgba(18, 20, 17, 0.78);
-        border: 1px solid rgba(255, 253, 248, 0.44);
+        background: rgba(22, 17, 13, 0.78);
+        border: 1px solid rgba(255, 250, 241, 0.44);
         border-radius: 50%;
         color: #fff;
         cursor: pointer;
@@ -422,7 +422,7 @@
       #processing-state,
       #preprocess-state {
         align-items: center;
-        border-radius: 16px;
+        border-radius: var(--radius);
         color: var(--ink-soft);
         display: none;
         font-size: 14px;
@@ -443,12 +443,12 @@
 
       #preprocess-state {
         background: var(--green-soft);
-        border: 1px solid rgba(8, 118, 79, 0.12);
+        border: 1px solid rgba(232, 68, 29, 0.16);
       }
 
       .spinner {
         animation: spin 0.8s linear infinite;
-        border: 2.5px solid rgba(8, 118, 79, 0.16);
+        border: 2.5px solid rgba(232, 68, 29, 0.18);
         border-radius: 50%;
         border-top-color: var(--green);
         flex-shrink: 0;
@@ -467,8 +467,8 @@
       }
 
       .eta-badge {
-        background: rgba(255, 253, 248, 0.76);
-        border-radius: 999px;
+        background: rgba(255, 250, 241, 0.76);
+        border-radius: var(--radius);
         color: var(--green-dark);
         font-size: 0.8rem;
         font-weight: 600;
@@ -485,8 +485,8 @@
       }
 
       #preprocess-progress {
-        background: rgba(255, 253, 248, 0.72);
-        border-radius: 999px;
+        background: rgba(255, 250, 241, 0.72);
+        border-radius: var(--radius);
         flex: 1;
         height: 6px;
         overflow: hidden;
@@ -494,7 +494,7 @@
 
       #preprocess-progress-fill {
         background: linear-gradient(90deg, var(--green), var(--blue));
-        border-radius: 999px;
+        border-radius: var(--radius);
         height: 100%;
         transition: width 0.25s ease;
         width: 0%;
@@ -517,7 +517,7 @@
 
       #result-img {
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: var(--radius);
         box-shadow: 0 12px 34px rgba(28, 29, 24, 0.1);
         display: block;
         height: auto;
@@ -536,7 +536,7 @@
 
       .dl-btn {
         border: 1px solid var(--line);
-        border-radius: 16px;
+        border-radius: var(--radius);
         cursor: pointer;
         display: inline-flex;
         flex-direction: column;
@@ -570,13 +570,13 @@
       }
 
       .dl-btn-png {
-        background: var(--ink);
-        border-color: var(--ink);
+        background: var(--green);
+        border-color: var(--green-dark);
         color: var(--paper);
       }
 
       .dl-btn-png:hover {
-        background: #282c27;
+        background: var(--green-dark);
       }
 
       .dl-btn-webp {
@@ -585,8 +585,8 @@
       }
 
       .dl-btn-webp:hover {
-        background: #d8ebdf;
-        border-color: rgba(8, 118, 79, 0.24);
+        background: #ffe3d6;
+        border-color: rgba(232, 68, 29, 0.28);
       }
 
       .dl-btn-min {
@@ -601,7 +601,7 @@
 
       .savings-badge {
         background: var(--green);
-        border-radius: 999px;
+        border-radius: var(--radius);
         color: #fff;
         display: none;
         font-size: 0.7rem;
@@ -705,6 +705,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="/assets/design-tokens.css" />
   </head>
   <body>
     <div id="top-progress">

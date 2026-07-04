@@ -123,6 +123,8 @@ The next tools should reinforce the existing image and data wedge:
 
 The brand should feel calm, precise, warm, and trustworthy.
 
+The working visual foundation is documented in [Design Foundation](Design-Foundation.md).
+
 Avoid:
 
 - Generic AI futurism

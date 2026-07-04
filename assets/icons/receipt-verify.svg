@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
   <title id="title">Receipt verification</title>
-  <path d="M13 7h22v34l-4-2.6-3.7 2.6-3.8-2.6-3.8 2.6-3.7-2.6-3 2V7Z" fill="#FFFDF8" stroke="#121411" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M18 16h12M18 22h9M18 29h7" stroke="#9DA49D" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="32" cy="30" r="7" fill="#E5F3EC" stroke="#08764F" stroke-width="2"/>
-  <path d="M28.7 30.1l2.1 2.1 4.4-4.8" fill="none" stroke="#08764F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13 7h22v34l-4-2.6-3.7 2.6-3.8-2.6-3.8 2.6-3.7-2.6-3 2V7Z" fill="#FFFAF1" stroke="#16110D" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M18 16h12M18 22h9M18 29h7" stroke="#A99C90" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="32" cy="30" r="7" fill="#FFF0E8" stroke="#E8441D" stroke-width="2"/>
+  <path d="M28.7 30.1l2.1 2.1 4.4-4.8" fill="none" stroke="#E8441D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
